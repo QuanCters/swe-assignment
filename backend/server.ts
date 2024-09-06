@@ -17,6 +17,11 @@ app.get("/", (req, res) => {
   res.send("Hello from the server!");
 });
 
+// New route
+app.get("/api/data", (req, res) => {
+  res.json({ message: "This is some sample data from the server" });
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
