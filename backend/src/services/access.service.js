@@ -6,7 +6,7 @@ const {
   NotFoundError,
 } = require("../core/error.response");
 const jwt = require("jsonwebtoken");
-const { findUserByEmail, findUserByAccessToken } = require("./user.service");
+const { findUserByEmail, findUserByAccessToken } = require("../repositories/user.repository");
 
 const ROLE = {
   STUDENT: "0000",
@@ -36,8 +36,7 @@ class AccessService {
     }
 
     const updateResponse = await fetch(
-      `https://json-server-s4l1.onrender.com/${
-        role === "0000" ? "students" : "SPSOs"
+      `https://json-server-s4l1.onrender.com/${role === "0000" ? "students" : "SPSOs"
       }/${foundUser[0].id}`,
       {
         method: "PUT",
@@ -82,8 +81,7 @@ class AccessService {
 
     // 4: Update access token to database
     const updateResponse = await fetch(
-      `https://json-server-s4l1.onrender.com/${
-        role === "0000" ? "students" : "SPSOs"
+      `https://json-server-s4l1.onrender.com/${role === "0000" ? "students" : "SPSOs"
       }/${foundUser[0].id}`,
       {
         method: "PUT",
