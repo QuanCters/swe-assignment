@@ -1,4 +1,4 @@
-import DragNDrop from "@/Components/Calendar/DragNDrop";
+import DragNDrop from "@/Components/DragNDrop";
 
 const PrintPage = () => {
   const handleFiles = (files: File[]) => {

@@ -6,9 +6,9 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 // It's the layout component
 export const Route = createRootRoute({
   component: () => (
-    <div className="app bg-gray-20">
+    <div className="app bg-gray-20 flex flex-col">
       <Header />
-      <body>
+      <body className="flex-1 z-0">
         <Outlet />
       </body>
 
