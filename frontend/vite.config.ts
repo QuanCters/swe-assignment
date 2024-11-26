@@ -7,7 +7,7 @@ import path from "path";
 export default defineConfig({
   plugins: [react(), TanStackRouterVite()],
   server: {
-    port: 3000,
+    port: 3003,
   },
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
