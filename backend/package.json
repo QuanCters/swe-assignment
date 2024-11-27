@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "node --watch server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -10,11 +11,22 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+<<<<<<< HEAD:package.json
     "@tailwindcss/forms": "^0.5.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jspdf": "^2.5.2",
+=======
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "helmet": "^8.0.0",
+    "json-web-token": "^3.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+>>>>>>> 8041ed0080d4292096580a900dca9d077cae2307:backend/package.json
     "react-router-dom": "^6.26.1"
   },
   "devDependencies": {
