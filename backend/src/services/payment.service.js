@@ -1,7 +1,16 @@
 "use strict"
 
+const { findUserById } = require("../repositories/user.repository");
+
 const pay = async ({ paymentInfo }) => {
     const { userId, pageCount, config } = paymentInfo;
+    const user = findUserById(userId);
+    if (!user) {
+        throw new Error(`User ${userId} not found`);
+    }
+    if (!user.money) {
+        throw new Error(`User ${userId} has no money`);
+    }
     const paymentAmount = pageCount
         * config.printCount
         * (config.color === 'color' ? 2 : 1)

@@ -7,8 +7,7 @@ const ROLE = {
 
 const findUserByEmail = async ({ email, role }) => {
   const response = await fetch(
-    `https://json-server-s4l1.onrender.com/${
-      role === ROLE.STUDENT ? "students" : "SPSOs"
+    `https://json-server-s4l1.onrender.com/${role === ROLE.STUDENT ? "students" : "SPSOs"
     }?email=${email}`
   );
 
@@ -21,8 +20,7 @@ const findUserByEmail = async ({ email, role }) => {
 
 const findUserByAccessToken = async ({ access_token, role }) => {
   const response = await fetch(
-    `https://json-server-s4l1.onrender.com/${
-      role === ROLE.STUDENT ? "students" : "SPSOs"
+    `https://json-server-s4l1.onrender.com/${role === ROLE.STUDENT ? "students" : "SPSOs"
     }?access_token=${access_token}`
   );
 
@@ -33,4 +31,15 @@ const findUserByAccessToken = async ({ access_token, role }) => {
   return response.json();
 };
 
-module.exports = { findUserByEmail, findUserByAccessToken };
+const findUserById = async ({ id, role }) => {
+  const response = await fetch(
+    `https://json-server-s4l1.onrender.com/${role === ROLE.STUDENT ? "students" : "SPSOs"
+    }?id=${id}`
+  );
+  if (!response.ok) {
+    throw new Error(`Error fetching user: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+module.exports = { findUserByEmail, findUserByAccessToken, findUserById };

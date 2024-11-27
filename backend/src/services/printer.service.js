@@ -25,6 +25,10 @@ const deletePrinter = async (id) => {
 
 const print = async ({ printInfo }) => {
     const { userId, printerId, documentId, config } = printInfo;
+    const printer = findPrinterById(printerId);
+    if (printer.status !== 'online') {
+        throw new Error(`Printer ${printerId} is not online`);
+    }
     const pageCount = documentId;
     const printCount = config.printCount;
     const pageType = config.pageType;
