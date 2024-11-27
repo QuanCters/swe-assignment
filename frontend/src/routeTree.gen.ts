@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
 
 // Create Virtual Routes
 
@@ -29,6 +30,12 @@ const PrivatePrintChoosePrinterLazyImport = createFileRoute(
 )()
 
 // Create/Update Routes
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -84,6 +91,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
     '/_private/printing-history': {
       id: '/_private/printing-history'
       path: '/printing-history'
@@ -119,6 +133,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/login': typeof LoginRoute
   '/printing-history': typeof PrivatePrintingHistoryLazyRoute
   '/choose-printer': typeof PrivatePrintChoosePrinterLazyRoute
   '/config-page': typeof PrivatePrintConfigPageLazyRoute
@@ -127,6 +142,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/login': typeof LoginRoute
   '/printing-history': typeof PrivatePrintingHistoryLazyRoute
   '/choose-printer': typeof PrivatePrintChoosePrinterLazyRoute
   '/config-page': typeof PrivatePrintConfigPageLazyRoute
@@ -136,6 +152,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/login': typeof LoginRoute
   '/_private/printing-history': typeof PrivatePrintingHistoryLazyRoute
   '/_private/_print/choose-printer': typeof PrivatePrintChoosePrinterLazyRoute
   '/_private/_print/config-page': typeof PrivatePrintConfigPageLazyRoute
@@ -146,15 +163,23 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
     | '/printing-history'
     | '/choose-printer'
     | '/config-page'
     | '/print'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/printing-history' | '/choose-printer' | '/config-page' | '/print'
+  to:
+    | '/'
+    | '/login'
+    | '/printing-history'
+    | '/choose-printer'
+    | '/config-page'
+    | '/print'
   id:
     | '__root__'
     | '/'
+    | '/login'
     | '/_private/printing-history'
     | '/_private/_print/choose-printer'
     | '/_private/_print/config-page'
@@ -164,6 +189,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  LoginRoute: typeof LoginRoute
   PrivatePrintingHistoryLazyRoute: typeof PrivatePrintingHistoryLazyRoute
   PrivatePrintChoosePrinterLazyRoute: typeof PrivatePrintChoosePrinterLazyRoute
   PrivatePrintConfigPageLazyRoute: typeof PrivatePrintConfigPageLazyRoute
@@ -172,6 +198,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  LoginRoute: LoginRoute,
   PrivatePrintingHistoryLazyRoute: PrivatePrintingHistoryLazyRoute,
   PrivatePrintChoosePrinterLazyRoute: PrivatePrintChoosePrinterLazyRoute,
   PrivatePrintConfigPageLazyRoute: PrivatePrintConfigPageLazyRoute,
@@ -189,6 +216,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/login",
         "/_private/printing-history",
         "/_private/_print/choose-printer",
         "/_private/_print/config-page",
@@ -197,6 +225,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
     },
     "/_private/printing-history": {
       "filePath": "_private/printing-history.lazy.tsx"

@@ -20,9 +20,11 @@ type Printer = {
 
 function ChoosePrinter() {
   const [printers, setPrinters] = React.useState<Printer[]>();
+  const { modal, openModal } = useModal();
 
   const onSubmit = () => {
     console.log("submit");
+    openModal("ConfirmPrintModal");
   };
 
   React.useEffect(() => {
