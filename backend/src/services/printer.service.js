@@ -25,17 +25,13 @@ const deletePrinter = async (id) => {
 
 const print = async ({ printInfo }) => {
     const { userId, printerId, documentId, config } = printInfo;
-    const printer = findPrinterById(printerId);
-    if (printer.status !== 'online') {
+    const printer = await findPrinterById(printerId);
+    if (printer.status === 'offline') {
         throw new Error(`Printer ${printerId} is not online`);
     }
     const pageCount = documentId;
-    const printCount = config.printCount;
-    const pageType = config.pageType;
-    const color = config.color;
-    const duplex = config.duplex;
-    const paymentAmount = pay({ paymentInfo: { userId, pageCount, config } });
-    const result = `User ${userId} printed ${pageCount} pages on printer ${printerId} with ${color} color, ${pageType} page type, ${duplex ? 'duplex' : 'simplex'} and ${printCount} copies and paid ${paymentAmount}VN$`;
+    const paymentAmount = await pay({ paymentInfo: { userId, pageCount, config } });
+    const result = `User ${userId} printed ${pageCount} pages on printer ${printerId} with ${config.color} color, ${config.pageType} page type, ${config.duplex ? 'duplex' : 'simplex'} and ${config.printCount} copies and paid ${paymentAmount}VN$`;
     console.log(result);
     return result;
 }
@@ -46,5 +42,6 @@ module.exports = {
     savePrinter,
     updatePrinter,
     deletePrinter,
-    pay
+    pay,
+    print,
 }
