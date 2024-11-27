@@ -24,7 +24,8 @@ function ChoosePrinter() {
 
   const onSubmit = () => {
     console.log("submit");
-    openModal("ConfirmPrintModal");
+    // openModal("ConfirmPrintModal");
+    openModal("InsufficientPagesModal");
   };
 
   React.useEffect(() => {

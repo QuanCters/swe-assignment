@@ -1,5 +1,5 @@
 import { Dialog, Stack } from "@mui/material";
-const ConfirmPrintModal: React.FC<{ onClose: any }> = ({ onClose }) => {
+const InsufficientPagesModal: React.FC<{ onClose: any }> = ({ onClose }) => {
   const stringlist = [
     "Report3.pdf - 15 A4 pages.",
     "Report3.pdf - 15 A4 pages.",
@@ -23,6 +23,9 @@ const ConfirmPrintModal: React.FC<{ onClose: any }> = ({ onClose }) => {
             <p>
               You have: <span className="font-normal">51 A4 pages</span>
             </p>
+            <p className="text-center">
+              Please adjust your settings or buy more pages.
+            </p>
           </div>
           <div className="flex flex-row flex-1 items-end w-full px-10 justify-between max-lg:px-0 min-h-20">
             <button
@@ -34,7 +37,7 @@ const ConfirmPrintModal: React.FC<{ onClose: any }> = ({ onClose }) => {
 
             <div className="relative group">
               <button className="bg-[#0052B4] text-white px-6 py-3 rounded-xl relative overflow-hidden transition-all ease-in-out duration-500">
-                Confirm
+                Buy Pages
                 <span
                   className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 
       transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"
@@ -48,4 +51,4 @@ const ConfirmPrintModal: React.FC<{ onClose: any }> = ({ onClose }) => {
   );
 };
 
-export default ConfirmPrintModal;
+export default InsufficientPagesModal;

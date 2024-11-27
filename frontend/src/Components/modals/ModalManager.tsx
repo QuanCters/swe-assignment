@@ -1,10 +1,12 @@
 import { useModal } from "@/context/ModalContext";
 import ConfirmPrintModal from "./ConfirmPrintModal";
+import InsufficientPagesModal from "./InsufficientPagesModal";
 
 const ModalLookup: Record<string, React.FC<any>> = {
   // UploadModal: UploadModal,
   // AnotherModal: AnotherModal,
   ConfirmPrintModal: ConfirmPrintModal,
+  InsufficientPagesModal: InsufficientPagesModal,
 };
 
 const ModalManager = () => {
