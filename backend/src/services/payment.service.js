@@ -21,6 +21,18 @@ const pay = async ({ paymentInfo }) => {
     return paymentAmount;
 }
 
+const buyPages = async ({ userId, pageCount }) => {
+    const user = await findUserById({ id: userId, role: "0000" });
+    if (!user) {
+        throw new Error(`User ${userId} not found`);
+    }
+    console.log(`User ${userId} is paying through BKPay`);
+    await updateStudentPageBalance({ id: userId, pageBalance: parseInt(user.pageBalance) + parseInt(pageCount) });
+    console.log(`User ${userId} bought ${pageCount} pages`);
+    return pageCount;
+}
+
 module.exports = {
-    pay
+    pay,
+    buyPages,
 }

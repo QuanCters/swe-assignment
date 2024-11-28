@@ -1,11 +1,12 @@
 "use strict"
 
-const { print, updateStudentPageBalance } = require("../controllers/student.controller");
+const { print, buyPages, updateStudentPageBalance } = require("../controllers/student.controller");
 
 const express = require("express");
 const router = express.Router();
 
-router.patch("/:userId", updateStudentPageBalance);
+router.patch("/:userId/updatePages", updateStudentPageBalance);
+router.patch("/:userId/buyPages", buyPages);
 router.post("/:userId/print/:printerId", print);
 
 module.exports = router;
