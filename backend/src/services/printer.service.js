@@ -20,6 +20,10 @@ const updatePrinter = async (printer) => {
     return await printerRepo.updatePrinter(printer);
 }
 
+const togglePrinterStatus = async (id, status) => {
+    return await printerRepo.togglePrinterStatus(id, status);
+}
+
 const deletePrinter = async (id) => {
     return await printerRepo.deletePrinter(id);
 }
@@ -46,4 +50,5 @@ module.exports = {
     deletePrinter,
     pay,
     print,
+    togglePrinterStatus,
 }

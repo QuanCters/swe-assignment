@@ -52,6 +52,22 @@ const updatePrinter = async (printer) => {
     return response.json();
 }
 
+const togglePrinterStatus = async (id, status) => {
+    const response = await fetch(`https://json-server-s4l1.onrender.com/printers/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(status)
+    });
+
+    if (!response.ok) {
+        throw new Error(`Error toggling printer status: ${response.statusText}`);
+    }
+
+    return response.json();
+}
+
 const deletePrinter = async (id) => {
     const response = await fetch(`https://json-server-s4l1.onrender.com/printers/${id}`, {
         method: 'DELETE'
@@ -64,4 +80,4 @@ const deletePrinter = async (id) => {
     return response.json();
 }
 
-module.exports = { findAllPrinters, findPrinterById, savePrinter, updatePrinter, deletePrinter };
+module.exports = { findAllPrinters, findPrinterById, savePrinter, updatePrinter, deletePrinter, togglePrinterStatus };
