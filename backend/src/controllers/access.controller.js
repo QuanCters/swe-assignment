@@ -21,9 +21,14 @@ class AccessController {
   };
 
   logoutSPSO = async (req, res) => {
+    const access_token = req.headers["authorization"];
     new SuccessReponse({
       message: "Logout success!",
-      metadata: await AccessService.logout({ ...req.body, role: ROLE.SPSO }),
+      metadata: await AccessService.logout({
+        ...req.body,
+        access_token: access_token,
+        role: ROLE.SPSO,
+      }),
     }).send(res);
   };
 

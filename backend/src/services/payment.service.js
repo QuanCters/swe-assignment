@@ -8,9 +8,6 @@ const pay = async ({ paymentInfo }) => {
     if (!user) {
         throw new Error(`User ${userId} not found`);
     }
-    if (!user.money) {
-        throw new Error(`User ${userId} has no money`);
-    }
     const paymentAmount = pageCount
         * config.printCount
         * (config.color === 'color' ? 2 : 1)
