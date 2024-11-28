@@ -34,7 +34,7 @@ const findUserByAccessToken = async ({ access_token, role }) => {
 const findUserById = async ({ id, role }) => {
   const response = await fetch(
     `https://json-server-s4l1.onrender.com/${role === ROLE.STUDENT ? "students" : "SPSOs"
-    }?id=${id}`
+    }/${id}`
   );
   if (!response.ok) {
     throw new Error(`Error fetching user: ${response.statusText}`);
@@ -42,4 +42,21 @@ const findUserById = async ({ id, role }) => {
   return response.json();
 };
 
-module.exports = { findUserByEmail, findUserByAccessToken, findUserById };
+const updateStudentPageBalance = async ({ id, pageBalance }) => {
+  const response = await fetch(
+    `https://json-server-s4l1.onrender.com/students/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ pageBalance }),
+    }
+  )
+  if (!response.ok) {
+    throw new Error(`Error updating student page balance: ${response.statusText}`);
+  }
+  return response.json();
+}
+
+module.exports = { findUserByEmail, findUserByAccessToken, findUserById, updateStudentPageBalance };

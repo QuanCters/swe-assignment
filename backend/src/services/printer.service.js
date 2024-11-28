@@ -26,12 +26,12 @@ const deletePrinter = async (id) => {
 const print = async ({ printInfo }) => {
     const { userId, printerId, documentId, config } = printInfo;
     const printer = await findPrinterById(printerId);
-    if (printer.status === 'offline') {
+    if (printer.status !== 'Online') {
         throw new Error(`Printer ${printerId} is not online`);
     }
     const pageCount = documentId;
     const paymentAmount = await pay({ paymentInfo: { userId, pageCount, config } });
-    const result = `User ${userId} printed ${pageCount} pages on printer ${printerId} with ${config.color} color, ${config.pageType} page type, ${config.duplex ? 'duplex' : 'simplex'} and ${config.printCount} copies and paid ${paymentAmount}VN$`;
+    const result = `User ${userId} printed ${pageCount} pages on printer ${printerId} with ${config.color} color, ${config.pageType} page type, ${config.duplex ? 'duplex' : 'simplex'} and ${config.printCount} copies and paid ${paymentAmount} pages`;
     console.log(result);
     return result;
 }

@@ -11,7 +11,7 @@ const findAllPrinters = async () => {
 }
 
 const findPrinterById = async (id) => {
-    const response = await fetch(`https://json-server-s4l1.onrender.com/printers?id=${id}`);
+    const response = await fetch(`https://json-server-s4l1.onrender.com/printers/${id}`);
 
     if (!response.ok) {
         throw new Error(`Error fetching printer: ${response.statusText}`);
@@ -37,7 +37,7 @@ const savePrinter = async (printer) => {
 }
 
 const updatePrinter = async (printer) => {
-    const response = await fetch(`https://json-server-s4l1.onrender.com/printers?id=${printer.id}`, {
+    const response = await fetch(`https://json-server-s4l1.onrender.com/printers/${printer.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ const updatePrinter = async (printer) => {
 }
 
 const deletePrinter = async (id) => {
-    const response = await fetch(`https://json-server-s4l1.onrender.com/printers?id=${id}`, {
+    const response = await fetch(`https://json-server-s4l1.onrender.com/printers/${id}`, {
         method: 'DELETE'
     });
 
