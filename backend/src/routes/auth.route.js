@@ -108,8 +108,13 @@ router.use(authentication);
  *     BearerAuth:
  *       type: apiKey
  *       in: header
- *       name: Authorization
+ *       name: authorization
  *       description: "Bearer token for authorization"
+ *     ApiKeyAuth:
+ *       type: apiKey
+ *       in: header
+ *       name: x-api-key
+ *       description: "API key for access"
  * '/v1/api/user/logout-student':
  *  post:
  *     tags:
@@ -132,13 +137,6 @@ router.post("/logout-student", asyncHandler(AccessController.logoutStudent));
 // logout for SPSO
 /**
  * @swagger
- * components:
- *   securitySchemes:
- *     BearerAuth:
- *       type: apiKey
- *       in: header
- *       name: Authorization
- *       description: "Bearer token for authorization"
  * '/v1/api/user/logout-spso':
  *  post:
  *     tags:
