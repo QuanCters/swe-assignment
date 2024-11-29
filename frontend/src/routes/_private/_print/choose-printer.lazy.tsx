@@ -1,25 +1,16 @@
 import * as React from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useModal } from "@/context/ModalContext";
+import { printers as MockPrinter } from "@/mocks/printers";
+import { Printer } from "@/models/printer";
+import { fetchPrinters } from "@/api/printer";
 
 export const Route = createLazyFileRoute("/_private/_print/choose-printer")({
   component: ChoosePrinter,
 });
 
-type Printer = {
-  id: string;
-  name: string;
-  img: string;
-  color: string;
-  function: string;
-  speed: string;
-  paperSize: string;
-  location: string;
-  status: string;
-};
-
 function ChoosePrinter() {
-  const [printers, setPrinters] = React.useState<Printer[]>();
+  const [printers, setPrinters] = React.useState<Printer[]>(MockPrinter);
   const { modal, openModal } = useModal();
 
   const onSubmit = () => {
@@ -31,11 +22,7 @@ function ChoosePrinter() {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://json-server-s4l1.onrender.com/printers"
-        );
-        if (!response.ok) throw new Error("Network response was not ok");
-        const result = await response.json();
+        const result = await fetchPrinters();
         console.log(result);
         const formattedPrinters: Printer[] = result.map((printer: any) => ({
           id: printer.id,
@@ -56,7 +43,7 @@ function ChoosePrinter() {
       }
     };
 
-    fetchData();
+    // fetchData();
   }, []);
   return (
     <div
@@ -68,11 +55,11 @@ function ChoosePrinter() {
         <form
           // id="printer-form"
           // onSubmit={onSubmit}
-          className="grid grid-cols-3 w-full h-[80vh] px-7 gap-6 max-md:grid-cols-1 max-lg:grid-cols-2 overflow-y-auto"
+          className={`grid grid-cols-4 w-full ${printers.length >= 9 ? "h-[80vh]" : "h-fit"} px-7 gap-6 max-sm:grid-cols-1 max-lg:grid-cols-2 max-2xl:grid-cols-3 overflow-y-auto`}
         >
           {printers.map((printer, index) => (
             <label
-              className=" cursor-pointer justify-self-center"
+              className="cursor-pointer justify-self-center w-full"
               htmlFor={`printer-${index}`}
               key={index}
             >
@@ -83,38 +70,35 @@ function ChoosePrinter() {
                 value={index}
                 className="hidden peer"
               />
-              <div className="w-[25vw] h-[200px] min-h-fit flex flex-row p-3 border-2 border-dashed border-[#2196F3] rounded-md gap-4 min-w-fit hover:bg-black/5 duration-300 hover:shadow-xl peer-checked:border-green-500 peer-checked:bg-green-500/5 max-sm:w-full max-md:w-[60vw] max-lg:w-full self-center">
-                <img
-                  src="src/assets/react.svg"
-                  alt=""
-                  className="w-2/5 h-full object-contain"
-                />
-                <div className="flex-1 flex flex-col text-xs select-none gap-1 h-fit">
+              <div className="w-full h-[200px] min-h-fit flex flex-row p-3 border-2 border-dashed border-[#2196F3] rounded-md gap-4 min-w-fit hover:bg-black/5 duration-300 hover:shadow-xl peer-checked:border-green-500 peer-checked:bg-green-500/5  self-center">
+                <div className="flex-1 flex flex-col text-sm select-none gap-1 min-h-fit w-full">
                   <h3 className="self-center text-base font-medium text-[#0052B4] mb-1">
                     {printer.name}
                   </h3>
                   <p>
-                    <span className="font-medium">Color Output: </span>
-                    {printer.color}
+                    <span className="font-medium">Brand: </span>
+                    {printer.brand}
                   </p>
                   <p>
-                    <span className="font-medium">Function: </span>
-                    {printer.function}
+                    <span className="font-medium">Model: </span>
+                    {printer.model}
                   </p>
                   <p>
-                    <span className="font-medium">Printing Speed: </span>
-                    {printer.speed}
+                    <span className="font-medium">Description: </span>
+                    {printer.description}
                   </p>
                   <p>
-                    <span className="font-medium">Paper Size: </span>
-                    {printer.paperSize}
+                    <span className="font-medium">Status: </span>
+                    {printer.status}
                   </p>
-                  <p className="mt-2 font-bold text-center text-[#2196F3] text-sm flex-1 flex items-center justify-center">
-                    <span className="font-medium text-stone-600">
-                      Location:&nbsp;
-                    </span>
-                    {printer.location}
-                  </p>
+                  <div className="font-bold text-center text-[#2196F3] text-sm flex-1 flex items-center justify-center mt-3">
+                    <p>
+                      <span className="font-medium text-stone-600">
+                        Location:&nbsp;
+                      </span>
+                      {printer.location}
+                    </p>
+                  </div>
                 </div>
               </div>
             </label>
