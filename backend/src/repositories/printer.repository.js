@@ -1,67 +1,86 @@
-"use strict"
+"use strict";
 
 const findAllPrinters = async () => {
-    const response = await fetch(`https://json-server-s4l1.onrender.com/printers`);
+  const response = await fetch(
+    `https://json-server-s4l1.onrender.com/printers`
+  );
 
-    if (!response.ok) {
-        throw new Error(`Error fetching printers: ${response.statusText}`);
-    }
+  if (!response.ok) {
+    throw new Error(`Error fetching printers: ${response.statusText}`);
+  }
 
-    return response.json();
-}
+  return response.json();
+};
 
 const findPrinterById = async (id) => {
-    const response = await fetch(`https://json-server-s4l1.onrender.com/printers?id=${id}`);
+  const response = await fetch(
+    `https://json-server-s4l1.onrender.com/printers?id=${id}`
+  );
 
-    if (!response.ok) {
-        throw new Error(`Error fetching printer: ${response.statusText}`);
-    }
+  if (!response.ok) {
+    throw new Error(`Error fetching printer: ${response.statusText}`);
+  }
 
-    return response.json();
-}
+  return response.json();
+};
 
 const savePrinter = async (printer) => {
-    const response = await fetch(`https://json-server-s4l1.onrender.com/printers`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(printer)
-    });
-
-    if (!response.ok) {
-        throw new Error(`Error saving printer: ${response.statusText}`);
+  const response = await fetch(
+    `https://json-server-s4l1.onrender.com/printers`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(printer),
     }
+  );
 
-    return response.json();
-}
+  if (!response.ok) {
+    throw new Error(`Error saving printer: ${response.statusText}`);
+  }
+
+  return response.json();
+};
 
 const updatePrinter = async (printer) => {
-    const response = await fetch(`https://json-server-s4l1.onrender.com/printers?id=${printer.id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(printer)
-    });
-
-    if (!response.ok) {
-        throw new Error(`Error updating printer: ${response.statusText}`);
+  const response = await fetch(
+    `https://json-server-s4l1.onrender.com/printers?id=${printer.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(printer),
     }
+  );
 
-    return response.json();
-}
+  if (!response.ok) {
+    throw new Error(`Error updating printer: ${response.statusText}`);
+  }
+
+  return response.json();
+};
 
 const deletePrinter = async (id) => {
-    const response = await fetch(`https://json-server-s4l1.onrender.com/printers?id=${id}`, {
-        method: 'DELETE'
-    });
-
-    if (!response.ok) {
-        throw new Error(`Error deleting printer: ${response.statusText}`);
+  const response = await fetch(
+    `https://json-server-s4l1.onrender.com/printers/${id}`,
+    {
+      method: "DELETE",
     }
+  );
 
-    return response.json();
-}
+  if (!response.ok) {
+    throw new Error(`Error deleting printer: ${response.statusText}`);
+  }
 
-module.exports = { findAllPrinters, findPrinterById, savePrinter, updatePrinter, deletePrinter };
+  return response.json();
+};
+
+module.exports = {
+  findAllPrinters,
+  findPrinterById,
+  savePrinter,
+  updatePrinter,
+  deletePrinter,
+};
