@@ -6,7 +6,6 @@ const express = require("express");
 const router = express.Router();
 const { authentication } = require("../auth/authUtils");
 
-router.use(authentication);
 
 /**
  * @swagger
@@ -105,11 +104,8 @@ router.patch("/:userId/buyPages", buyPages);
  *                     - A3
  *                     - Legal
  *                 color:
- *                   type: string
- *                   description: The color mode for printing
- *                   enum:
- *                     - color
- *                     - none
+ *                   type: boolean
+ *                   description: Whether to print in color
  *                 duplex:
  *                   type: boolean
  *                   description: Whether to print on both sides of the paper
