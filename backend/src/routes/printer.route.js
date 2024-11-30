@@ -13,36 +13,38 @@ router.use(authentication);
 /**
  * @swagger
  * '/v1/api/printer':
- *  get:
+ *   get:
  *     summary: Get all printers
  *     tags:
- *     - Printer Controller
+ *       - Printer Controller
  *     security:
  *       - BearerAuth: []
  *     responses:
- *      200:
- *        description: Fetched Successfully
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                id:
- *                  type: integer
- *                name:
- *                  type: string
- *                location:
- *                  type: string
- *                status:
- *                  type: string
- *                condition:
- *                  type: string
- *      400:
- *        description: Bad Request
- *      404:
- *        description: Not Found
- *      500:
- *        description: Server Error
+ *       200:
+ *         description: Fetched Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   location:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                   condition:
+ *                     type: string
+ *       400:
+ *         description: Bad Request
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Server Error
  */
 router.get("/", printerCtrl.findAllPrinters);
 
