@@ -87,7 +87,7 @@ const ConfigPrintPage: React.FC = () => {
                   id="layout-portrait"
                   name="layout"
                   defaultChecked
-                  className="w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
+                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
                 />
                 <label htmlFor="layout-portrait" className="select-none">
                   Portrait
@@ -98,7 +98,7 @@ const ConfigPrintPage: React.FC = () => {
                   type="radio"
                   id="layout-landscape"
                   name="layout"
-                  className="w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
+                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
                 />
                 <label htmlFor="layout-landscape" className="select-none">
                   Landscape
@@ -114,7 +114,7 @@ const ConfigPrintPage: React.FC = () => {
                   type="radio"
                   id="pages-all"
                   name="pages"
-                  className="w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
+                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
                   defaultChecked
                 />
                 <label htmlFor="pages-all" className="select-none flex-1">
@@ -126,7 +126,7 @@ const ConfigPrintPage: React.FC = () => {
                   type="radio"
                   id="pages-even"
                   name="pages"
-                  className="w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
+                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
                 />
                 <label htmlFor="pages-even" className="select-none flex-1">
                   Even pages only
@@ -137,7 +137,7 @@ const ConfigPrintPage: React.FC = () => {
                   type="radio"
                   id="pages-odd"
                   name="pages"
-                  className="w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
+                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
                 />
                 <label htmlFor="pages-odd" className="select-none flex-1">
                   Odd pages only
@@ -148,12 +148,12 @@ const ConfigPrintPage: React.FC = () => {
                   type="radio"
                   id="pages-custom"
                   name="pages"
-                  className="w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
+                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
                 />
                 <label htmlFor="pages-custom" className="select-none flex-1">
                   <input
                     type="text"
-                    className="self-center h-8 px-3 border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4] rounded-md bg-transparent w-full"
+                    className="form-input self-center h-8 px-3 border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4] rounded-md bg-transparent w-full"
                     onFocus={() =>
                       document.getElementById("pages-custom")?.click()
                     }
@@ -169,7 +169,7 @@ const ConfigPrintPage: React.FC = () => {
           </div>
           <div className="flex flex-col gap-2">
             <h4 className="text-lg font-bold select-none">Paper Size</h4>
-            <select className="rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4]">
+            <select className="form-select rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4]">
               {paperOptions.map((option, index) => (
                 <option key={index} value={option}>
                   {option}
@@ -180,7 +180,7 @@ const ConfigPrintPage: React.FC = () => {
           <div className="flex flex-col gap-2">
             <h4 className="text-lg font-bold select-none">Pages per Sheet</h4>
             <select
-              className="rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4]"
+              className="form-select rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4]"
               value={pagesPerSheet}
               onChange={(e) => setPagesPerSheet(Number(e.target.value))}
             >
@@ -194,7 +194,7 @@ const ConfigPrintPage: React.FC = () => {
           <div className="flex flex-col gap-2">
             <h4 className="text-lg font-bold select-none">Margins</h4>
             <select
-              className={`rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4] 
+              className={`form-select rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4] 
                 ${pagesPerSheet !== 1 ? "opacity-50 cursor-not-allowed" : ""}`}
               value={selectedOption}
               onChange={(e) => setSelectedOption(e.target.value)}

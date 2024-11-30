@@ -57,7 +57,7 @@ const MarginInputs: React.FC<MarginInputsProps> = ({ onMarginsChange }) => {
             id={`margin-${margin}`}
             name={margin}
             value={tempMargins[margin as keyof typeof tempMargins]}
-            className="rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4]"
+            className="form-input rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4]"
             onChange={handleMarginChange}
             step={0.01}
             min={0}

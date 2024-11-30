@@ -25,6 +25,13 @@ const updatePrinter = async (req, res) => {
   res.send();
 };
 
+const togglePrinterStatus = async (req, res) => {
+  const id = req.params.id;
+  const status = req.body;
+  await printerService.togglePrinterStatus(id, status);
+  res.send();
+};
+
 const deletePrinter = async (req, res) => {
   const { id } = req.params;
   await printerService.deletePrinter(id);
@@ -37,4 +44,5 @@ module.exports = {
   savePrinter,
   updatePrinter,
   deletePrinter,
+  togglePrinterStatus,
 };
