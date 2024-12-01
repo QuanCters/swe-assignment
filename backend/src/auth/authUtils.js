@@ -9,7 +9,7 @@ const HEADER = {
 
 const authentication = asyncHandler(async (req, res, next) => {
   const access_token = req.headers[HEADER.AUTHORIZATION];
-  if (!access_token) {
+  if (!access_token || access_token === "") {
     return next(new AuthFailureError("Invalid Request"));
   }
 

@@ -109,6 +109,7 @@ class AccessService {
       status: 200,
       message: "Login successful",
       accessToken,
+      userID: foundUser[0].id,
     };
 
     // Add "x-api-key" only if the role is not "0000"
