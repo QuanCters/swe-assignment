@@ -12,9 +12,6 @@ const authentication = asyncHandler(async (req, res, next) => {
   if (!access_token || access_token === "") {
     return next(new AuthFailureError("Invalid Request"));
   }
-
-  // TODO: Verify Access Token
-
   // TODO: Check if userId is valid
   try {
     next();
