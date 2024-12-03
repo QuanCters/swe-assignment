@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as PrivateStudentImport } from './routes/_private/_student'
 import { Route as PrivateSpsoImport } from './routes/_private/_spso'
@@ -39,7 +40,15 @@ const PrivateRoute = PrivateImport.update({
   id: '/_private',
   getParentRoute: () => rootRoute,
 } as any)
-
+const PrivateRoute = PrivateImport.update({
+  id: '/_private',
+  getParentRoute: () => rootRoute,
+} as any)
+const IndexLazyRoute = IndexLazyImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 const PrivatePrintingHistoryLazyRoute = PrivatePrintingHistoryLazyImport.update(
   {
     id: '/printing-history',
@@ -49,7 +58,6 @@ const PrivatePrintingHistoryLazyRoute = PrivatePrintingHistoryLazyImport.update(
 ).lazy(() =>
   import('./routes/_private/printing-history.lazy').then((d) => d.Route),
 )
-
 const PrivateStudentRoute = PrivateStudentImport.update({
   id: '/_student',
   getParentRoute: () => PrivateRoute,
@@ -106,6 +114,21 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof PrivateImport
+      parentRoute: typeof rootRoute
+    }
+
+    '/_private': {
+      id: '/_private'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof PrivateImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
     '/_private/_spso': {
@@ -208,7 +231,9 @@ const PrivateRouteWithChildren =
   PrivateRoute._addFileChildren(PrivateRouteChildren)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexLazyRoute
   '': typeof PrivateStudentRouteWithChildren
+  '/login': typeof LoginRoute
   '/printing-history': typeof PrivatePrintingHistoryLazyRoute
   '/manage/printer': typeof PrivateSpsoManagePrinterRoute
   '/choose-printer': typeof PrivateStudentPrintChoosePrinterLazyRoute
@@ -217,7 +242,9 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/': typeof IndexLazyRoute
   '': typeof PrivateStudentRouteWithChildren
+  '/login': typeof LoginRoute
   '/printing-history': typeof PrivatePrintingHistoryLazyRoute
   '/manage/printer': typeof PrivateSpsoManagePrinterRoute
   '/choose-printer': typeof PrivateStudentPrintChoosePrinterLazyRoute
@@ -227,7 +254,9 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexLazyRoute
   '/_private': typeof PrivateRouteWithChildren
+  '/login': typeof LoginRoute
   '/_private/_spso': typeof PrivateSpsoRouteWithChildren
   '/_private/_student': typeof PrivateStudentRouteWithChildren
   '/_private/printing-history': typeof PrivatePrintingHistoryLazyRoute
@@ -240,7 +269,9 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | ''
+    | '/login'
     | '/printing-history'
     | '/manage/printer'
     | '/choose-printer'
@@ -248,7 +279,9 @@ export interface FileRouteTypes {
     | '/print'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | ''
+    | '/login'
     | '/printing-history'
     | '/manage/printer'
     | '/choose-printer'
@@ -256,7 +289,9 @@ export interface FileRouteTypes {
     | '/print'
   id:
     | '__root__'
+    | '/'
     | '/_private'
+    | '/login'
     | '/_private/_spso'
     | '/_private/_student'
     | '/_private/printing-history'
@@ -268,11 +303,15 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  IndexLazyRoute: typeof IndexLazyRoute
   PrivateRoute: typeof PrivateRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexLazyRoute: IndexLazyRoute,
   PrivateRoute: PrivateRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -285,7 +324,16 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/_private"
+        "/",
+        "/_private",
+        "/login"
+      ]
+    },
+    "/_private/_spso": {
+      "filePath": "_private/_spso.tsx",
+      "parent": "/_private",
+      "children": [
+        "/_private/_spso/manage/printer"
       ]
     },
     "/_private": {
@@ -295,6 +343,9 @@ export const routeTree = rootRoute
         "/_private/_student",
         "/_private/printing-history"
       ]
+    },
+    "/login": {
+      "filePath": "login.tsx"
     },
     "/_private/_spso": {
       "filePath": "_private/_spso.tsx",

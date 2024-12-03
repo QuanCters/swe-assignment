@@ -10,7 +10,6 @@ const HEADER = {
 const apiKey = async (req, res, next) => {
   try {
     const key = req.headers[HEADER.API_KEY]?.toString();
-
     if (!key) {
       return res.status(403).json({
         message: "Forbidden Error",
@@ -26,7 +25,7 @@ const apiKey = async (req, res, next) => {
       });
     }
 
-    req.objKey = objKey;
+    req.objKey = objKey[0];
     return next();
   } catch (error) {
     console.error(error);
@@ -41,7 +40,7 @@ const permission = (permission) => {
       });
     }
 
-    const validPermission = req.objKey.permissions.includes(permission);
+    const validPermission = req.objKey.permissions === "1111";
     if (!validPermission) {
       return res.status(403).json({
         message: "permission denied",

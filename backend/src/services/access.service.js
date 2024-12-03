@@ -6,7 +6,10 @@ const {
   NotFoundError,
 } = require("../core/error.response");
 const jwt = require("jsonwebtoken");
-const { findUserByEmail, findUserByAccessToken } = require("../repositories/user.repository");
+const {
+  findUserByEmail,
+  findUserByAccessToken,
+} = require("../repositories/user.repository");
 
 const ROLE = {
   STUDENT: "0000",
@@ -15,11 +18,9 @@ const ROLE = {
 
 class AccessService {
   static generateAccessToken = async () => {
-    const accessToken = jwt.sign(
-      { role: ROLE.STUDENT },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1h" }
-    );
+    const accessToken = jwt.sign({ role: ROLE.STUDENT }, "HCMUT", {
+      expiresIn: "1h",
+    });
     return accessToken;
   };
 
@@ -29,24 +30,21 @@ class AccessService {
     }
 
     const foundUser = await findUserByAccessToken({ access_token, role });
-    console.log(foundUser);
 
     if (!foundUser) {
       throw new NotFoundError("User not found for the provided access token");
     }
 
     const updateResponse = await fetch(
-      `https://json-server-s4l1.onrender.com/${role === "0000" ? "students" : "SPSOs"
+      `https://json-server-s4l1.onrender.com/${
+        role === "0000" ? "students" : "SPSOs"
       }/${foundUser[0].id}`,
       {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: foundUser[0].id,
-          email: foundUser[0].email,
-          password: foundUser[0].password,
           access_token: "",
         }),
       }
@@ -63,10 +61,19 @@ class AccessService {
   };
 
   static login = async ({ email, password, role }) => {
-    // 1: Check if email in database
+    // Check if user is already logged in
     const foundUser = await findUserByEmail({ email, role });
-    if (!foundUser) {
+    // 1: Check if email in database
+    if (!foundUser[0]) {
       throw new NotFoundError("User not found");
+    }
+
+    // 1.1: Check if user already logged in
+    if (foundUser[0].access_token !== "") {
+      return {
+        status: 409,
+        message: "User is already logged in",
+      };
     }
 
     // 2: Verify password
@@ -81,17 +88,15 @@ class AccessService {
 
     // 4: Update access token to database
     const updateResponse = await fetch(
-      `https://json-server-s4l1.onrender.com/${role === "0000" ? "students" : "SPSOs"
+      `https://json-server-s4l1.onrender.com/${
+        role === "0000" ? "students" : "SPSOs"
       }/${foundUser[0].id}`,
       {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: foundUser[0].id,
-          email: foundUser[0].email,
-          password: foundUser[0].password,
           access_token: accessToken,
         }),
       }
@@ -99,11 +104,20 @@ class AccessService {
     if (!updateResponse.ok) {
       throw new BadRequestError("Failed to update access token");
     }
-    return {
+
+    const response = {
       status: 200,
       message: "Login successful",
       accessToken,
+      userID: foundUser[0].id,
     };
+
+    // Add "x-api-key" only if the role is not "0000"
+    if (role !== "0000") {
+      response["x-api-key"] = foundUser[0]["x-api-key"];
+    }
+
+    return response;
   };
 }
 

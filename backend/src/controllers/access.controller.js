@@ -12,8 +12,7 @@ class AccessController {
   logoutStudent = async (req, res) => {
     const access_token = req.headers["authorization"];
     new SuccessReponse({
-      message: "Logout success!",
-      metadata: await AccessService.logout({
+      response: await AccessService.logout({
         access_token: access_token,
         role: ROLE.STUDENT,
       }),
@@ -21,21 +20,25 @@ class AccessController {
   };
 
   logoutSPSO = async (req, res) => {
+    const access_token = req.headers["authorization"];
     new SuccessReponse({
-      message: "Logout success!",
-      metadata: await AccessService.logout({ ...req.body, role: ROLE.SPSO }),
+      response: await AccessService.logout({
+        ...req.body,
+        access_token: access_token,
+        role: ROLE.SPSO,
+      }),
     }).send(res);
   };
 
   loginStudent = async (req, res) => {
     new SuccessReponse({
-      metadata: await AccessService.login({ ...req.body, role: ROLE.STUDENT }),
+      response: await AccessService.login({ ...req.body, role: ROLE.STUDENT }),
     }).send(res);
   };
 
   loginSPSO = async (req, res) => {
     new SuccessReponse({
-      metadata: await AccessService.login({ ...req.body, role: ROLE.SPSO }),
+      response: await AccessService.login({ ...req.body, role: ROLE.SPSO }),
     }).send(res);
   };
 }
