@@ -44,7 +44,7 @@ const MarginInputs: React.FC<MarginInputsProps> = ({ onMarginsChange }) => {
   return (
     <div className="grid grid-cols-2 max-md:grid-cols-1 flex-1 gap-x-10 gap-y-2">
       {["top", "bottom", "left", "right"].map((margin, index) => (
-        <div className="flex flex-col flex-1 gap-1">
+        <div className="flex flex-col flex-1 gap-1" key={index}>
           <label
             key={margin}
             htmlFor={`margin-${margin}`}

@@ -1,4 +1,3 @@
-import React from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
@@ -12,11 +11,18 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 type FileViewerProps = {
   fileData: ArrayBuffer | null;
   margins: { top: number; bottom: number; left: number; right: number };
+  file?: File | null;
+  numPages: number;
+  setNumPages: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const FileViewer: React.FC<FileViewerProps> = ({ fileData, margins }) => {
-  const [numPages, setNumPages] = React.useState(0);
-
+const FileViewer: React.FC<FileViewerProps> = ({
+  fileData,
+  margins,
+  file,
+  numPages,
+  setNumPages,
+}) => {
   return (
     <div className="flex flex-col flex-1 start gap-4 ">
       <h3 className="text-2xl font-bold text-[#2196F3]">File Preview</h3>
@@ -47,6 +53,16 @@ const FileViewer: React.FC<FileViewerProps> = ({ fileData, margins }) => {
               </div>
             ))}
           </Document>
+        )}
+        {!fileData && (
+          <div className="h-full flex justify-center items-center flex-col gap-3">
+            <p className="font-medium"> Preview only support for .pdf</p>
+            {file && (
+              <>
+                <p className="font-medium">File: {file.name}</p>
+              </>
+            )}
+          </div>
         )}
       </div>
     </div>
