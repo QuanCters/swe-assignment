@@ -5,9 +5,8 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Mini Blog API",
-      description:
-        "API endpoints for a mini blog services documented on swagger",
+      title: "HCMUT_SSPS API",
+      description: "API endpoints for printing services on swagger",
       version: "1.0.0",
     },
   },
