@@ -3,6 +3,8 @@ import { Link, useChildMatches } from "@tanstack/react-router";
 type Props = {
   page: string;
   route?: string;
+  routeMatch?: string;
+  wholeRoute?: boolean;
 };
 function toKebabCase(str: string) {
   return str
@@ -11,22 +13,27 @@ function toKebabCase(str: string) {
     .trim(); // Loại bỏ khoảng trắng thừa ở đầu và cuối (nếu có)
 }
 
-export const Tab = ({ page, route = "" }: Props): JSX.Element => {
+export const Tab = ({
+  page,
+  routeMatch = "",
+  route,
+  wholeRoute,
+}: Props): JSX.Element => {
   const routePath = `/${toKebabCase(page)}`;
   const isActive = useChildMatches({
     select: (matches) =>
       matches.some((match) => {
-        const targetRoute = route === "" ? routePath : route;
+        if (wholeRoute) return match.routeId == routeMatch;
+        const targetRoute = routeMatch === "" ? routePath : routeMatch;
         return (
           match.routeId.startsWith(targetRoute) ||
           match.routeId.includes(targetRoute)
         );
       }),
   });
-  console.log(isActive, "isActive");
   return (
     <Link
-      to={`/${toKebabCase(page)}`}
+      to={`/${route ? route : toKebabCase(page)}`}
       className="tab items-center inline-flex justify-center relative h-full"
     >
       <div
