@@ -6,6 +6,7 @@
 :root {
     --primary: rgb(182, 222, 255);
     background-color: #F0F7FF;
+    width: fit-content;
 }
   
 .bg-primary {
