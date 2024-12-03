@@ -37,9 +37,18 @@ const router = express.Router();
  *            schema:
  *              type: object
  *              properties:
+ *                status:
+ *                  type: integer
+ *                  example: 200
+ *                message:
+ *                  type: string
+ *                  description: message response
  *                access-token:
  *                  type: string
  *                  description: A token used for accessing protected routes
+ *                id:
+ *                  type: string
+ *                  description: The ID of student
  *      400:
  *        description: Bad Request (Invalid email or password)
  *      404:
