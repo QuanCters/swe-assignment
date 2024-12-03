@@ -21,7 +21,6 @@ import { Route as PrivateSpsoManagePrinterImport } from './routes/_private/_spso
 
 // Create Virtual Routes
 
-const IndexLazyImport = createFileRoute('/')()
 const PrivatePrintingHistoryLazyImport = createFileRoute(
   '/_private/printing-history',
 )()
@@ -37,23 +36,19 @@ const PrivateStudentPrintChoosePrinterLazyImport = createFileRoute(
 
 // Create/Update Routes
 
-const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const PrivateRoute = PrivateImport.update({
   id: '/_private',
   getParentRoute: () => rootRoute,
 } as any)
-
+const PrivateRoute = PrivateImport.update({
+  id: '/_private',
+  getParentRoute: () => rootRoute,
+} as any)
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-
 const PrivatePrintingHistoryLazyRoute = PrivatePrintingHistoryLazyImport.update(
   {
     id: '/printing-history',
@@ -63,7 +58,6 @@ const PrivatePrintingHistoryLazyRoute = PrivatePrintingHistoryLazyImport.update(
 ).lazy(() =>
   import('./routes/_private/printing-history.lazy').then((d) => d.Route),
 )
-
 const PrivateStudentRoute = PrivateStudentImport.update({
   id: '/_student',
   getParentRoute: () => PrivateRoute,
@@ -115,13 +109,14 @@ const PrivateSpsoManagePrinterRoute = PrivateSpsoManagePrinterImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+    '/_private': {
+      id: '/_private'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof PrivateImport
       parentRoute: typeof rootRoute
     }
+
     '/_private': {
       id: '/_private'
       path: ''
@@ -334,8 +329,12 @@ export const routeTree = rootRoute
         "/login"
       ]
     },
-    "/": {
-      "filePath": "index.lazy.tsx"
+    "/_private/_spso": {
+      "filePath": "_private/_spso.tsx",
+      "parent": "/_private",
+      "children": [
+        "/_private/_spso/manage/printer"
+      ]
     },
     "/_private": {
       "filePath": "_private.tsx",

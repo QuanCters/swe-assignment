@@ -1,7 +1,14 @@
 import FileViewer from "@/Components/FileViewer";
-import React from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import MarginInputs from "@/Components/ConfigInputs";
+import { useMutation } from "@tanstack/react-query";
+import { saveDocument } from "@/api/printing";
+import { RadioGroup } from "@/Components/RadioGroup";
+import { PagesInput } from "@/Components/PagesInput";
+import { Dropdown } from "@/Components/Dropdown";
+import { pageCount } from "@/utils/pageCount";
+import { CircularProgress } from "@mui/material";
 
 const paperOptions = [
   "A4",
@@ -25,164 +32,179 @@ const pagesSheetOptions = [1, 2, 4, 6, 9, 16];
 
 const ConfigPrintPage: React.FC = () => {
   const navigate = useNavigate();
+  const routerState = useRouterState();
+  const file = routerState.location.state.file;
 
-  const [fileData, setFileData] = React.useState<ArrayBuffer | null>(null);
-  const [selectedOption, setSelectedOption] = React.useState("Default");
-  const [pagesPerSheet, setPagesPerSheet] = React.useState(
-    pagesSheetOptions[0]
-  );
-  const [margins, setMargins] = React.useState({
+  const [fileData, setFileData] = useState<ArrayBuffer | null>(null);
+  const [margins, setMargins] = useState({
     top: 25.2,
     bottom: 25.2,
     left: 25.2,
     right: 25.2,
   });
+  const [formState, setFormState] = useState({
+    duplex: "duplex-true",
+    color: "color-false",
+    layout: "portrait",
+    pages: "all",
+    customPages: "",
+    paperType: "A4",
+    pagesPerSheet: 1,
+    margins: "Default",
+    customMargins: margins,
+  });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
+  const [numPages, setNumPages] = useState(0);
+  const mutation = useMutation({
+    mutationFn: () => {
+      if (!file)
+        throw new Error(
+          "The file is missing. Please try uploading a file from Print."
+        );
+      return saveDocument({
+        pageCount: pageCount(numPages, formState),
+        fileName: file.name,
+        file: file,
+      });
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+  console.log(formState, "fileeeeeee");
+
+  useEffect(() => {
+    if (file && file.name.endsWith(".pdf")) {
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target?.result) {
           setFileData(event.target.result as ArrayBuffer);
         }
       };
-      reader.readAsArrayBuffer(e.target.files[0]);
+      reader.readAsArrayBuffer(file);
     }
-  };
+  }, [file]);
 
   const handleMarginsChange = (newMargins: typeof margins) => {
     setMargins(newMargins);
+    setFormState((prevState) => ({
+      ...prevState,
+      customMargins: margins,
+    }));
   };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const userConfirmed = window.confirm(
+      "Are you sure you want to continue? If continue, cannot go back to this back"
+    );
+    if (!userConfirmed) return;
+    const printCount = getCopiesValue();
+    console.log("printCount", printCount);
 
-    navigate({ to: "/choose-printer" });
+    mutation.mutate(undefined, {
+      onSuccess(data) {
+        navigate({
+          to: "/choose-printer",
+          state: {
+            config: {
+              documentId: data.id,
+              data: formState,
+              pageCount: pageCount(numPages, formState),
+              printCount: printCount,
+            },
+            file: file,
+          },
+        });
+      },
+    });
   };
-  const onReset = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    navigate({ to: "/print" });
-  };
+  if (mutation.isLoading)
+    return (
+      <div className="w-full h-[90vh] flex justify-center items-center">
+        <CircularProgress size={40} className="w-full h-[90vw]" />
+      </div>
+    );
 
   return (
-    <div className="flex-1 flex flex-row px-20 gap-x-20 flex-wrap max-md:grid max-md:grid-cols-1 max-md:gap-3">
-      <FileViewer fileData={fileData} margins={margins} />
+    <div className="flex-1 flex flex-row px-20 gap-x-20 flex-wrap max-lg:grid max-lg:grid-cols-1 max-lg:gap-3">
+      <FileViewer
+        fileData={fileData}
+        margins={margins}
+        file={file}
+        numPages={numPages}
+        setNumPages={setNumPages}
+      />
 
       <form
-        className="w-[25vw] flex flex-col gap-4 max-md:w-full h-full"
+        className="w-[25vw] flex flex-col gap-4 max-lg:w-full h-full"
         onSubmit={onSubmit}
-        onReset={onReset}
       >
         <h3 className="text-2xl font-bold text-[#2196F3] select-none">
           Settings
         </h3>
         <div className="flex flex-col gap-4 flex-1 overscroll-y-auto">
           <div className="flex flex-col gap-2">
-            <h4 className="text-lg font-bold select-none">Layout</h4>
-            <div className="flex flex-row px-6 text-sm">
-              <div className="flex flex-row gap-2 flex-1 items-center">
-                <input
-                  type="radio"
-                  id="layout-portrait"
-                  name="layout"
-                  defaultChecked
-                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
-                />
-                <label htmlFor="layout-portrait" className="select-none">
-                  Portrait
-                </label>
-              </div>
-              <div className="flex flex-row gap-2 flex-1 items-center">
-                <input
-                  type="radio"
-                  id="layout-landscape"
-                  name="layout"
-                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
-                />
-                <label htmlFor="layout-landscape" className="select-none">
-                  Landscape
-                </label>
-              </div>
-            </div>
+            <h4 className="text-lg font-bold select-none">Number of Copies</h4>
+            <input
+              id="copies"
+              type="number"
+              className="form-input self-center border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4] rounded-md bg-transparent w-full"
+              defaultValue={1}
+              min={1}
+            />
           </div>
-          <div className="flex flex-col gap-2">
-            <h4 className="text-lg font-bold select-none">Pages</h4>
-            <div className="grid grid-cols-2 max-md:grid-cols-1 px-6 gap-y-3 text-sm">
-              <div className="flex flex-row gap-2 flex-1 items-center">
-                <input
-                  type="radio"
-                  id="pages-all"
-                  name="pages"
-                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
-                  defaultChecked
-                />
-                <label htmlFor="pages-all" className="select-none flex-1">
-                  All
-                </label>
-              </div>
-              <div className="flex flex-row gap-2 flex-1 items-center">
-                <input
-                  type="radio"
-                  id="pages-even"
-                  name="pages"
-                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
-                />
-                <label htmlFor="pages-even" className="select-none flex-1">
-                  Even pages only
-                </label>
-              </div>
-              <div className="flex flex-row gap-2 flex-1 items-center">
-                <input
-                  type="radio"
-                  id="pages-odd"
-                  name="pages"
-                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
-                />
-                <label htmlFor="pages-odd" className="select-none flex-1">
-                  Odd pages only
-                </label>
-              </div>
-              <div className="flex flex-row gap-2 flex-1 items-center">
-                <input
-                  type="radio"
-                  id="pages-custom"
-                  name="pages"
-                  className="form-radio w-4 h-4 text-[#0052B4] checked:ring-[#0052B4] bg-transparent"
-                />
-                <label htmlFor="pages-custom" className="select-none flex-1">
-                  <input
-                    type="text"
-                    className="form-input self-center h-8 px-3 border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4] rounded-md bg-transparent w-full"
-                    onFocus={() =>
-                      document.getElementById("pages-custom")?.click()
-                    }
-                    onClick={() =>
-                      document.getElementById("pages-custom")?.click()
-                    }
-                    placeholder="e.g. 1-5, 8, 11-13"
-                  />
-                  {/* Even pages only */}
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h4 className="text-lg font-bold select-none">Paper Size</h4>
-            <select className="form-select rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4]">
-              {paperOptions.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
+          <RadioGroup
+            title="Printing on Both side ?"
+            name="duplex"
+            options={[
+              { id: "duplex-true", label: "True" },
+              { id: "duplex-false", label: "False" },
+            ]}
+            formState={formState}
+            setFormState={setFormState}
+          />
+          <RadioGroup
+            title="Color"
+            name="color"
+            options={[
+              { id: "color-false", label: "Black & White" },
+              { id: "color-true", label: "Colored" },
+            ]}
+            formState={formState}
+            setFormState={setFormState}
+          />
+          <RadioGroup
+            title="Layout"
+            name="layout"
+            options={[
+              { id: "portrait", label: "Portrait" },
+              { id: "landscape", label: "Landscape" },
+            ]}
+            formState={formState}
+            setFormState={setFormState}
+          />
+          <PagesInput formState={formState} setFormState={setFormState} />
+
+          <Dropdown
+            title="Paper Size"
+            options={paperOptions}
+            name="paperType" // Tên sẽ được dùng làm key trong `formState`
+            formState={formState}
+            setFormState={setFormState}
+            disabled={false}
+          />
           <div className="flex flex-col gap-2">
             <h4 className="text-lg font-bold select-none">Pages per Sheet</h4>
             <select
               className="form-select rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4]"
-              value={pagesPerSheet}
-              onChange={(e) => setPagesPerSheet(Number(e.target.value))}
+              value={formState.pagesPerSheet}
+              onChange={(e) => {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  pagesPerSheet: Number(e.target.value),
+                }));
+              }}
             >
               {pagesSheetOptions.map((option, index) => (
                 <option key={index} value={option}>
@@ -195,40 +217,58 @@ const ConfigPrintPage: React.FC = () => {
             <h4 className="text-lg font-bold select-none">Margins</h4>
             <select
               className={`form-select rounded-md bg-transparent border border-stone-500 focus:ring-[#0052B4] focus:border-[#0052B4] 
-                ${pagesPerSheet !== 1 ? "opacity-50 cursor-not-allowed" : ""}`}
-              value={selectedOption}
-              onChange={(e) => setSelectedOption(e.target.value)}
-              disabled={pagesPerSheet !== 1}
+                ${formState.pagesPerSheet !== 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+              value={formState.margins}
+              onChange={(e) => {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  margins: e.target.value,
+                }));
+              }}
+              disabled={formState.pagesPerSheet !== 1}
             >
               <option>Default</option>
               <option>None</option>
               <option>Custom</option>
             </select>
-            {selectedOption === "Custom" && pagesPerSheet === 1 && (
-              <MarginInputs onMarginsChange={handleMarginsChange} />
-            )}
+            {formState.margins === "Custom" &&
+              formState.pagesPerSheet === 1 && (
+                <MarginInputs onMarginsChange={handleMarginsChange} />
+              )}
           </div>
         </div>
 
-        <h3>Upload File</h3>
-        <input type="file" accept=".pdf" onChange={handleFileChange} />
         <div className="flex flex-row justify-between">
           <button
             type="reset"
             className="bg-[#0052B4] px-6 py-3 rounded-xl text-white w-[150px] font-semibold"
+            onClick={(event) => {
+              event.preventDefault();
+              navigate({ to: "/print", state: { file: file } });
+            }}
           >
             Back
           </button>
           <button
             type="submit"
-            className="bg-[#0052B4] px-6 py-3 rounded-xl text-white w-[150px] font-semibold"
+            className=" bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold"
           >
             Next
+            <span className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"></span>
           </button>
         </div>
       </form>
     </div>
   );
+};
+
+const getCopiesValue = () => {
+  const inputElement = document.getElementById("copies") as HTMLInputElement;
+  if (inputElement) {
+    const value = parseInt(inputElement.value, 10);
+    return value;
+  }
+  return 1;
 };
 
 export default ConfigPrintPage;
