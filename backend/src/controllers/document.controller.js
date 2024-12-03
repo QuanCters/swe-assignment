@@ -14,7 +14,13 @@ const findDocumentById = async (req, res) => {
 
 const saveDocument = async (req, res) => {
   const document = await documentService.saveDocument(req.body);
-  res.status(201).json({ status: 201, message: "Save Document Successfully" });
+  res
+    .status(201)
+    .json({
+      status: 201,
+      message: "Save Document Successfully",
+      id: document.id,
+    });
 };
 
 const deleteDocument = async (req, res) => {
