@@ -13,15 +13,6 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-<<<<<<< HEAD
-
-// Create Virtual Routes
-
-const PrintingHistoryLazyImport = createFileRoute('/printing-history')()
-const PrivatePrintPrintLazyImport = createFileRoute('/_private/_print/print')()
-const PrivatePrintConfigPageLazyImport = createFileRoute(
-  '/_private/_print/config-page',
-=======
 import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as PrivateStudentImport } from './routes/_private/_student'
@@ -30,12 +21,12 @@ import { Route as PrivateSpsoManagePrinterImport } from './routes/_private/_spso
 
 // Create Virtual Routes
 
+const IndexLazyImport = createFileRoute('/')()
 const PrivatePrintingHistoryLazyImport = createFileRoute(
   '/_private/printing-history',
 )()
 const PrivateStudentPrintPrintLazyImport = createFileRoute(
   '/_private/_student/_print/print',
->>>>>>> 7284c4e4a4ecf97f3067fa761207b9c8ec6a8951
 )()
 const PrivateStudentPrintConfigPageLazyImport = createFileRoute(
   '/_private/_student/_print/config-page',
@@ -46,56 +37,23 @@ const PrivateStudentPrintChoosePrinterLazyImport = createFileRoute(
 
 // Create/Update Routes
 
-<<<<<<< HEAD
-const PrintingHistoryLazyRoute = PrintingHistoryLazyImport.update({
-  id: '/printing-history',
-  path: '/printing-history',
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/printing-history.lazy').then((d) => d.Route),
-)
+} as any)
 
-const PrivatePrintPrintLazyRoute = PrivatePrintPrintLazyImport.update({
-  id: '/_private/_print/print',
-  path: '/print',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/_private/_print/print.lazy').then((d) => d.Route),
-)
-
-const PrivatePrintConfigPageLazyRoute = PrivatePrintConfigPageLazyImport.update(
-  {
-    id: '/_private/_print/config-page',
-    path: '/config-page',
-    getParentRoute: () => rootRoute,
-  } as any,
-).lazy(() =>
-  import('./routes/_private/_print/config-page.lazy').then((d) => d.Route),
-)
-
-const PrivatePrintChoosePrinterLazyRoute =
-  PrivatePrintChoosePrinterLazyImport.update({
-    id: '/_private/_print/choose-printer',
-    path: '/choose-printer',
-    getParentRoute: () => rootRoute,
-  } as any).lazy(() =>
-    import('./routes/_private/_print/choose-printer.lazy').then((d) => d.Route),
-  )
-
-=======
 const PrivateRoute = PrivateImport.update({
   id: '/_private',
   getParentRoute: () => rootRoute,
 } as any)
-const PrivateRoute = PrivateImport.update({
-  id: '/_private',
-  getParentRoute: () => rootRoute,
-} as any)
+
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
 const PrivatePrintingHistoryLazyRoute = PrivatePrintingHistoryLazyImport.update(
   {
     id: '/printing-history',
@@ -105,6 +63,7 @@ const PrivatePrintingHistoryLazyRoute = PrivatePrintingHistoryLazyImport.update(
 ).lazy(() =>
   import('./routes/_private/printing-history.lazy').then((d) => d.Route),
 )
+
 const PrivateStudentRoute = PrivateStudentImport.update({
   id: '/_student',
   getParentRoute: () => PrivateRoute,
@@ -152,30 +111,17 @@ const PrivateSpsoManagePrinterRoute = PrivateSpsoManagePrinterImport.update({
   getParentRoute: () => PrivateSpsoRoute,
 } as any)
 
->>>>>>> 7284c4e4a4ecf97f3067fa761207b9c8ec6a8951
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-<<<<<<< HEAD
-    '/printing-history': {
-      id: '/printing-history'
-      path: '/printing-history'
-      fullPath: '/printing-history'
-      preLoaderRoute: typeof PrintingHistoryLazyImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/_private/_print/choose-printer': {
-      id: '/_private/_print/choose-printer'
-=======
-    '/_private': {
-      id: '/_private'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof PrivateImport
-      parentRoute: typeof rootRoute
-    }
-
     '/_private': {
       id: '/_private'
       path: ''
@@ -220,7 +166,6 @@ declare module '@tanstack/react-router' {
     }
     '/_private/_student/_print/choose-printer': {
       id: '/_private/_student/_print/choose-printer'
->>>>>>> 7284c4e4a4ecf97f3067fa761207b9c8ec6a8951
       path: '/choose-printer'
       fullPath: '/choose-printer'
       preLoaderRoute: typeof PrivateStudentPrintChoosePrinterLazyImport
@@ -291,19 +236,6 @@ const PrivateRouteWithChildren =
   PrivateRoute._addFileChildren(PrivateRouteChildren)
 
 export interface FileRoutesByFullPath {
-<<<<<<< HEAD
-  '/printing-history': typeof PrintingHistoryLazyRoute
-  '/choose-printer': typeof PrivatePrintChoosePrinterLazyRoute
-  '/config-page': typeof PrivatePrintConfigPageLazyRoute
-  '/print': typeof PrivatePrintPrintLazyRoute
-}
-
-export interface FileRoutesByTo {
-  '/printing-history': typeof PrintingHistoryLazyRoute
-  '/choose-printer': typeof PrivatePrintChoosePrinterLazyRoute
-  '/config-page': typeof PrivatePrintConfigPageLazyRoute
-  '/print': typeof PrivatePrintPrintLazyRoute
-=======
   '/': typeof IndexLazyRoute
   '': typeof PrivateStudentRouteWithChildren
   '/login': typeof LoginRoute
@@ -323,17 +255,10 @@ export interface FileRoutesByTo {
   '/choose-printer': typeof PrivateStudentPrintChoosePrinterLazyRoute
   '/config-page': typeof PrivateStudentPrintConfigPageLazyRoute
   '/print': typeof PrivateStudentPrintPrintLazyRoute
->>>>>>> 7284c4e4a4ecf97f3067fa761207b9c8ec6a8951
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-<<<<<<< HEAD
-  '/printing-history': typeof PrintingHistoryLazyRoute
-  '/_private/_print/choose-printer': typeof PrivatePrintChoosePrinterLazyRoute
-  '/_private/_print/config-page': typeof PrivatePrintConfigPageLazyRoute
-  '/_private/_print/print': typeof PrivatePrintPrintLazyRoute
-=======
   '/': typeof IndexLazyRoute
   '/_private': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
@@ -344,22 +269,10 @@ export interface FileRoutesById {
   '/_private/_student/_print/choose-printer': typeof PrivateStudentPrintChoosePrinterLazyRoute
   '/_private/_student/_print/config-page': typeof PrivateStudentPrintConfigPageLazyRoute
   '/_private/_student/_print/print': typeof PrivateStudentPrintPrintLazyRoute
->>>>>>> 7284c4e4a4ecf97f3067fa761207b9c8ec6a8951
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-<<<<<<< HEAD
-  fullPaths: '/printing-history' | '/choose-printer' | '/config-page' | '/print'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/printing-history' | '/choose-printer' | '/config-page' | '/print'
-  id:
-    | '__root__'
-    | '/printing-history'
-    | '/_private/_print/choose-printer'
-    | '/_private/_print/config-page'
-    | '/_private/_print/print'
-=======
   fullPaths:
     | '/'
     | ''
@@ -391,24 +304,10 @@ export interface FileRouteTypes {
     | '/_private/_student/_print/choose-printer'
     | '/_private/_student/_print/config-page'
     | '/_private/_student/_print/print'
->>>>>>> 7284c4e4a4ecf97f3067fa761207b9c8ec6a8951
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-<<<<<<< HEAD
-  PrintingHistoryLazyRoute: typeof PrintingHistoryLazyRoute
-  PrivatePrintChoosePrinterLazyRoute: typeof PrivatePrintChoosePrinterLazyRoute
-  PrivatePrintConfigPageLazyRoute: typeof PrivatePrintConfigPageLazyRoute
-  PrivatePrintPrintLazyRoute: typeof PrivatePrintPrintLazyRoute
-}
-
-const rootRouteChildren: RootRouteChildren = {
-  PrintingHistoryLazyRoute: PrintingHistoryLazyRoute,
-  PrivatePrintChoosePrinterLazyRoute: PrivatePrintChoosePrinterLazyRoute,
-  PrivatePrintConfigPageLazyRoute: PrivatePrintConfigPageLazyRoute,
-  PrivatePrintPrintLazyRoute: PrivatePrintPrintLazyRoute,
-=======
   IndexLazyRoute: typeof IndexLazyRoute
   PrivateRoute: typeof PrivateRouteWithChildren
   LoginRoute: typeof LoginRoute
@@ -418,7 +317,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   PrivateRoute: PrivateRouteWithChildren,
   LoginRoute: LoginRoute,
->>>>>>> 7284c4e4a4ecf97f3067fa761207b9c8ec6a8951
 }
 
 export const routeTree = rootRoute
@@ -431,27 +329,13 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-<<<<<<< HEAD
-        "/printing-history",
-        "/_private/_print/choose-printer",
-        "/_private/_print/config-page",
-        "/_private/_print/print"
-      ]
-    },
-    "/printing-history": {
-      "filePath": "printing-history.lazy.tsx"
-=======
         "/",
         "/_private",
         "/login"
       ]
     },
-    "/_private/_spso": {
-      "filePath": "_private/_spso.tsx",
-      "parent": "/_private",
-      "children": [
-        "/_private/_spso/manage/printer"
-      ]
+    "/": {
+      "filePath": "index.lazy.tsx"
     },
     "/_private": {
       "filePath": "_private.tsx",
@@ -491,7 +375,6 @@ export const routeTree = rootRoute
     "/_private/_student/_print/choose-printer": {
       "filePath": "_private/_student/_print/choose-printer.lazy.tsx",
       "parent": "/_private/_student"
->>>>>>> 7284c4e4a4ecf97f3067fa761207b9c8ec6a8951
     },
     "/_private/_student/_print/config-page": {
       "filePath": "_private/_student/_print/config-page.lazy.tsx",
