@@ -139,8 +139,8 @@ router.post("/:userId/print/:printerId", print);
 
 /**
  * @swagger
- * '/v1/api/student/{userId}/print/{printerId}':
- *  get:
+ * '/v1/api/student/{userId}/printcheck/{printerId}':
+ *  post:
  *     summary: Student print pages
  *     tags:
  *     - Student Controller
@@ -215,6 +215,6 @@ router.post("/:userId/print/:printerId", print);
  *      500:
  *        description: Server Error
  */
-router.get("/:userId/print/:printerId", printCheck);
+router.post("/:userId/printcheck/:printerId", printCheck);
 
 module.exports = router;
