@@ -14,9 +14,6 @@ export const Route = createFileRoute("/_private/_spso/manage/printer")({
 
 const fetchPrinters = async () => {
   const result = await getPrinters();
-  if (result.status !== 200) {
-  }
-  console.log(result);
   const printerList: Printer[] = result.map((printer: Printer) => ({
     ...printer,
     isOn: PrinterType[printer.status],
@@ -61,7 +58,7 @@ function ManagePrinter() {
     index: any
   ) => {
     const isChecked = event.target.checked;
-    console.log("here, ", isChecked);
+
     setPrinters((prev) => {
       const updatedPrinters = [...prev];
 
@@ -72,7 +69,6 @@ function ManagePrinter() {
         hasChanged: updatedPrinters[index].initialOn !== isChecked,
       };
       const hasChanges = updatedPrinters.some((printer) => printer.hasChanged);
-      console.log("here2, ", updatedPrinters);
       setAnyChange(hasChanges);
 
       return updatedPrinters;
@@ -80,14 +76,22 @@ function ManagePrinter() {
   };
 
   const handleSaveChanges = async () => {
+    let promises: Promise<void>[] = [];
     printers.forEach((printer) => {
       if (printer.delete) {
-        deleteMutation.mutate(printer);
+        promises.push(deleteMutation.mutateAsync(printer));
       } else if (printer.hasChanged && !printer.delete) {
-        updateMutation.mutate(printer);
+        promises.push(updateMutation.mutateAsync(printer));
       }
     });
-    setAnyChange(false);
+    try {
+      if (promises.length === 0) return;
+      await Promise.all(promises);
+      setAnyChange(false);
+      alert("Successfully save changes");
+    } catch (error) {
+      alert(`Error in save changes, please try again. Error:${error}`);
+    }
   };
 
   const handleDiscardChanges = () => {

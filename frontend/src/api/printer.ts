@@ -40,10 +40,10 @@ export const updatePrinter = async (data: Printer) => {
       headers: {
         "Content-Type": "application/json",
         CLIENT_ID: "x-client-id",
-        AUTHORIZATION: access_token, // Định dạng nội dung gửi là JSON
+        AUTHORIZATION: access_token,
         "x-api-key": api_key,
       },
-      body: JSON.stringify(data), // Convert formData thành JSON
+      body: JSON.stringify(data),
     });
     if (!response.ok)
       throw new HttpError(response.statusText + data.id, response.status);
@@ -67,10 +67,10 @@ export const addPrinter = async (printer: any) => {
       headers: {
         "Content-Type": "application/json",
         CLIENT_ID: "x-client-id",
-        AUTHORIZATION: access_token, // Định dạng nội dung gửi là JSON
+        AUTHORIZATION: access_token,
         "x-api-key": api_key,
       },
-      body: JSON.stringify(printer), // Convert formData thành JSON
+      body: JSON.stringify(printer),
     });
     if (!response.ok) throw new HttpError(response.statusText, response.status);
   } catch (err) {
@@ -93,7 +93,7 @@ export const getPrinterByID = async (id: string) => {
       headers: {
         "Content-Type": "application/json",
         CLIENT_ID: "x-client-id",
-        AUTHORIZATION: access_token, // Định dạng nội dung gửi là JSON
+        AUTHORIZATION: access_token,
         "x-api-key": api_key,
       },
     });
@@ -101,7 +101,7 @@ export const getPrinterByID = async (id: string) => {
     const result = await response.json();
     return result;
   } catch (err) {
-    console.error("Error update printers:", err);
+    console.error("Error getPrinterByID:", err);
     throw err;
   }
 };
@@ -130,7 +130,7 @@ export const deletePrinterByID = async (id: string) => {
         response.status
       );
   } catch (err) {
-    console.error("Error update printers:", err);
+    console.error("Error deletePrinterByID:", err);
     throw err;
   }
 };
