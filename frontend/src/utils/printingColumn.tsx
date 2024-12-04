@@ -1,4 +1,4 @@
-import { Person, Printing } from "@/models/printing";
+import { Printing } from "@/models/printing";
 import { ColumnDef, RowData } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import { inDateRange } from "./dateFilters";
@@ -58,7 +58,6 @@ export const printing_columns: ColumnDef<Printing, any>[] = [
   },
   {
     accessorKey: "paymentAmount",
-    // id: "pageCount",
     cell: (info) => {
       return info.getValue();
     },

@@ -1,13 +1,14 @@
 import { printPages } from "@/api/printing";
 import { Dialog, Stack } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
+
 const ConfirmPrintModal: React.FC<{
   onClose: any;
   config: any;
   printer: any;
-  file: File;
-}> = ({ onClose, config, printer, file }) => {
-  console.log("printCount", config.printCount);
+  fileName?: string;
+  navigate?: any;
+}> = ({ onClose, config, printer, fileName, navigate }) => {
   const mutation = useMutation({
     mutationFn: (e: any) => {
       e.preventDefault();
@@ -20,15 +21,21 @@ const ConfirmPrintModal: React.FC<{
           duplex: config.data.duplex === "duplex-true" ? true : false,
         },
       };
-      console.log(data, "data to print");
       return printPages(printer.id, data);
+    },
+    onSuccess: () => {
+      alert(
+        "Successfully send confirm printing. We will navigate you back to print"
+      );
+      onClose();
+      navigate();
     },
     onError: (error) => {
       alert(error);
     },
   });
   const stringlist = [
-    `${file.name} - ${config.pageCount} ${config.data.paperType} pages \t ${config.printCount !== 1 ? "x" + config.printCount : ""}`,
+    `${fileName} - ${config.pageCount} ${config.data.pageType} pages \t ${config.printCount !== 1 ? "x" + config.printCount : ""}`,
   ];
   return (
     <Dialog open maxWidth={"md"} onClose={onClose}>
@@ -48,11 +55,12 @@ const ConfirmPrintModal: React.FC<{
             <p>
               Total:{" "}
               <span className="font-normal">
-                {config.pageCount * config.printCount} A4 pages
+                {config.paymentAmount} A4 pages
               </span>
             </p>
             <p>
-              You have: <span className="font-normal">51 A4 pages</span>
+              You have:{" "}
+              <span className="font-normal">{config.pageBalance} A4 pages</span>
             </p>
           </div>
           <div className="flex flex-row flex-1 items-end w-full px-10 justify-between max-lg:px-0 min-h-20">

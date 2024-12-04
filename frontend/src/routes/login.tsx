@@ -48,39 +48,9 @@ function Login() {
     onSuccess: () => {
       navigate({ to: "/" });
     },
-    onSettled: () => {},
   });
 
   const handleSubmit = async (e: any) => {
-    // e.preventDefault();
-
-    // const roleName =
-    //   Object.keys(Role)
-    //     .find((key) => Role[key as keyof typeof Role] === account)
-    //     ?.toLowerCase() || "";
-    // // Logic xử lý form
-    // const formData = new FormData(e.target);
-    // const formObject: Record<string, string> = {};
-
-    // // Duyệt qua các key-value trong FormData
-    // formData.forEach((value, key) => {
-    //   if (value) {
-    //     formObject[key] = value.toString();
-    //   }
-    // });
-
-    // try {
-    //   const result = await loginWithRole(roleName, formObject);
-    //   console.log(result, "EEEEEEEEEEE", typeof result.status);
-    //   if (result.status === 200 || result.status === 409) {
-    //     navigate({ to: "/" });
-    //   }
-    // } catch (err) {
-    //   // setError(err.message);
-    //   console.log(err);
-    // } finally {
-    //   // setLoading(false);
-    // }
     mutation.mutate(e);
   };
   if (mutation.isLoading)

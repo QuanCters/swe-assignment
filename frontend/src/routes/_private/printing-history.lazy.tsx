@@ -31,12 +31,7 @@ function PrintingHistoryPage() {
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  // Sample data created manually
-
-  // Manually defined sample data
-  // const [printingData, setPrintingData] = useState<Printing[]>(samplePrintings);
   const columns = useMemo<ColumnDef<Printing, any>[]>(() => {
-    // Cột bổ sung
     const additionalColumn: ColumnDef<Printing, any> = {
       accessorKey: "studentId",
       header: "Student ID",
@@ -53,6 +48,7 @@ function PrintingHistoryPage() {
       ? [...printing_columns, additionalColumn]
       : printing_columns;
   }, []);
+
   const table = useReactTable({
     data: data ?? [],
     columns,
@@ -65,9 +61,6 @@ function PrintingHistoryPage() {
     getFilteredRowModel: getFilteredRowModel(), //client side filtering
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugTable: true,
-    debugHeaders: true,
-    debugColumns: true,
   });
   if (error)
     return (
@@ -111,7 +104,6 @@ const fetchHistory = async (isSPSO: any) => {
   const result = isSPSO()
     ? await getAllHistory()
     : await getHistoryByStudentID();
-  console.log("History result", result);
   const printings: Printing[] = result?.map((item: any) => ({
     id: item.id,
     timestamp: new Date(item.timestamp), // Chuyển timestamp sang Date

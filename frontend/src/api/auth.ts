@@ -16,14 +16,8 @@ export const loginWithRole = async (roleName: string, data: any) => {
     if (!response.ok) throw new HttpError(response.statusText, response.status);
 
     const result = await response.json();
-    console.log(
-      result,
-      // result.metadata,
-      // result.metadata?.accessToken,
-      "halo halo"
-    );
     if (result.status !== 200)
-      throw new HttpError(result.status, result.message);
+      throw new HttpError(result.message, result.status);
 
     localStorage.setItem("access-token", result.accessToken);
     localStorage.setItem("userID", result.userID);
@@ -62,7 +56,7 @@ export const logoutWithRole = async (roleName: string) => {
     }
     const result = await response.json();
     if (result.status !== 200)
-      throw new HttpError(result.status, result.message);
+      throw new HttpError(result.message, result.status);
 
     localStorage.removeItem("access-token");
     localStorage.removeItem("userID");

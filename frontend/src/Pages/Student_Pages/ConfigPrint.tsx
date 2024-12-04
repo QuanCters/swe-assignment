@@ -48,7 +48,7 @@ const ConfigPrintPage: React.FC = () => {
     layout: "portrait",
     pages: "all",
     customPages: "",
-    paperType: "A4",
+    pageType: "A4",
     pagesPerSheet: 1,
     margins: "Default",
     customMargins: margins,
@@ -71,7 +71,6 @@ const ConfigPrintPage: React.FC = () => {
       alert(error);
     },
   });
-  console.log(formState, "fileeeeeee");
 
   useEffect(() => {
     if (file && file.name.endsWith(".pdf")) {
@@ -100,7 +99,6 @@ const ConfigPrintPage: React.FC = () => {
     );
     if (!userConfirmed) return;
     const printCount = getCopiesValue();
-    console.log("printCount", printCount);
 
     mutation.mutate(undefined, {
       onSuccess(data) {
@@ -189,7 +187,7 @@ const ConfigPrintPage: React.FC = () => {
           <Dropdown
             title="Paper Size"
             options={paperOptions}
-            name="paperType" // Tên sẽ được dùng làm key trong `formState`
+            name="pageType"
             formState={formState}
             setFormState={setFormState}
             disabled={false}
