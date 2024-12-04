@@ -1,6 +1,6 @@
 "use strict";
 
-const { print: printService } = require("../services/printer.service");
+const { print: printService, printCheck: printCheckService } = require("../services/printer.service");
 const { buyPages: buyPagesService } = require("../services/payment.service");
 const {
   updateStudentPageBalance: updateStudentPageBalanceRepo,
@@ -28,8 +28,17 @@ const buyPages = async (req, res) => {
   res.send({ status: 200, message: "Buy successfully", pageCount: result });
 };
 
+const printCheck = async (req, res) => {
+  const { userId, printerId } = req.params;
+  const { documentId, config } = req.body;
+  const printInfo = { userId, printerId, documentId, config };
+  const result = await printCheckService({ printInfo });
+  res.send({ status: 200, message: "lmao", ...result });
+}
+
 module.exports = {
   print,
   updateStudentPageBalance,
   buyPages,
+  printCheck,
 };
