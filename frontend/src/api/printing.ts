@@ -17,7 +17,6 @@ export const saveDocument = async (data: any) => {
   });
   if (!response.ok) throw new HttpError(response.statusText, response.status);
   const result = await response.json();
-  console.log("result", result);
   return result;
 };
 
@@ -46,7 +45,6 @@ export const getDocumentByID = async (id: string) => {
 
 export const deleteDocumentByID = async (id: string) => {
   try {
-    console.log("documentID", id);
     const access_token = localStorage.getItem("access-token");
     if (!access_token) {
       throw new Error("Access token not found. Please try to login again");
@@ -144,8 +142,30 @@ export const printPages = async (printerID: string, data: any) => {
   );
   if (!response.ok) throw new HttpError(response.statusText, response.status);
   const result = await response.json();
-  // if (result.status !== 200 || result.status !== 304)
-  //   throw new HttpError(result.message, result.status);
-  console.log("result", result);
   return result.message;
+};
+
+export const printPagesCheck = async (printerID: string, data: any) => {
+  const access_token = localStorage.getItem("access-token");
+  const userID = localStorage.getItem("userID");
+  if (!access_token || !userID) {
+    throw new Error(
+      "Access token or userID not found. Please try to login again"
+    );
+  }
+  const response = await fetch(
+    `${BaseUrl}/student/${userID}/printcheck/${printerID}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        CLIENT_ID: "x-client-id",
+        AUTHORIZATION: access_token,
+      },
+      body: JSON.stringify(data),
+    }
+  );
+  if (!response.ok) throw new HttpError(response.statusText, response.status);
+  const result = await response.json();
+  return result;
 };

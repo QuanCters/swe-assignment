@@ -71,7 +71,6 @@ const ConfigPrintPage: React.FC = () => {
       alert(error);
     },
   });
-  console.log(formState, "fileeeeeee");
 
   useEffect(() => {
     if (file && file.name.endsWith(".pdf")) {
@@ -100,7 +99,6 @@ const ConfigPrintPage: React.FC = () => {
     );
     if (!userConfirmed) return;
     const printCount = getCopiesValue();
-    console.log("printCount", printCount);
 
     mutation.mutate(undefined, {
       onSuccess(data) {
