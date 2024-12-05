@@ -1,9 +1,41 @@
+import { printPages } from "@/api/printing";
 import { Dialog, Stack } from "@mui/material";
-const ConfirmPrintModal: React.FC<{ onClose: any }> = ({ onClose }) => {
+import { useMutation } from "@tanstack/react-query";
+
+const ConfirmPrintModal: React.FC<{
+  onClose: any;
+  config: any;
+  printer: any;
+  fileName?: string;
+  navigate?: any;
+}> = ({ onClose, config, printer, fileName, navigate }) => {
+  const mutation = useMutation({
+    mutationFn: (e: any) => {
+      e.preventDefault();
+      const data = {
+        documentId: config.documentId,
+        config: {
+          ...config.data,
+          printCount: config.printCount,
+          color: config.data.color === "color-true" ? true : false,
+          duplex: config.data.duplex === "duplex-true" ? true : false,
+        },
+      };
+      return printPages(printer.id, data);
+    },
+    onSuccess: () => {
+      alert(
+        "Successfully send confirm printing. We will navigate you back to print"
+      );
+      onClose();
+      navigate();
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
   const stringlist = [
-    "Report3.pdf - 15 A4 pages.",
-    "Report3.pdf - 15 A4 pages.",
-    "Report3.pdf - 15 A4 pages.",
+    `${fileName} - ${config.pageCount} ${config.data.pageType} pages \t ${config.printCount !== 1 ? "x" + config.printCount : ""}`,
   ];
   return (
     <Dialog open maxWidth={"md"} onClose={onClose}>
@@ -15,13 +47,20 @@ const ConfirmPrintModal: React.FC<{ onClose: any }> = ({ onClose }) => {
             {stringlist.map((item, index) => (
               <p key={index}>{item}</p>
             ))}
+            <p className="text-center mt-4">
+              With printer id: {printer.id}, at location: {printer.location}
+            </p>
           </div>
           <div className="flex flex-col items-center gap-1 w-2/3 font-bold">
             <p>
-              Total: <span className="font-normal">51 A4 pages</span>
+              Total:{" "}
+              <span className="font-normal">
+                {config.paymentAmount} A4 pages
+              </span>
             </p>
             <p>
-              You have: <span className="font-normal">51 A4 pages</span>
+              You have:{" "}
+              <span className="font-normal">{config.pageBalance} A4 pages</span>
             </p>
           </div>
           <div className="flex flex-row flex-1 items-end w-full px-10 justify-between max-lg:px-0 min-h-20">
@@ -32,13 +71,13 @@ const ConfirmPrintModal: React.FC<{ onClose: any }> = ({ onClose }) => {
               Return
             </button>
 
-            <div className="relative group">
-              <button className="bg-[#0052B4] text-white px-6 py-3 rounded-xl relative overflow-hidden transition-all ease-in-out duration-500">
+            <div className="">
+              <button
+                className="bg-[#0052B4] text-white px-6 py-3 rounded-xl relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold"
+                onClick={mutation.mutate}
+              >
                 Confirm
-                <span
-                  className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 
-      transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"
-                ></span>
+                <span className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"></span>
               </button>
             </div>
           </div>

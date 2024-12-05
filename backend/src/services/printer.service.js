@@ -4,6 +4,8 @@ const printerRepo = require("../repositories/printer.repository");
 const { pay } = require("./payment.service");
 const { saveHistory } = require("./history.service");
 const { findDocumentById } = require("./document.service");
+const { findUserById } = require("../repositories/user.repository");
+const { calculatePaymentAmount } = require("./payment.service");
 
 const findAllPrinters = async () => {
   return await printerRepo.findAllPrinters();
@@ -64,6 +66,23 @@ const print = async ({ printInfo }) => {
   return result;
 };
 
+const printCheck = async ({ printInfo }) => {
+  const { userId, printerId, documentId, config } = printInfo;
+
+  const user = await findUserById({ id: userId, role: "0000" });
+  const document = await findDocumentById(documentId);
+  if (!document) {
+    throw new Error(`Document ${documentId} not found`);
+  }
+
+  const pageCount = document.pageCount;
+
+  const paymentAmount = calculatePaymentAmount({ pageCount, config });
+  const pageBalance = user.pageBalance;
+
+  return { paymentAmount, pageBalance };
+};
+
 module.exports = {
   findAllPrinters,
   findPrinterById,
@@ -73,4 +92,5 @@ module.exports = {
   pay,
   print,
   togglePrinterStatus,
+  printCheck,
 };

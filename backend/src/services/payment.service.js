@@ -5,6 +5,16 @@ const {
   updateStudentPageBalance,
 } = require("../repositories/user.repository");
 
+const calculatePaymentAmount = ({ pageCount, config }) => {
+  return (
+    pageCount *
+    config.printCount *
+    (config.color ? 2 : 1) *
+    (config.duplex ? 2 : 1) *
+    (config.pageType === "A3" ? 2 : 1)
+  );
+};
+
 const pay = async ({ paymentInfo }) => {
   const { userId, pageCount, config } = paymentInfo;
   console.log(paymentInfo);
@@ -12,12 +22,7 @@ const pay = async ({ paymentInfo }) => {
   if (!user) {
     throw new Error(`User ${userId} not found`);
   }
-  const paymentAmount =
-    pageCount *
-    config.printCount *
-    (config.color ? 2 : 1) *
-    (config.duplex ? 2 : 1) *
-    (config.pageType === "A3" ? 2 : 1);
+  const paymentAmount = calculatePaymentAmount({ pageCount, config });
   if (user.pageBalance < paymentAmount) {
     throw new Error(`User ${userId} has insufficient pages`);
   }
@@ -46,4 +51,5 @@ const buyPages = async ({ userId, pageCount }) => {
 module.exports = {
   pay,
   buyPages,
+  calculatePaymentAmount,
 };

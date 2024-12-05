@@ -1,29 +1,43 @@
 import { Dialog, Stack } from "@mui/material";
-const InsufficientPagesModal: React.FC<{ onClose: any }> = ({ onClose }) => {
+
+const InsufficientPagesModal: React.FC<{
+  onClose: any;
+  config: any;
+  printer: any;
+  fileName?: string;
+  navigate?: any;
+}> = ({ onClose, config, printer, fileName, navigate }) => {
   const stringlist = [
-    "Report3.pdf - 15 A4 pages.",
-    "Report3.pdf - 15 A4 pages.",
-    "Report3.pdf - 15 A4 pages.",
+    `${fileName} - ${config.pageCount} ${config.data.pageType} pages \t ${config.printCount !== 1 ? "x" + config.printCount : ""}`,
   ];
   return (
     <Dialog open maxWidth={"md"} onClose={onClose}>
       <Stack p={3}>
         <div className="flex flex-col items-center gap-12 select-none h-[70vh] w-[25vw]">
-          <h3 className="font-bold text-2xl">Confirm Printing?</h3>
+          <h3 className="font-bold text-2xl">Not enough page</h3>
           <p>You are about to print:</p>
           <div className="flex flex-col items-center gap-1 w-2/3">
             {stringlist.map((item, index) => (
               <p key={index}>{item}</p>
             ))}
+            <p className="text-center mt-4">
+              With printer id: {printer.id}, at location: {printer.location}
+            </p>
           </div>
           <div className="flex flex-col items-center gap-1 w-2/3 font-bold">
             <p>
-              Total: <span className="font-normal">51 A4 pages</span>
+              Total:{" "}
+              <span className="font-normal">
+                {config.paymentAmount} A4 pages
+              </span>
             </p>
             <p>
-              You have: <span className="font-normal">51 A4 pages</span>
+              You have:{" "}
+              <span className="font-normal text-red-500">
+                {config.pageBalance} A4 pages
+              </span>
             </p>
-            <p className="text-center">
+            <p className="text-center text-red-500">
               Please adjust your settings or buy more pages.
             </p>
           </div>
@@ -35,15 +49,19 @@ const InsufficientPagesModal: React.FC<{ onClose: any }> = ({ onClose }) => {
               Return
             </button>
 
-            <div className="relative group">
-              <button className="bg-[#0052B4] text-white px-6 py-3 rounded-xl relative overflow-hidden transition-all ease-in-out duration-500">
-                Buy Pages
-                <span
-                  className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 
+            <button
+              className="bg-[#0052B4] text-white px-6 py-3 rounded-xl group relative overflow-hidden transition-all ease-in-out duration-500"
+              onClick={() => {
+                onClose();
+                navigate();
+              }}
+            >
+              Buy Pages
+              <span
+                className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 
       transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"
-                ></span>
-              </button>
-            </div>
+              ></span>
+            </button>
           </div>
         </div>
       </Stack>

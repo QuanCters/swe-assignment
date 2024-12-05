@@ -1,23 +1,12 @@
 import React from "react";
-import {
-  RowData,
-  flexRender,
-  Table as ReactTable,
-} from "@tanstack/react-table";
-import type { Person } from "@/Pages/Student_Pages/PrintingHistory_StudentPage/PrintingHistory";
-
-declare module "@tanstack/react-table" {
-  //allows us to define custom properties for our columns
-  interface ColumnMeta<TData extends RowData, TValue> {
-    filterVariant?: "text" | "range" | "select" | "range-date";
-  }
-}
+import { flexRender, Table as ReactTable } from "@tanstack/react-table";
+import { Printing } from "@/models/printing";
 
 type Props = {
   // columnFilters: ColumnFiltersState;
   // setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
   // columns: ColumnDef<any, any>[];
-  setData: React.Dispatch<React.SetStateAction<Person[]>>;
+  setData?: React.Dispatch<React.SetStateAction<Printing[]>>;
   table: ReactTable<any>;
 };
 
@@ -26,7 +15,7 @@ const Table = ({ setData, table }: Props) => {
 
   return (
     <div className="p-2 z-0">
-      <table className="table-auto z-0">
+      <table className="table-auto z-0 w-[80vw]">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
@@ -36,9 +25,10 @@ const Table = ({ setData, table }: Props) => {
               {headerGroup.headers.map((header) => {
                 return (
                   <th
-                    className="py-4 px-4 w-40 min-w-4"
+                    className="py-4 px-4"
                     key={header.id}
                     colSpan={header.colSpan}
+                    style={{ width: `${header.getSize()}px` }}
                   >
                     {header.isPlaceholder ? null : (
                       <>
@@ -88,8 +78,13 @@ const Table = ({ setData, table }: Props) => {
           })}
         </tbody>
       </table>
+      {!table && (
+        <div className="font-semibold w-[full] text-center mt-7">
+          No data available
+        </div>
+      )}
       <div className="h-2" />
-      <div className="flex items-center gap-2 justify-end">
+      <div className="flex items-center gap-2 justify-end mt-10">
         <button
           className="border rounded p-1"
           onClick={() => table.setPageIndex(0)}
@@ -136,7 +131,7 @@ const Table = ({ setData, table }: Props) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
               table.setPageIndex(page);
             }}
-            className="border p-1 rounded w-16"
+            className="border p-1 rounded w-16 h-8 bg-transparent border-stone-500"
           />
         </span>
         <select
@@ -144,6 +139,7 @@ const Table = ({ setData, table }: Props) => {
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));
           }}
+          className="border p-1 rounded h-8 bg-transparent border-stone-500"
         >
           {[10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
@@ -152,20 +148,18 @@ const Table = ({ setData, table }: Props) => {
           ))}
         </select>
       </div>
-      <div>{table.getPrePaginationRowModel().rows.length} Rows</div>
+      {/* <div>{table.getPrePaginationRowModel().rows.length} Rows</div>
       <div>
         <button onClick={() => rerender()}>Force Rerender</button>
       </div>
-      <div>
-        <button onClick={() => setData([])}>Clear Data</button>
-      </div>
+      <div><button onClick={() => setData([])}>Clear Data</button></div>
       <pre>
         {JSON.stringify(
           { columnFilters: table.getState().columnFilters },
           null,
           2
         )}
-      </pre>
+      </pre> */}
     </div>
   );
 };
