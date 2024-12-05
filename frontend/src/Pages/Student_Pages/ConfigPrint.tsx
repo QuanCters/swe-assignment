@@ -239,7 +239,7 @@ const ConfigPrintPage: React.FC = () => {
         <div className="flex flex-row justify-between">
           <button
             type="reset"
-            className="bg-[#0052B4] px-6 py-3 rounded-xl text-white w-[150px] font-semibold"
+            className="navigateBtn bg-[#0052B4] px-6 py-3 rounded-xl text-white w-[150px] font-semibold"
             onClick={(event) => {
               event.preventDefault();
               navigate({ to: "/print", state: { file: file } });
@@ -249,7 +249,7 @@ const ConfigPrintPage: React.FC = () => {
           </button>
           <button
             type="submit"
-            className=" bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold"
+            className="navigateBtn bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold"
           >
             Next
             <span className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"></span>

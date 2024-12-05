@@ -73,7 +73,7 @@ const ConfirmPrintModal: React.FC<{
 
             <div className="">
               <button
-                className="bg-[#0052B4] text-white px-6 py-3 rounded-xl relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold"
+                className="navigateBtn bg-[#0052B4] text-white px-6 py-3 rounded-xl relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold"
                 onClick={mutation.mutate}
               >
                 Confirm
