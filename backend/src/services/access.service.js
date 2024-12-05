@@ -10,6 +10,7 @@ const {
   findUserByEmail,
   findUserByAccessToken,
 } = require("../repositories/user.repository");
+const crypto = require("node:crypto");
 
 const ROLE = {
   STUDENT: "0000",
@@ -78,7 +79,11 @@ class AccessService {
 
     // 2: Verify password
     // const match = await compare(password, foundUser.password);
-    let match = password === foundUser[0].password ? 1 : 0;
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
+    let match = hashedPassword === foundUser[0].password ? 1 : 0;
     if (!match) {
       throw new AuthFailureError("Authentication Error");
     }
