@@ -110,7 +110,9 @@ export default function Header() {
           >
             {/* <Typography sx={{ p: 2 }}>The content of the Popover.</Typography> */}
             <div className="flex flex-col w-40 p-4">
-              <button onClick={handleSignOut}>Sign out</button>
+              <button className="navigateBtn" onClick={handleSignOut}>
+                Sign out
+              </button>
             </div>
           </Popover>
         </div>

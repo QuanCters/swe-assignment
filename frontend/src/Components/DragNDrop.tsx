@@ -250,7 +250,7 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
             <button
               type="submit"
               form="file-form"
-              className={`bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold ${files.length > 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none select-none"}`}
+              className={`navigateBtn bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold ${files.length > 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none select-none"}`}
             >
               Next
               <span className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"></span>
