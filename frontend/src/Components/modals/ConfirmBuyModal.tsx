@@ -41,6 +41,11 @@ const ConfirmBuyModal: React.FC<{
               {config.pageCount} pages
             </p>
           </div>
+          <div className="flex flex-col items-center gap-1 w-2/3">
+            <p className="text-center mt-4">
+              You will be redirected to BKPay to finish your purcha
+            </p>
+          </div>
           
           <div className="flex flex-row flex-1 items-end w-full px-10 justify-between max-lg:px-0 min-h-20">
             <button onClick= {onClose}

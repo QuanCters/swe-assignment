@@ -34,6 +34,7 @@ function BuyPage() {
         fileName: config.fileName
       },
       
+      //help with this state
       navigate: () => {
         setTimeout(() => {
           navigate({
