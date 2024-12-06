@@ -35,8 +35,6 @@ function BuyPage() {
       },
       pageCount: pageCount,
       totalPrice: totalPrice,
-
-      //when bought successfully, redirect to print
       navigate: () => {
         setTimeout(() => {
           navigate({
