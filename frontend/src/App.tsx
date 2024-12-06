@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ModalProvider } from "./context/ModalContext";
 import ModalManager from "./Components/modals/ModalManager";
 import { useAuth } from "./hooks/useAuth";
+import setupLogoutOnClose from "./utils/logoutOnClose";
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -25,6 +26,8 @@ const router = createRouter({
 });
 
 const queryClient = new QueryClient();
+
+setupLogoutOnClose();
 
 export default function App() {
   const authentication = useAuth();

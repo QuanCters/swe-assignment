@@ -143,7 +143,7 @@ function Login() {
               </div>
             </div>
             <button
-              className="py-3 bg-[#0052B4] w-1/3 min-w-fit self-center font-semibold text-white mt-5 rounded-xl"
+              className="navigateBtn py-3 bg-[#0052B4] w-1/3 min-w-fit self-center font-semibold text-white mt-5 rounded-xl"
               type="submit"
             >
               Login
