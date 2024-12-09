@@ -6,7 +6,9 @@ const ConfirmBuyModal: React.FC<{
   config: any,
   onClose: any,
   navigate: any,
-}> = ({config, onClose, navigate}) => {
+  totalPrice: any,
+  pageCount: any,
+}> = ({config, onClose, navigate, totalPrice, pageCount}) => {
 
   console.log("Config:", config);
   const mutation = useMutation({
@@ -14,13 +16,13 @@ const ConfirmBuyModal: React.FC<{
       e.preventDefault();
       console.log("about to buy");
       const data = {
-        pageCount: config.pageCount,
+        pageCount: pageCount,
       }
       return updatePageBalance(data);
     },
     onSuccess: () => {
       alert(
-        "Successfully bought pages. Navigate back to choose printer."
+        "Successfully bought pages. We will navigate you back to choose printer."
       );
       onClose();
       navigate();
@@ -33,17 +35,15 @@ const ConfirmBuyModal: React.FC<{
   return (
     <Dialog open maxWidth={"md"} onClick={onClose}>
       <Stack p={3}>
-        <div className="flex flex-col items-center gap-12 select-none h-[70vh] w-[25vw]">
+        <div className="flex flex-col items-center gap-12 select-none h-[70vh] w-[20vw]">
           <h3 className="font-bold text-2xl">Confirm Purchase?</h3>
-          <p>You are about to buy:</p>
+          <p>You are about to buy:  {pageCount} pages</p>
           <div className="flex flex-col items-center gap-1 w-2/3">
-            <p className="text-center mt-4">
-              {config.pageCount} pages
+            <p className="text-center mt-4 text-bold">
+              Total price: {totalPrice} vnđ
             </p>
-          </div>
-          <div className="flex flex-col items-center gap-1 w-2/3">
-            <p className="text-center mt-4">
-              You will be redirected to BKPay to finish your purcha
+            <p className="text-center mt-4 text-bold">
+              You will be redirected to BKPay to finish your purchase.
             </p>
           </div>
           

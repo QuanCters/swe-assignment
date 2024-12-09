@@ -94,6 +94,7 @@ function ChoosePrinter() {
             paymentAmount: Number(data.paymentAmount),
             pageBalance: Number(data.pageBalance),
           },
+          
           fileName: routerState.location.state.file?.name,
           printer: printerData,
           navigate: function () {
@@ -119,7 +120,7 @@ function ChoosePrinter() {
                   state: {
                     config: {
                       ...config,
-                      printerID: printerData.id,
+                      printer: printerData.id,
                       fileName: routerState.location.state.file?.name,
                       paymentAmount: Number(data.paymentAmount),
                       pageBalance: Number(data.pageBalance),
