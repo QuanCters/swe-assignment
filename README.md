@@ -1,5 +1,18 @@
 # HCMUT_SSPS - STUDENT SMART PRINTING SERVICE at HCMUT
 
+## Table of Content:
+
+- [HCMUT\_SSPS - STUDENT SMART PRINTING SERVICE at HCMUT](#hcmut_ssps---student-smart-printing-service-at-hcmut)
+  - [Table of Content:](#table-of-content)
+  - [Descriptions:](#descriptions)
+  - [Features](#features)
+    - [Use Case Diagram](#use-case-diagram)
+    - [Activity Diagram](#activity-diagram)
+    - [Sequence Diagram](#sequence-diagram)
+    - [Class Diagram](#class-diagram)
+  - [Installation](#installation)
+  - [Using the system](#using-the-system)
+  - [Credit](#credit)
 ## Descriptions:
 
 The university is intent to build a Student Smart Printing Service (HCMUT_SSPS) for serving students in its campuses to print their documents.
@@ -61,36 +74,29 @@ The system is implemented mainly on a web application platform, so there will be
 
 ### Sequence Diagram
 
-![Sequence Diagram](./assets/sequence.png)
+![Sequence Diagram](./assets/sequence.drawio.png)
 
 **Description**
 
-• Student presses Print Document
+• User presses Upload Document
 
-• The controller then requests printing service and displays request document from the Student
+• The Controller component forwards the document to the Service component
 
-• The student uploads his/her document, it is kept in Service Component and will be used as a parameter of printing function
+• If the document is invalid, it returns an error which indicates ”Invalid document” then exits the flow.
 
-• The Service retrieves a list of printers available and return the list to the Student
+• If it is a valid document, the Service component will call ”Store document” function in the Repository component to store the document in the component. It will then be inserted into the database. When completed, the Database component returns acknowledgment from the insert to the Repository component, which returns acknowledgment from the store operation to the Service.
 
-• The Student selects one of the printers.
+• After that, the Service Component returns acknowledgment from the ”Save document” message following that the Upload successful is returned to the user. User will then choose the printer to print that document.
 
-• The system updates status of this printer in the Database, while the printer chosen is signaled and set ready
+• The controller passes the message to the Service Component. It will then passes the message to Repository component and the Repository then call that function inside the Database component. Once it finds the printer. It will return the message to the upper layer and display it to the user.
 
-• The Controller requests confirmation from Student
+• User sends the Print request to Controller component. It then saves the setting into Service. After that, the Controller component calls function Validate print request from the Service component. Within the validation, it checks available pages in the Repository component, whose values are match with the Users’ value. It then queries the balance from the database and returns page balance of the User to Service Component.
 
-• If the student wants to set preference for the pages to print, he/she can do it at this confirmation phase
-
-• The student selects submit the action
-
-• If the student’s balance is efficient, signal Printer to print and update the status of this printer on the Database at the same time, then display ”Printed Successfully” notification
-
-• If the student’s balance is inefficient, display a warning ”Not enough balance” and suggest
-him/her to buy some more pages.
-
+• If the user has enough page balance, the Service will send Document data to the printer and
+the printer will print. After printing, the Printer returns the message indicating completion.
 ### Class Diagram
 
-![Class Diagram](./assets/Class%20diagram.png)
+![Class Diagram](./assets/classDiagram.png)
 
 ## Installation
 
@@ -98,5 +104,10 @@ him/her to buy some more pages.
 
 ## Credit
 
-
+This project is contributed by the members of group Calculus 8:
+- Nguyễn Bảo Trâm - 2213572
+- Nguyễn Minh Quân - 2212804
+- Nguyễn Minh Toàn - 2213533
+- Phan Đình Khôi Nguyên - 2212318
+- Lê Hoàng Tiến - 2213455
 
