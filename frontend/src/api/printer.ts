@@ -5,7 +5,7 @@ const BaseUrl = "http://localhost:5000/v1/api";
 export const getPrinters = async () => {
   try {
     const access_token = localStorage.getItem("access-token");
-    console.log("access_token", access_token);
+
     if (!access_token) {
       throw new Error("Access token not found. Please try to login again");
     }
