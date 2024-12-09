@@ -122,7 +122,6 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
   const handleRemoveFile = (index: number) => {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
-  console.log("file", files);
 
   useEffect(() => {
     onFilesSelected(files);
