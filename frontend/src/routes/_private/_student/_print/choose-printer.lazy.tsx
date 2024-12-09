@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   createLazyFileRoute,
   useBlocker,
@@ -27,9 +27,7 @@ function ChoosePrinter() {
 
   const routerState = useRouterState();
   const config = routerState.location.state.config;
-  
-  console.log(config);
-  const { modal, openModal } = useModal();
+  const { openModal } = useModal();
 
   const mutation = useMutation({
     mutationFn: (printer: any) => {
