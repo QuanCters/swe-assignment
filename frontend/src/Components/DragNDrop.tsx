@@ -174,7 +174,10 @@ const DragNDrop: React.FC = () => {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     event.preventDefault();
                     const selectedFiles = event.target.files;
-                    return handleFile(selectedFiles);
+                    handleFile(selectedFiles);
+                    if (inputFile.current) {
+                      inputFile.current.value = "";
+                    }
                   }}
                   accept=".pdf"
                 />
