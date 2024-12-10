@@ -20,7 +20,7 @@ export const Route = createLazyFileRoute(
 
 function ChoosePrinter() {
   const navigate = useNavigate();
-  const { data, isLoading, error } = useQuery<Printer[], Error>({
+  const { data } = useQuery<Printer[], Error>({
     queryKey: ["fetchPrinters"],
     queryFn: fetchPrinters,
   });
@@ -94,7 +94,7 @@ function ChoosePrinter() {
             paymentAmount: Number(data.paymentAmount),
             pageBalance: Number(data.pageBalance),
           },
-          
+
           fileName: routerState.location.state.file?.name,
           printer: printerData,
           navigate: function () {

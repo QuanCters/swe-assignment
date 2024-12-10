@@ -1,34 +1,28 @@
-import * as React from 'react'
-import minus from '@/assets/minus.svg'
-import plus from '@/assets/plus.svg'
-import {
-  useRouterState,
-  useNavigate,
-} from '@tanstack/react-router'
+import * as React from "react";
+import minus from "@/assets/minus.svg";
+import plus from "@/assets/plus.svg";
+import { useRouterState, useNavigate } from "@tanstack/react-router";
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import { useModal } from "@/context/ModalContext";
-import { useMutation } from '@tanstack/react-query'
 
-export const Route = createFileRoute('/_private/_student/buy-page')({
+export const Route = createFileRoute("/_private/_student/buy-page")({
   component: BuyPage,
-})
+});
 
 function BuyPage() {
   const navigate = useNavigate();
-  const { modal, closeModal, openModal } = useModal();
-  const routerState = useRouterState()
+  const { openModal } = useModal();
+  const routerState = useRouterState();
   const config = routerState.location.state.config;
 
-  console.log('Config at buy-page:', config);
+  console.log("Config at buy-page:", config);
   const price = 220;
   const pageBalance = config.pageBalance;
   const recommendedPages = config.paymentAmount - pageBalance;
 
   const [pageCount, setPageCount] = React.useState(recommendedPages);
   const handleConfirm = () => {
-    
-
     openModal("ConfirmBuyModal", {
       config: {
         ...config,
@@ -38,23 +32,22 @@ function BuyPage() {
       navigate: () => {
         setTimeout(() => {
           navigate({
-            to: "/print"
+            to: "/print",
           });
         }, 100);
-      }
+      },
     });
-
-  }
+  };
   const totalPrice = pageCount * price;
   const handleDecrement = () => {
-    setPageCount(prevValue => prevValue - 1);
-  }
+    setPageCount((prevValue) => prevValue - 1);
+  };
 
   const handleIncrement = () => {
-    setPageCount(prevValue => prevValue + 1);
-  }
+    setPageCount((prevValue) => prevValue + 1);
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (/^\d*$/.test(e.target.value) && Number(e.target.value)) 
+    if (/^\d*$/.test(e.target.value) && Number(e.target.value))
       setPageCount(Number(e.target.value));
   };
 
@@ -108,8 +101,7 @@ function BuyPage() {
                     className="select-none overflow-hidden border rounded w-[40px]"
                     value={pageCount}
                     onChange={handleChange}
-                  >
-                  </input>
+                  ></input>
                 </span>
 
                 <button
@@ -123,7 +115,6 @@ function BuyPage() {
                   />
                 </button>
               </div>
-
             </div>
             <div className="flex overflow-hidden flex-col flex-1 items-end mt-16 w-full font-bold max-md:mt-10 max-md:max-w-full">
               <div className="flex overflow-hidden flex-col justify-between px-6 py-8 max-w-full min-h-[171px] w-[241px] max-md:px-5">
@@ -132,17 +123,18 @@ function BuyPage() {
                 </p>
               </div>
 
-              <button onClick={handleConfirm}
-                className="bg-[#0052B4] px-6 py-3 rounded-xl text-white w-[150px] font-semibold">
+              <button
+                onClick={handleConfirm}
+                className="bg-[#0052B4] px-6 py-3 rounded-xl text-white w-[150px] font-semibold"
+              >
                 Confirm
               </button>
             </div>
           </section>
         </div>
-
       </section>
     </main>
-  )
+  );
 }
 
 function PageInfo({
@@ -150,9 +142,9 @@ function PageInfo({
   pricePerPage,
   recommendedPages,
 }: {
-  pageBalance: number
-  pricePerPage: number
-  recommendedPages: number
+  pageBalance: number;
+  pricePerPage: number;
+  recommendedPages: number;
 }) {
   return (
     <section aria-labelledby="page-info-title">
@@ -186,6 +178,5 @@ function PageInfo({
         (For example: a document with 16 A3 pages will cost 32 A4 pages)
       </div>
     </section>
-
-  )
+  );
 }
