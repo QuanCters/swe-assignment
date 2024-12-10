@@ -9,7 +9,7 @@ import { CircularProgress } from "@mui/material";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isLogged, isSPSO, signOut } = useAuth();
+  const { isLogged, isSPSO, signOut, getName } = useAuth();
   const match = useMatch({ from: "/login", shouldThrow: false });
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -76,9 +76,7 @@ export default function Header() {
       {/* Right Section */}
       {isLogged() && (
         <div className="right-sec flex items-center flex-row h-2/3 divide-x-2 divide-gray-500 select-none">
-          <h2 className="bold text-[15px] p-4">
-            {isSPSO() ? "SPSO" : "Student"} Name
-          </h2>
+          <h2 className="font-bold text-[15px] p-4">{getName()}</h2>
           <button
             className="flex h-full items-center place-content-center flex-row gap-1 p-4"
             aria-describedby={id}

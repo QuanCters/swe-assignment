@@ -21,6 +21,7 @@ export const loginWithRole = async (roleName: string, data: any) => {
 
     localStorage.setItem("access-token", result.accessToken);
     localStorage.setItem("userID", result.userID);
+    localStorage.setItem("name", result.name);
     if (roleName === "spso")
       localStorage.setItem("x-api-key", result["x-api-key"]);
   } catch (err) {
@@ -60,6 +61,7 @@ export const logoutWithRole = async (roleName: string) => {
 
     localStorage.removeItem("access-token");
     localStorage.removeItem("userID");
+    localStorage.removeItem("name");
     if (roleName === "spso") localStorage.removeItem("x-api-key");
   } catch (err) {
     console.log("Error with logoutWithRole", err);
