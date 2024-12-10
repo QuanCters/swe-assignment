@@ -49,6 +49,9 @@ const router = express.Router();
  *                id:
  *                  type: string
  *                  description: The ID of student
+ *                name:
+ *                  type: string
+ *                  description: The name of student
  *      400:
  *        description: Bad Request (Invalid email or password)
  *      404:
@@ -92,9 +95,24 @@ router.post("/login-student", asyncHandler(AccessController.loginStudent));
  *            schema:
  *              type: object
  *              properties:
+ *                status:
+ *                  type: integer
+ *                  example: 200
+ *                message:
+ *                  type: string
+ *                  description: Return message
  *                access-token:
  *                  type: string
  *                  description: A token used for accessing protected routes
+ *                id:
+ *                  type: string
+ *                  description: The ID of SPSO
+ *                x-api-key:
+ *                  type: string
+ *                  description: Api key for SPSO
+ *                name:
+ *                  type: string
+ *                  description: The name of SPSO
  *      400:
  *        description: Bad Request (Invalid email or password)
  *      404:
