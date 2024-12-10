@@ -5,7 +5,6 @@ import { useRouterState, useNavigate } from "@tanstack/react-router";
 
 import { createFileRoute } from "@tanstack/react-router";
 import { useModal } from "@/context/ModalContext";
-// import { useMutation } from '@tanstack/react-query'
 
 export const Route = createFileRoute("/_private/_student/buy-page")({
   component: BuyPage,

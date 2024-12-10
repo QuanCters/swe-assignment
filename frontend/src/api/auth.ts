@@ -1,6 +1,6 @@
 import { HttpError } from "@/errors/HttpError";
 
-const BaseUrl = "http://localhost:5000/v1/api";
+const BaseUrl = import.meta.env.VITE_API_URL;
 
 export const loginWithRole = async (roleName: string, data: any) => {
   try {

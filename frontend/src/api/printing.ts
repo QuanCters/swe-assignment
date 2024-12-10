@@ -1,5 +1,5 @@
 import { HttpError } from "@/errors/HttpError";
-const BaseUrl = "http://localhost:5000/v1/api";
+const BaseUrl = import.meta.env.VITE_API_URL;
 
 export const saveDocument = async (data: any) => {
   const access_token = localStorage.getItem("access-token");
