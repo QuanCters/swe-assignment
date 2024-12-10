@@ -25,7 +25,7 @@ const fetchPrinters = async () => {
 };
 
 function ManagePrinter() {
-  const { modal, openModal } = useModal();
+  const { openModal } = useModal();
   const [anyChange, setAnyChange] = useState<boolean>(false);
   const [printers, setPrinters] = useState<Printer[]>([]);
   const { data, isLoading, error } = useQuery<Printer[], Error>({

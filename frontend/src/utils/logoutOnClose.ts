@@ -12,7 +12,7 @@ const setupLogoutOnClose = () => {
 
   // Xử lý onbeforeunload
   // based on suggestion from https://stackoverflow.com/a/38495856
-  window.addEventListener("beforeunload", (event) => {
+  window.addEventListener("beforeunload", () => {
     if (!navigating) {
       const { isSPSO, signOut } = useAuth();
       const access_token = localStorage.getItem("access-token");

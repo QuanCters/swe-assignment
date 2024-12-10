@@ -1,4 +1,4 @@
-type PagesOption = "all" | "even" | "odd" | "custom";
+// type PagesOption = "all" | "even" | "odd" | "custom";
 
 export function pageCount(totalPages: number, formState: any): number {
   let pagesCount = totalPages;

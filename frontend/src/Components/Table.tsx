@@ -10,8 +10,8 @@ type Props = {
   table: ReactTable<any>;
 };
 
-const Table = ({ setData, table }: Props) => {
-  const rerender = React.useReducer(() => ({}), {})[1];
+const Table = ({ table }: Props) => {
+  // const rerender = React.useReducer(() => ({}), {})[1];
 
   return (
     <div className="p-2 z-0">
