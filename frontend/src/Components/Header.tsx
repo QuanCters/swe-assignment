@@ -25,9 +25,6 @@ export default function Header() {
       signOut();
       navigate({ to: "/login" });
     },
-    onSettled: () => {
-      // signOut();
-    },
   });
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

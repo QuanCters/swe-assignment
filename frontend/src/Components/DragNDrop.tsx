@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { MdClear } from "react-icons/md";
-// import { ReactComponent as UploadIcon } from './assets/upload.svg';
 import {
   FaFilePdf,
   FaFileWord,
@@ -54,13 +53,7 @@ const FileIcon: React.FC<
   }
 };
 
-interface DragNDropProps {
-  onFilesSelected: (files: File[]) => void;
-  width?: string;
-  height?: string;
-}
-
-const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
+const DragNDrop: React.FC = () => {
   const navigate = useNavigate();
   const routerState = useRouterState();
   const file = routerState.location.state.file;
@@ -122,10 +115,6 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
   const handleRemoveFile = (index: number) => {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
-
-  useEffect(() => {
-    onFilesSelected(files);
-  }, [files, onFilesSelected]);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
