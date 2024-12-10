@@ -22,7 +22,6 @@ export const AddPrinterModal: React.FC<{
   const mutation = useMutation({
     mutationFn: (printerData: any) => {
       printerData["status"] = "Offline";
-      console.log(printerData, "12345");
       return addPrinter(printerData);
     },
     onError: (error) => {

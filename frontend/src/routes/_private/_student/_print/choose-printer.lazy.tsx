@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   createLazyFileRoute,
   useBlocker,
@@ -27,7 +27,7 @@ function ChoosePrinter() {
 
   const routerState = useRouterState();
   const config = routerState.location.state.config;
-  const { modal, openModal } = useModal();
+  const { openModal } = useModal();
 
   const mutation = useMutation({
     mutationFn: (printer: any) => {
@@ -94,6 +94,7 @@ function ChoosePrinter() {
             paymentAmount: Number(data.paymentAmount),
             pageBalance: Number(data.pageBalance),
           },
+          
           fileName: routerState.location.state.file?.name,
           printer: printerData,
           navigate: function () {
@@ -119,7 +120,7 @@ function ChoosePrinter() {
                   state: {
                     config: {
                       ...config,
-                      printerID: printerData.id,
+                      printer: printerData.id,
                       fileName: routerState.location.state.file?.name,
                       paymentAmount: Number(data.paymentAmount),
                       pageBalance: Number(data.pageBalance),
