@@ -20,11 +20,11 @@ export default defineConfig(({ command }) => {
     build: {
       outDir: "build",
     },
-    base: "/", // Default base path
+    base: "/", // default base path
   };
 
   if (command !== "serve") {
-    config.base = "/";
+    config.base = "/swe-assignment/";
   }
 
   return config;
