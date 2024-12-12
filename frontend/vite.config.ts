@@ -21,7 +21,7 @@ export default defineConfig(({}) => {
     build: {
       outDir: "build",
     },
-    base: "/", // default base path
+    base: "/swe-assignment/", // default base path
   };
 
   return config;
