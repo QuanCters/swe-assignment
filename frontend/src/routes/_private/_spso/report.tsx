@@ -96,8 +96,6 @@ function ManageReportPage() {
   const statCardData = [
     { title: 'Total pages purchased', value: Math.floor(Math.random() * 10000) + 1000 },
     { title: 'Total pages used', value: Math.floor(Math.random() * 10000) + 1000 },
-    { title: 'Printers available', value: Math.floor(Math.random() * 50) + 1 },
-    { title: 'Printers added', value: Math.floor(Math.random() * 20) + 1 },
     { title: 'Total print requests', value: totalPrintRequest },
     {
       title: 'Top 3 periods with the most requests',
