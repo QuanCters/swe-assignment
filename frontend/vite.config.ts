@@ -13,7 +13,7 @@ export default defineConfig(({ command }) => {
       port: 3000,
     },
     resolve: {
-      alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
+      alias: [{ find: "@", replacement: path.resolve(__dirname, "") }],
     },
     build: {
       outDir: "build",
