@@ -42,8 +42,7 @@ export default function Header() {
     mutation.mutate();
   };
 
-  const image_path =
-    (import.meta.env.VITE_IMG_PATH || "./swe-assignment") + "/assets/hcmut.png";
+  const image_path = "/assets/hcmut.png";
 
   return (
     <header className="sticky top-0 w-full min-w-fit flex items-center bg-primary h-[64px] text-justify drop-shadow-md justify-between px-8 z-50">

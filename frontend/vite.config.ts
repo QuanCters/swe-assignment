@@ -4,7 +4,7 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => {
+export default defineConfig(({}) => {
   // Define the default configuration object
   const config = {
     plugins: [react(), TanStackRouterVite()],
@@ -23,10 +23,6 @@ export default defineConfig(({ command }) => {
     },
     base: "/", // default base path
   };
-
-  if (command !== "serve") {
-    config.base = "/swe-assignment/";
-  }
 
   return config;
 });

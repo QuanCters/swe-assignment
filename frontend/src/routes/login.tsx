@@ -60,8 +60,7 @@ function Login() {
       </div>
     );
 
-  const image_path =
-    (import.meta.env.VITE_IMG_PATH || "./swe-assignment") + "/assets/hcmut.png";
+  const image_path = "/assets/hcmut.png";
 
   return (
     <div className="flex py-12 justify-center items-center">

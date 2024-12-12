@@ -126,9 +126,7 @@ const DragNDrop: React.FC = () => {
     }
   };
 
-  const image_path =
-    (import.meta.env.VITE_IMG_PATH || "./swe-assignment") +
-    "/assets/upload.svg";
+  const image_path = "/assets/upload.svg";
 
   return (
     <div className="grid grid-cols-3 grid-rows-1 gap-x-12 gap-y-10 w-[80vw] max-lg:grid-cols-2 max-sm:grid-cols-1">
