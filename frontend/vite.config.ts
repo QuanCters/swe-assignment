@@ -20,6 +20,10 @@ export default defineConfig(({}) => {
     publicDir: "public",
     build: {
       outDir: "build",
+      assetsDir: "images",
+      rollupOptions: {
+        input: path.resolve(__dirname, "index.html"),
+      },
     },
     base: "/swe-assignment/", // default base path
   };
