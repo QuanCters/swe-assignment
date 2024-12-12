@@ -12,7 +12,8 @@
     - [Class Diagram](#class-diagram)
   - [Installation](#installation)
     - [Prerequisite](#prerequisite)
-    - [](#)
+    - [Clone project](#clone-project)
+    - [Build project](#build-project)
   - [Using the system](#using-the-system)
   - [Credit](#credit)
 ## Descriptions:
@@ -108,9 +109,27 @@ To use the application, follow these steps:
 
 Before running the project, install [*Docker Desktop*](https://www.docker.com/) and [*Nodejs*](https://nodejs.org/en)
 
-### 
+### Clone project 
+
+Open your terminal, "cd" your folder that you want to clone your project to, then run this command:
+
+```
+git clone https://github.com/QuanCters/swe-assignment.git
+```
+### Build project
+
+Inside your cloned project, open your terminal and run the following command:
+```
+docker compose build
+```
 
 ## Using the system
+
+To run the project, open your terminal and run the following command:
+
+```
+docker compose up
+```
 
 ## Credit
 
