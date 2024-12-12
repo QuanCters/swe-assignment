@@ -1,6 +1,6 @@
 import * as React from "react";
-import minus from "@/assets/minus.svg";
-import plus from "@/assets/plus.svg";
+import minus from "/assets/minus.svg";
+import plus from "/assets/plus.svg";
 import { useRouterState, useNavigate } from "@tanstack/react-router";
 
 import { createFileRoute } from "@tanstack/react-router";
