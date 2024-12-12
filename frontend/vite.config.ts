@@ -24,7 +24,7 @@ export default defineConfig(({ command }) => {
   };
 
   if (command !== "serve") {
-    config.base = "/src/";
+    config.base = "/swe-assignment/";
   }
 
   return config;
