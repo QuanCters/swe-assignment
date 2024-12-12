@@ -1,6 +1,4 @@
 import * as React from "react";
-import minus from "/assets/minus.svg";
-import plus from "/assets/plus.svg";
 import { useRouterState, useNavigate } from "@tanstack/react-router";
 
 import { createFileRoute } from "@tanstack/react-router";
@@ -90,8 +88,8 @@ function BuyPage() {
                   className="focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:opacity-50"
                 >
                   <img
-                    src={minus}
-                    alt=""
+                    src="assets/minus.svg"
+                    alt="minus icon"
                     className="object-contain shrink-0 self-stretch my-auto aspect-square w-[18px]"
                   />
                 </button>
@@ -110,7 +108,8 @@ function BuyPage() {
                   className="focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <img
-                    src={plus}
+                    src="assets/plus.svg"
+                    alt="plus icon"
                     className="object-contain shrink-0 self-stretch my-auto aspect-square w-[18px]"
                   />
                 </button>
