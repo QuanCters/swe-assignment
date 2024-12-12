@@ -17,7 +17,7 @@ export default defineConfig(({ command }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
-    publicDir: "static",
+    publicDir: "public",
     build: {
       outDir: "build",
     },
