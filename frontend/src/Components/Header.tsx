@@ -42,13 +42,16 @@ export default function Header() {
     mutation.mutate();
   };
 
+  const image_path =
+    (import.meta.env.VITE_IMG_PATH || "./swe-assignment") + "/assets/hcmut.png";
+
   return (
     <header className="sticky top-0 w-full min-w-fit flex items-center bg-primary h-[64px] text-justify drop-shadow-md justify-between px-8 z-50">
       <div className="left-sec flex items-center gap-8 h-full ">
         {/* Logo Section */}
         <div className="logo flex w-auto flex-row gap-4 items-center">
           <img
-            src="./src/assets/hcmut.png"
+            src={image_path}
             alt="Logo"
             className="aspect-square w-[3vw] h-[3vw] min-w-10 min-h-10"
           />
