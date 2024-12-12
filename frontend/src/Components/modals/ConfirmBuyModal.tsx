@@ -25,7 +25,6 @@ const ConfirmBuyModal: React.FC<{
         "Successfully bought pages. We will navigate you back to choose printer."
       );
       onClose();
-      navigate();
     },
     onError: (error) => {
       alert(error);

@@ -71,6 +71,18 @@ export default function Header() {
               route="/manage/printer"
             />
           )}
+          {isLogged() && !isSPSO() && (
+            <Tab
+              page="Buy Page"
+              routeMatch="/_private/_student/buy-page"
+            />
+          )}
+          {isLogged() && isSPSO() && (
+            <Tab
+              page="Report"
+              routeMatch="/_private/_spso/report"
+            />
+          )}
         </nav>
       </div>
       {/* Right Section */}

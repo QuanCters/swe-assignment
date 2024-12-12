@@ -16,4 +16,10 @@
 .body {
     background-color: #F0F7FF;
 }
+
+@layer base {
+  :root {
+        --radius: 0.5rem;
+    }
+}
   
