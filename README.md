@@ -11,6 +11,8 @@
     - [Sequence Diagram](#sequence-diagram)
     - [Class Diagram](#class-diagram)
   - [Installation](#installation)
+    - [Prerequisite](#prerequisite)
+    - [](#)
   - [Using the system](#using-the-system)
   - [Credit](#credit)
 ## Descriptions:
@@ -99,6 +101,14 @@ the printer will print. After printing, the Printer returns the message indicati
 ![Class Diagram](./assets/classDiagram.png)
 
 ## Installation
+
+To use the application, follow these steps:
+
+### Prerequisite
+
+Before running the project, install [*Docker Desktop*](https://www.docker.com/) and [*Nodejs*](https://nodejs.org/en)
+
+### 
 
 ## Using the system
 
