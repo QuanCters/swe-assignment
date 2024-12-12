@@ -14,7 +14,7 @@ export default defineConfig(({ command }) => {
     },
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./"),
+        "@": path.resolve(__dirname, "./src"),
       },
     },
     build: {
@@ -24,7 +24,7 @@ export default defineConfig(({ command }) => {
   };
 
   if (command !== "serve") {
-    config.base = "/swe-assignment/";
+    config.base = "/";
   }
 
   return config;
