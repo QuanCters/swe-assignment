@@ -24,7 +24,6 @@ const setupLogoutOnClose = () => {
         "Content-Type": "application/json",
         AUTHORIZATION: access_token,
       };
-      signOut();
       fetch(
         `http://localhost:5000/v1/api/user/logout-${isSPSO() ? "spso" : "student"}`,
         {
@@ -33,6 +32,7 @@ const setupLogoutOnClose = () => {
           headers: headers,
         }
       );
+      signOut();
     }
     return;
   });
