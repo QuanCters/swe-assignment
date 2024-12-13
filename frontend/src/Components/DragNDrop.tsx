@@ -126,6 +126,8 @@ const DragNDrop: React.FC = () => {
     }
   };
 
+  const image_path = "/assets/upload.svg";
+
   return (
     <div className="grid grid-cols-3 grid-rows-1 gap-x-12 gap-y-10 w-[80vw] max-lg:grid-cols-2 max-sm:grid-cols-1">
       <div className="max-lg:col-span-1 col-start-1 row-end-2 col-span-2 flex flex-row justify-end items-end">
@@ -139,7 +141,7 @@ const DragNDrop: React.FC = () => {
           onDragOver={(event) => event.preventDefault()}
           id="document-uploader"
         >
-          <img src="./src/assets/upload.svg" className="w-[42px] h-[42px]" />
+          <img src={image_path} className="w-[42px] h-[42px]" />
           {/* <object data="./assets/upload.svg"> </object> */}
           <div className="self-stretch h-[84px] flex-col justify-start items-center gap-2 flex">
             <div className="self-stretch justify-center items-start gap-1 inline-flex">

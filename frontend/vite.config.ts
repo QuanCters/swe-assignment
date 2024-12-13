@@ -4,7 +4,7 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => {
+export default defineConfig(({}) => {
   // Define the default configuration object
   const config = {
     plugins: [react(), TanStackRouterVite()],
@@ -17,15 +17,16 @@ export default defineConfig(({ command }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
+    publicDir: "public",
     build: {
       outDir: "build",
+      assetsDir: "images",
+      rollupOptions: {
+        input: path.resolve(__dirname, "index.html"),
+      },
     },
-    base: "/", // default base path
+    base: "/swe-assignment/", // default base path
   };
-
-  if (command !== "serve") {
-    config.base = "/swe-assignment/";
-  }
 
   return config;
 });
