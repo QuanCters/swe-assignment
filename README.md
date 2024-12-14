@@ -13,7 +13,6 @@
   - [Installation](#installation)
     - [Prerequisite](#prerequisite)
     - [Clone project](#clone-project)
-    - [Build project](#build-project)
   - [Using the system](#using-the-system)
   - [Credit](#credit)
 ## Descriptions:
@@ -40,7 +39,7 @@ The reports of the using of the printing system are generated automatically at t
 All users have to be authenticated by the HCMUT_SSO authentication service before using the
 system.
 
-The system are provided through a web-based app and a mobile app.
+The system are provided through a web-based app.
 
 ## Features
 
@@ -66,8 +65,8 @@ The system is implemented mainly on a web application platform, so there will be
 
 • If student doesn’t have enough printing paper,
 
-    – System displays interface to assist student with either reducing pages printed or buying more printing paper.
-    – Student finishes these actions and ensures that they have enough printing paper.
+  - System displays interface to assist student with either reducing pages printed or buying more printing paper.
+  - Student finishes these actions and ensures that they have enough printing paper.
 
 • Printer starts printing after receiving documents and settings.
 
@@ -107,7 +106,7 @@ To use the application, follow these steps:
 
 ### Prerequisite
 
-Before running the project, install [*Docker Desktop*](https://www.docker.com/) and [*Nodejs*](https://nodejs.org/en)
+Before running the project, install *Docker*
 
 ### Clone project 
 
@@ -115,12 +114,6 @@ Open your terminal, "cd" your folder that you want to clone your project to, the
 
 ```
 git clone https://github.com/QuanCters/swe-assignment.git
-```
-### Build project
-
-Inside your cloned project, open your terminal and run the following command:
-```
-docker compose build
 ```
 
 ## Using the system
