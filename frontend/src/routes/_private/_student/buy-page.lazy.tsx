@@ -3,61 +3,72 @@ import { useRouterState, useNavigate } from "@tanstack/react-router";
 
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useModal } from '@/context/ModalContext'
-import { useAuth } from '@/hooks/useAuth'
+import { getCurrentStudentPageBalance } from "@/api/student";
+import { useQuery } from "@tanstack/react-query";
+
 export const Route = createLazyFileRoute('/_private/_student/buy-page')({
   component: BuyPage,
 })
-
-// async function getFakeConfig() {
-//   const {getUserID} = useAuth();
-//   let userID = getUserID();
-//   let response = await fetch('https://json-server-s4l1.onrender.com/students');
-//   if (!response) {
-//     console.error('error');
-//   }
-
-//   let data = await response.json();
-//   let pageBalance = data.find((item: any) => item.id === userID).pageBalance;
-//   return pageBalance;
-// }
 
 function BuyPage() {
   const navigate = useNavigate()
   const { openModal } = useModal()
   const routerState = useRouterState()
-  let config = routerState.location.state.config
+  const config = routerState.location.state.config
 
-  //hardcode data only to get pageBalance
-  const {getUserID} = useAuth();
-  console.log(getUserID());
+  const { data } = useQuery(
+    ['pageBalance'], 
+    () => getCurrentStudentPageBalance(),
+  )
   
-  if (!config) {
-    config = {
-      pageBalance: 200,
-      paymentAmount: 200
-    }
-  }
-  const price = 220
-  const pageBalance = config.pageBalance
-  const recommendedPages = config.paymentAmount - pageBalance
 
-  const [pageCount, setPageCount] = React.useState(recommendedPages)
+  const pageBalance = data;
+  const paymentAmount = config?.paymentAmount ?? 0;
+  let recommendedPages = (paymentAmount - pageBalance < 0) ? 1 : (paymentAmount - pageBalance);
+  const price = 220;
+
+  const [pageCount, setPageCount] = React.useState(recommendedPages);
+  //i dont write state for this because of infinite loading from state
+  let isFromHome = true;
+
+  if (config) isFromHome = false;
+  console.log(isFromHome);
+
   const handleConfirm = () => {
-    openModal('ConfirmBuyModal', {
-      config: {
-        ...config,
-      },
-      pageCount: pageCount,
-      totalPrice: totalPrice,
-
-      navigate: () => {
-        setTimeout(() => {
-          navigate({
-            to: '/print',
-          })
-        }, 100)
-      },
-    })
+    if (isFromHome) {
+      openModal('ConfirmBuyModal', {
+        config: {
+          ...config,
+        },
+        pageCount: pageCount,
+        totalPrice: totalPrice,
+  
+        navigate: () => {
+          setTimeout(() => {
+            navigate({
+              to: '/',
+            })
+          }, 100)
+        },
+      })
+    }
+    else {
+        openModal('ConfirmBuyModal', {
+          config: {
+            ...config,
+          },
+          pageCount: pageCount,
+          totalPrice: totalPrice,
+    
+          navigate: () => {
+            setTimeout(() => {
+              navigate({
+                to: '/print',
+              })
+            }, 100)
+          },
+        })
+    }
   }
   const totalPrice = pageCount * price
   const handleDecrement = () => {
@@ -119,7 +130,7 @@ function BuyPage() {
                 <span className="select-none">
                   <input
                     type="text"
-                    className="select-none overflow-hidden border rounded w-[40px]"
+                    className="text-center select-none overflow-hidden border rounded w-[100px]"
                     value={pageCount}
                     onChange={handleChange}
                   ></input>

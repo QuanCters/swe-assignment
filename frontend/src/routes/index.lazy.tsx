@@ -35,12 +35,12 @@ function Index() {
 
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
             <h2 className="text-2xl font-semibold text-blue-600">History</h2>
-            <p className="mt-2 text-gray-600">View your previous print jobs.</p>
+            <p className="mt-2 text-gray-600">View your previous print requests.</p>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-            <h2 className="text-2xl font-semibold text-blue-600">Settings</h2>
-            <p className="mt-2 text-gray-600">Manage your printer settings.</p>
+            <h2 className="text-2xl font-semibold text-blue-600">Buy pages</h2>
+            <p className="mt-2 text-gray-600">Pages are required for every print request.</p>
           </div>
         </section>
       </div>

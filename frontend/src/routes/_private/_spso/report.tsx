@@ -65,17 +65,17 @@ function ManageReportPage() {
     type: string
   }> = ({ title, value, className = '', type = 'col' }) => (
     <section
-      className={`flex flex-${type} px-4 pt-2.5 pb-10 bg-blue-200 bg-opacity-50 min-h-[122px] ${className}`}
+      className={`flex flex-${type} px-4 pt-2.5 pb-10 bg-blue-200 bg-opacity-50 w-[200px] h-auto ${className}`}
     >
-      <h3 className="text-2xl leading-none text-black">{title}</h3>
+      <h3 className="text-base leading-none text-black">{title}</h3>
       {Array.isArray(value) ? (
-        <ul className="mt-4 text-3xl font-medium leading-none text-black">
+        <ul className="mt-4 text-xl font-medium leading-none text-black">
           {value.map((item, index) => (
             <li key={index}>{item}</li>
           ))}
         </ul>
       ) : (
-        <p className="mt-4 text-4xl font-medium leading-none text-black">
+        <p className="mt-4 text-xl font-medium leading-none text-black">
           {value}
         </p>
       )}
@@ -103,17 +103,21 @@ function ManageReportPage() {
     },
   ]
 
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <main className="flex overflow-hidden flex-col flex-1 justify-center px-16 py-8 w-full max-md:px-5 max-md:max-w-full">
       <section className="flex flex-col pt-5 pr-7 pb-20 pl-8 w-full bg-blue-50 rounded-md shadow-md min-h-[868px] max-md:px-5 max-md:max-w-full">
         <header className="flex flex-wrap gap-10 justify-between items-center w-full max-md:max-w-full">
           {month != '' && year != '' ? (
             <h1 className="self-stretch my-auto text-3xl font-bold text-sky-500 max-md:max-w-full">
-              View reports for {month} {year}
+              View reports for {capitalizeFirstLetter(month)} {year}
             </h1>
           ) : (
             <h1 className="self-stretch my-auto text-2xl font-bold text-sky-500 max-md:max-w-full">
-              Select month and year to view reports
+              Select date to view reports
             </h1>
           )}
 
@@ -152,12 +156,12 @@ function ManageReportPage() {
 
         {month != '' && year != '' && (
           <div>
-            <section className="grid grid-cols-3 grid-flow-col gap-10 justify-between items-center mt-4 w-full min-h-[561px] max-md:max-w-full">
+            <section className="grid grid-cols-5 grid-flow-col gap-10 justify-between items-center mt-4 w-full min-h-[561px] max-md:max-w-full">
               <article
-                className="col-span-2 justify-center items-center gap-2
+                className="col-span-4 justify-center items-center gap-2
          self-stretch my-auto max-md:max-w-full"
               >
-                <h2 className="text-xl font-bold leading-none text-black">
+                <h2 className="text-2xl px-[360px] font-bold leading-none text-black">
                   Print requests per day
                 </h2>
                 <div className="flex flex-col mt-16 w-full max-w-[1200px] max-md:mt-10 max-md:max-w-full">
@@ -171,20 +175,8 @@ function ManageReportPage() {
                 </div>
               </article>
 
-              <div className="col-span-1 justify-center gap-4 items-stretch p-4 max-w-full min-h-[122px] w-[1262px]">
-                {statCardData.slice(4, 6).map((card, index) => (
-                  <StatCard
-                    type="col"
-                    className="gap-2 items-stretch"
-                    key={index}
-                    title={card.title}
-                    value={card.value}
-                  />
-                ))}
-              </div>
-            </section>
-
-            <section className="flex flex-wrap gap-4 items-start mt-4 max-w-full min-h-[122px] w-[1262px]">
+              
+            <section className="col-span-1 flex flex-wrap flex-col gap-4 items-start mt-4 max-w-full min-h-[122px] w-[1262px]">
               {statCardData.slice(0, 4).map((card, index) => (
                 <StatCard
                   type="col"
@@ -193,6 +185,8 @@ function ManageReportPage() {
                   value={card.value}
                 />
               ))}
+            </section>
+
             </section>
           </div>
         )}
