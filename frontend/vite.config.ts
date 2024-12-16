@@ -9,6 +9,9 @@ export default defineConfig(({}) => {
   const config = {
     plugins: [react(), TanStackRouterVite()],
     server: {
+      watch: {
+        usePolling: true, // Đảm bảo hot reload hoạt động trong Docker
+      },
       host: "0.0.0.0",
       port: 3000,
     },
@@ -25,7 +28,6 @@ export default defineConfig(({}) => {
         input: path.resolve(__dirname, "index.html"),
       },
     },
-    base: "/swe-assignment/", // default base path
   };
 
   return config;

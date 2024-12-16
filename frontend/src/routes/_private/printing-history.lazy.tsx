@@ -76,8 +76,8 @@ function PrintingHistoryPage() {
     );
 
   return (
-    <div className="body flex justify-center w-full bg-[#F0F7FF] pb-16 pt-10 min-w-fit px-5">
-      <div className="shadow-lg w-[18\/25] min-w-min h-full px-12 py-16">
+    <div className="body flex flex-col items-center justify-center w-full bg-[#F0F7FF] pb-16 pt-10 min-w-fit px-5 flex-grow">
+      <div className="shadow-lg w-[18\/25] min-w-min h-full px-12 py-16 flex-grow flex flex-col">
         <div className="filters flex items-stretch flex-wrap">
           {/* <DateRangePicker /> */}
           <Filter column={table.getColumn("date")} placeholder="Age" />

@@ -24,7 +24,7 @@ const FileViewer: React.FC<FileViewerProps> = ({
   setNumPages,
 }) => {
   return (
-    <div className="flex flex-col flex-1 start gap-4 ">
+    <div className="flex flex-col flex-1 start gap-4 flex-grow">
       <h3 className="text-2xl font-bold text-[#2196F3]">File Preview</h3>
       <div className="h-[850px] border border-[#2196F3] relative overflow-hidden w-full self-center rounded-md bg-black/5">
         {fileData && (
