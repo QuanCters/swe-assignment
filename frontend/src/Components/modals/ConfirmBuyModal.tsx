@@ -22,7 +22,7 @@ const ConfirmBuyModal: React.FC<{
     },
     onSuccess: () => {
       alert(
-        "Successfully bought pages. We will navigate you back to choose printer."
+        "Successfully bought pages."
       );
       onClose();
       navigate();
@@ -36,14 +36,16 @@ const ConfirmBuyModal: React.FC<{
     <Dialog open maxWidth={"md"} onClick={onClose}>
       <Stack p={3}>
         <div className="flex flex-col items-center gap-12 select-none h-[70vh] w-[20vw]">
-          <h3 className="font-bold text-2xl">Confirm Purchase?</h3>
-          <p>You are about to buy:  {pageCount} pages</p>
-          <div className="flex flex-col items-center gap-1 w-2/3">
-            <p className="text-center mt-4 text-bold">
-              Total price: {totalPrice} vnđ
+          <h3 className="text-2xl font-medium">Confirm Purchase?</h3>
+          <div className="flex flex-col items-center gap-1 w-2/3 text-center mt-4 text-bold">
+            <p>
+              You are about to buy:
             </p>
-            <p className="text-center mt-4 text-bold">
-              You will be redirected to BKPay to finish your purchase.
+            <p>
+            {pageCount} page{pageCount >=2 ? <>s</> : <></>}
+            </p>
+            <p className="font-bold">
+              Total price: {totalPrice} vnđ
             </p>
           </div>
           

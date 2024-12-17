@@ -55,6 +55,7 @@ const ConfigPrintPage: React.FC = () => {
   });
 
   const [numPages, setNumPages] = useState(0);
+  
   const mutation = useMutation({
     mutationFn: () => {
       if (!file)
