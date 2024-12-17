@@ -87,7 +87,7 @@ function ChoosePrinter() {
     try {
       const data = await mutation.mutateAsync(printerData);
 
-      if (Number(data.paymentAmount) < Number(data.pageBalance)) {
+      if (Number(data.paymentAmount) <= Number(data.pageBalance)) {
         openModal("ConfirmPrintModal", {
           config: {
             ...config,
