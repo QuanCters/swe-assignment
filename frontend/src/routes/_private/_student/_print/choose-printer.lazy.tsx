@@ -40,6 +40,8 @@ function ChoosePrinter() {
           duplex: config.data.duplex === "duplex-true" ? true : false,
         },
       };
+      console.log('Check' , data);
+      
       return printPagesCheck(printer.id, data);
     },
     onError: (error) => {
@@ -87,7 +89,7 @@ function ChoosePrinter() {
     try {
       const data = await mutation.mutateAsync(printerData);
 
-      if (Number(data.paymentAmount) < Number(data.pageBalance)) {
+      if (Number(data.paymentAmount) <= Number(data.pageBalance)) {
         openModal("ConfirmPrintModal", {
           config: {
             ...config,

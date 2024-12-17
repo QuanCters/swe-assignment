@@ -12,6 +12,8 @@ export const Route = createFileRoute("/_private/_spso/manage/printer")({
   component: ManagePrinter,
 });
 
+const image_path = "/assets/hcmut.png";
+
 const fetchPrinters = async () => {
   const result = await getPrinters();
   const printerList: Printer[] = result.map((printer: Printer) => ({
@@ -137,8 +139,8 @@ function ManagePrinter() {
   }, [data]);
 
   return (
-    <div className="flex justify-center w-full pt-7 pb-16">
-      <div className="min-h-full shadow-lg w-[90vw] min-w-min h-full px-12 py-16 flex flex-col gap-10">
+    <div className="flex flex-col w-full pt-7 pb-16 flex-grow items-center">
+      <div className="min-h-full shadow-lg w-[90vw] h-max px-12 py-11 flex flex-col gap-8 flex-grow">
         <div className="flex flex-row flex-wrap justify-between">
           <div className="flex flex-row flex-wrap"></div>
           <div className="flex flex-row flex-wrap gap-3">
@@ -184,12 +186,12 @@ function ManagePrinter() {
             </p>
           </div>
         )}
-        <div className="grid grid-cols-4 gap-6 max-sm:grid-cols-1 max-lg:grid-cols-2 max-2xl:grid-cols-3 w-full overscroll-y-auto">
+        <div className="grid grid-cols-4 grid-flow-row gap-6 max-sm:grid-cols-1 max-lg:grid-cols-2 max-2xl:grid-cols-3 w-full overscroll-y-contain min-h-full items-center justify-center">
           {printers.map((printer, index) => {
             if (printer.delete) return;
             return (
               <div
-                className="flex flex-col p-3 w-full border-dashed border-2 border-[#2196F3] rounded-md gap-4 select-none hover:shadow-[0_3px_10px_rgba(0,0,0,0.5)] duration-150 relative"
+                className="flex flex-col p-3 w-full border-dashed border-2 border-[#2196F3] rounded-md gap-4 select-none hover:shadow-[0_3px_10px_rgba(0,0,0,0.5)] duration-150 relative max-w-[320px] place-self-center"
                 id="index"
               >
                 <div className="absolute right-1 top-1 flex flex-row-reverse gap-1">
@@ -209,6 +211,7 @@ function ManagePrinter() {
                     <MdModeEdit size={12.5} color="green" />
                   </div>
                 </div>
+                <img src={image_path} className="w-full h-36 object-contain" />
                 <p className="text-center text-lg font-semibold text-[#0052B4]">
                   Printer ID: {printer.id}
                 </p>
@@ -233,7 +236,7 @@ function ManagePrinter() {
                     <span className="font-medium">Status: </span>
                     {printer.status}
                   </p>
-                  <div className="font-bold text-center text-[#2196F3] text-sm flex-1 flex flex-col items-center justify-center mt-5 gap-2">
+                  <div className="font-bold text-center text-[#2196F3] text-sm flex-1 flex flex-col items-center justify-center my-5 gap-2">
                     <p>
                       <span className="font-medium text-stone-600">
                         Location:&nbsp;

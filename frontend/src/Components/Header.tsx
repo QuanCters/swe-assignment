@@ -61,7 +61,7 @@ export default function Header() {
         {/* Tab Group Section */}
         <nav className="tab-group relative flex flex-row justify-center h-full flex-1 items-stretch">
           {/* Tab with Lines */}
-          <Tab page="Home" route="/" routeMatch="/" wholeRoute={true} />
+          <Tab page="Home" route="/" routeMatches={["/", "/login"]} />
           {isLogged() && <Tab page="Printing History" />}
           {isLogged() && !isSPSO() && (
             <Tab page="Print" routeMatch="/_private/_student/_print" />
@@ -71,6 +71,18 @@ export default function Header() {
               page="Manage"
               routeMatch="/_private/_spso/manage"
               route="/manage/printer"
+            />
+          )}
+          {isLogged() && !isSPSO() && (
+            <Tab
+              page="Buy Page"
+              routeMatch="/_private/_student/buy-page"
+            />
+          )}
+          {isLogged() && isSPSO() && (
+            <Tab
+              page="Report"
+              routeMatch="/_private/_spso/report"
             />
           )}
         </nav>

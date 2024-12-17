@@ -4,11 +4,14 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({}) => {
+export default defineConfig(({ }) => {
   // Define the default configuration object
   const config = {
     plugins: [react(), TanStackRouterVite()],
     server: {
+      watch: {
+        usePolling: true, // Đảm bảo hot reload hoạt động trong Docker
+      },
       host: "0.0.0.0",
       port: 3000,
     },

@@ -63,7 +63,7 @@ function Login() {
   const image_path = "/assets/hcmut.png";
 
   return (
-    <div className="flex py-12 justify-center items-center">
+    <div className="flex justify-center items-center flex-grow">
       <div className="shadow-2xl flex flex-col gap-14 p-12 w-[50vw] max-w-[512px] items-center rounded-2xl min-w-fit relative">
         {account && (
           <button
