@@ -25,7 +25,6 @@ export default defineConfig(({}) => {
         input: path.resolve(__dirname, "index.html"),
       },
     },
-    base: "/swe-assignment/", // default base path
   };
 
   return config;
