@@ -1,8 +1,7 @@
 import { addPrinter, updatePrinter } from "@/api/printer";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import useDisableBodyScroll from "@/hooks/useDisableBodyScroll";
-import { useRef } from "react";
+import { useDialog } from "@/hooks/useDialog";
 
 export const AddPrinterModal: React.FC<{
   onClose: any;
@@ -120,16 +119,7 @@ const PrinterModal: React.FC<{
         JSON.stringify(updatedFormData) !== JSON.stringify(initialData)
       );
   };
-  const dialogRef = useRef<null | HTMLDialogElement>(null);
-
-  useDisableBodyScroll(dialogRef.current?.open ?? true);
-
-  const handleOutsideClick = (event: React.MouseEvent) => {
-    // Close modal if clicked outside of the modal content area
-    if (event.target === dialogRef.current) {
-      onClose();
-    }
-  };
+  const { dialogRef, handleOutsideClick } = useDialog(onClose);
 
   return (
     <dialog

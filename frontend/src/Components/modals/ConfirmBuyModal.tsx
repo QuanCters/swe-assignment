@@ -1,15 +1,14 @@
 import { Dialog, Stack } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import { updatePageBalance } from '@/api/buy';
+import { updatePageBalance } from "@/api/buy";
 
 const ConfirmBuyModal: React.FC<{
-  config: any,
-  onClose: any,
-  navigate: any,
-  totalPrice: any,
-  pageCount: any,
-}> = ({config, onClose, navigate, totalPrice, pageCount}) => {
-
+  config: any;
+  onClose: any;
+  navigate: any;
+  totalPrice: any;
+  pageCount: any;
+}> = ({ config, onClose, navigate, totalPrice, pageCount }) => {
   console.log("Config:", config);
   const mutation = useMutation({
     mutationFn: (e: any) => {
@@ -17,7 +16,7 @@ const ConfirmBuyModal: React.FC<{
       console.log("about to buy");
       const data = {
         pageCount: pageCount,
-      }
+      };
       return updatePageBalance(data);
     },
     onSuccess: () => {
@@ -29,7 +28,7 @@ const ConfirmBuyModal: React.FC<{
     },
     onError: (error) => {
       alert(error);
-    }
+    },
   });
 
   return (
@@ -48,9 +47,10 @@ const ConfirmBuyModal: React.FC<{
               Total price: {totalPrice} vnđ
             </p>
           </div>
-          
+
           <div className="flex flex-row flex-1 items-end w-full px-10 justify-between max-lg:px-0 min-h-20">
-            <button onClick= {onClose}
+            <button
+              onClick={onClose}
               className="px-6 py-3 bg-stone-600 text-white rounded-xl font-semibold hover:bg-gradient-to-r hover:from-stone-500 hover:via-stone-400 hover:to-stone-500 duration-300 shadow-md transform hover:scale-105 transition"
             >
               Return
