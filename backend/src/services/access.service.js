@@ -61,6 +61,26 @@ class AccessService {
     };
   };
 
+  static confirmPassword = async ({ password, access_token, role }) => {
+    const foundUser = await findUserByAccessToken({ access_token, role });
+    if (!foundUser[0]) {
+      throw new NotFoundError("User not found");
+    }
+
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
+    let match = hashedPassword === foundUser[0].password ? 1 : 0;
+    if (!match) {
+      throw new AuthFailureError("Authentication Error");
+    }
+    return {
+      status: 200,
+      message: "Verify Password Successfully",
+    };
+  };
+
   static login = async ({ email, password, role }) => {
     // Check if user is already logged in
     const foundUser = await findUserByEmail({ email, role });
