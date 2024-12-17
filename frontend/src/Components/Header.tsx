@@ -9,7 +9,7 @@ import { CircularProgress } from "@mui/material";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isLogged, isSPSO, signOut } = useAuth();
+  const { isLogged, isSPSO, signOut, getName } = useAuth();
   const match = useMatch({ from: "/login", shouldThrow: false });
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -24,9 +24,6 @@ export default function Header() {
     onSuccess: () => {
       signOut();
       navigate({ to: "/login" });
-    },
-    onSettled: () => {
-      // signOut();
     },
   });
 
@@ -45,13 +42,15 @@ export default function Header() {
     mutation.mutate();
   };
 
+  const image_path = "/assets/hcmut.png";
+
   return (
     <header className="sticky top-0 w-full min-w-fit flex items-center bg-primary h-[64px] text-justify drop-shadow-md justify-between px-8 z-50">
       <div className="left-sec flex items-center gap-8 h-full ">
         {/* Logo Section */}
         <div className="logo flex w-auto flex-row gap-4 items-center">
           <img
-            src="./src/assets/hcmut.png"
+            src={image_path}
             alt="Logo"
             className="aspect-square w-[3vw] h-[3vw] min-w-10 min-h-10"
           />
@@ -62,7 +61,7 @@ export default function Header() {
         {/* Tab Group Section */}
         <nav className="tab-group relative flex flex-row justify-center h-full flex-1 items-stretch">
           {/* Tab with Lines */}
-          <Tab page="Home" route="/" routeMatch="/" wholeRoute={true} />
+          <Tab page="Home" route="/" routeMatches={["/", "/login"]} />
           {isLogged() && <Tab page="Printing History" />}
           {isLogged() && !isSPSO() && (
             <Tab page="Print" routeMatch="/_private/_student/_print" />
@@ -74,14 +73,24 @@ export default function Header() {
               route="/manage/printer"
             />
           )}
+          {isLogged() && !isSPSO() && (
+            <Tab
+              page="Buy Page"
+              routeMatch="/_private/_student/buy-page"
+            />
+          )}
+          {isLogged() && isSPSO() && (
+            <Tab
+              page="Report"
+              routeMatch="/_private/_spso/report"
+            />
+          )}
         </nav>
       </div>
       {/* Right Section */}
       {isLogged() && (
         <div className="right-sec flex items-center flex-row h-2/3 divide-x-2 divide-gray-500 select-none">
-          <h2 className="bold text-[15px] p-4">
-            {isSPSO() ? "SPSO" : "Student"} Name
-          </h2>
+          <h2 className="font-bold text-[15px] p-4">{getName()}</h2>
           <button
             className="flex h-full items-center place-content-center flex-row gap-1 p-4"
             aria-describedby={id}
@@ -110,7 +119,9 @@ export default function Header() {
           >
             {/* <Typography sx={{ p: 2 }}>The content of the Popover.</Typography> */}
             <div className="flex flex-col w-40 p-4">
-              <button onClick={handleSignOut}>Sign out</button>
+              <button className="navigateBtn" onClick={handleSignOut}>
+                Sign out
+              </button>
             </div>
           </Popover>
         </div>

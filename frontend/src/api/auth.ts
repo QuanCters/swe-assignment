@@ -1,6 +1,6 @@
 import { HttpError } from "@/errors/HttpError";
 
-const BaseUrl = "http://localhost:5000/v1/api";
+const BaseUrl = import.meta.env.VITE_API_URL;
 
 export const loginWithRole = async (roleName: string, data: any) => {
   try {
@@ -16,17 +16,12 @@ export const loginWithRole = async (roleName: string, data: any) => {
     if (!response.ok) throw new HttpError(response.statusText, response.status);
 
     const result = await response.json();
-    console.log(
-      result,
-      // result.metadata,
-      // result.metadata?.accessToken,
-      "halo halo"
-    );
     if (result.status !== 200)
-      throw new HttpError(result.status, result.message);
+      throw new HttpError(result.message, result.status);
 
     localStorage.setItem("access-token", result.accessToken);
     localStorage.setItem("userID", result.userID);
+    localStorage.setItem("name", result.name);
     if (roleName === "spso")
       localStorage.setItem("x-api-key", result["x-api-key"]);
   } catch (err) {
@@ -62,10 +57,11 @@ export const logoutWithRole = async (roleName: string) => {
     }
     const result = await response.json();
     if (result.status !== 200)
-      throw new HttpError(result.status, result.message);
+      throw new HttpError(result.message, result.status);
 
     localStorage.removeItem("access-token");
     localStorage.removeItem("userID");
+    localStorage.removeItem("name");
     if (roleName === "spso") localStorage.removeItem("x-api-key");
   } catch (err) {
     console.log("Error with logoutWithRole", err);

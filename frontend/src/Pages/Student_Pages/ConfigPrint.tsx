@@ -48,13 +48,14 @@ const ConfigPrintPage: React.FC = () => {
     layout: "portrait",
     pages: "all",
     customPages: "",
-    paperType: "A4",
+    pageType: "A4",
     pagesPerSheet: 1,
     margins: "Default",
     customMargins: margins,
   });
 
   const [numPages, setNumPages] = useState(0);
+  
   const mutation = useMutation({
     mutationFn: () => {
       if (!file)
@@ -71,7 +72,6 @@ const ConfigPrintPage: React.FC = () => {
       alert(error);
     },
   });
-  console.log(formState, "fileeeeeee");
 
   useEffect(() => {
     if (file && file.name.endsWith(".pdf")) {
@@ -100,7 +100,6 @@ const ConfigPrintPage: React.FC = () => {
     );
     if (!userConfirmed) return;
     const printCount = getCopiesValue();
-    console.log("printCount", printCount);
 
     mutation.mutate(undefined, {
       onSuccess(data) {
@@ -189,7 +188,7 @@ const ConfigPrintPage: React.FC = () => {
           <Dropdown
             title="Paper Size"
             options={paperOptions}
-            name="paperType" // Tên sẽ được dùng làm key trong `formState`
+            name="pageType"
             formState={formState}
             setFormState={setFormState}
             disabled={false}
@@ -241,7 +240,7 @@ const ConfigPrintPage: React.FC = () => {
         <div className="flex flex-row justify-between">
           <button
             type="reset"
-            className="bg-[#0052B4] px-6 py-3 rounded-xl text-white w-[150px] font-semibold"
+            className="navigateBtn bg-[#0052B4] px-6 py-3 rounded-xl text-white w-[150px] font-semibold"
             onClick={(event) => {
               event.preventDefault();
               navigate({ to: "/print", state: { file: file } });
@@ -251,7 +250,7 @@ const ConfigPrintPage: React.FC = () => {
           </button>
           <button
             type="submit"
-            className=" bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold"
+            className="navigateBtn bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold"
           >
             Next
             <span className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"></span>

@@ -2,6 +2,7 @@
 
 const { AccessService } = require("../services/access.service");
 const SuccessReponse = require("../core/success.response");
+const { access } = require("fs");
 
 const ROLE = {
   STUDENT: "0000",
@@ -13,6 +14,17 @@ class AccessController {
     const access_token = req.headers["authorization"];
     new SuccessReponse({
       response: await AccessService.logout({
+        access_token: access_token,
+        role: ROLE.STUDENT,
+      }),
+    }).send(res);
+  };
+
+  confirmPassword = async (req, res) => {
+    const access_token = req.headers["authorization"];
+    new SuccessReponse({
+      response: await AccessService.confirmPassword({
+        ...req.body,
         access_token: access_token,
         role: ROLE.STUDENT,
       }),

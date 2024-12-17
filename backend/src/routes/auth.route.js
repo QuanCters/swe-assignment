@@ -49,6 +49,9 @@ const router = express.Router();
  *                id:
  *                  type: string
  *                  description: The ID of student
+ *                name:
+ *                  type: string
+ *                  description: The name of student
  *      400:
  *        description: Bad Request (Invalid email or password)
  *      404:
@@ -92,9 +95,24 @@ router.post("/login-student", asyncHandler(AccessController.loginStudent));
  *            schema:
  *              type: object
  *              properties:
+ *                status:
+ *                  type: integer
+ *                  example: 200
+ *                message:
+ *                  type: string
+ *                  description: Return message
  *                access-token:
  *                  type: string
  *                  description: A token used for accessing protected routes
+ *                id:
+ *                  type: string
+ *                  description: The ID of SPSO
+ *                x-api-key:
+ *                  type: string
+ *                  description: Api key for SPSO
+ *                name:
+ *                  type: string
+ *                  description: The name of SPSO
  *      400:
  *        description: Bad Request (Invalid email or password)
  *      404:
@@ -108,6 +126,43 @@ router.post("/login-spso", asyncHandler(AccessController.loginSPSO));
 
 // authentication
 router.use(authentication);
+
+// password confirm
+/**
+ * @swagger
+ * '/v1/api/user/confirm-password':
+ *  post:
+ *     tags:
+ *     - User controller
+ *     summary: Confirm password for student
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - password
+ *            properties:
+ *              password:
+ *                type: string
+ *                format: password
+ *     responses:
+ *      200:
+ *        description: Verify Password Successfully
+ *      400:
+ *        description: Bad Request (Invalid or missing token)
+ *      401:
+ *        description: Unauthorized (Token is invalid or expired)
+ *      500:
+ *        description: Server error
+ */
+router.post(
+  "/confirm-password",
+  asyncHandler(AccessController.confirmPassword)
+);
 
 // logout for student
 /**

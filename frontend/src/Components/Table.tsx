@@ -1,21 +1,13 @@
-import React from "react";
 import { flexRender, Table as ReactTable } from "@tanstack/react-table";
-import { Printing } from "@/models/printing";
 
 type Props = {
-  // columnFilters: ColumnFiltersState;
-  // setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
-  // columns: ColumnDef<any, any>[];
-  setData?: React.Dispatch<React.SetStateAction<Printing[]>>;
   table: ReactTable<any>;
 };
 
-const Table = ({ setData, table }: Props) => {
-  const rerender = React.useReducer(() => ({}), {})[1];
-
+const Table = ({ table }: Props) => {
   return (
-    <div className="p-2 z-0">
-      <table className="table-auto z-0 w-[80vw]">
+    <div className="p-2 z-0 flex-grow flex flex-col justify-between">
+      <table className="table-auto z-0 w-[80vw] h-full ">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr

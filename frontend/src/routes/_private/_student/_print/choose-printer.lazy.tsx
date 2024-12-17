@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   createLazyFileRoute,
   useBlocker,
@@ -9,7 +9,7 @@ import { useModal } from "@/context/ModalContext";
 import { Printer } from "@/models/printer";
 import { getPrinters } from "@/api/printer";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { deleteDocumentByID } from "@/api/printing";
+import { deleteDocumentByID, printPagesCheck } from "@/api/printing";
 import { CircularProgress } from "@mui/material";
 
 export const Route = createLazyFileRoute(
@@ -20,38 +20,59 @@ export const Route = createLazyFileRoute(
 
 function ChoosePrinter() {
   const navigate = useNavigate();
-  const { data, isLoading, error } = useQuery<Printer[], Error>({
+  const { data } = useQuery<Printer[], Error>({
     queryKey: ["fetchPrinters"],
     queryFn: fetchPrinters,
   });
 
   const routerState = useRouterState();
   const config = routerState.location.state.config;
-  const { modal, openModal } = useModal();
+  const { openModal } = useModal();
+
+  const mutation = useMutation({
+    mutationFn: (printer: any) => {
+      const data = {
+        documentId: config.documentId,
+        config: {
+          ...config.data,
+          printCount: config.printCount,
+          color: config.data.color === "color-true" ? true : false,
+          duplex: config.data.duplex === "duplex-true" ? true : false,
+        },
+      };
+      console.log('Check' , data);
+      
+      return printPagesCheck(printer.id, data);
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
 
   const deletemutation = useMutation({
     mutationFn: () => {
       return deleteDocumentByID(config.documentId);
     },
-    // onError: (error) => {
-    //   alert(error);
-    // },
     retry: 3,
   });
+  const [block, setBlock] = useState(true);
 
   useBlocker({
     blockerFn: () => {
-      const userConfirmed = window.confirm("Are you sure you want to leave?");
+      if (block) {
+        const userConfirmed = window.confirm("Are you sure you want to leave?");
 
-      if (userConfirmed) {
-        deletemutation.mutate();
+        if (userConfirmed) {
+          deletemutation.mutate();
+        }
+        return userConfirmed;
       }
-      return userConfirmed;
+      return true;
     },
     condition: true,
   });
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const selectedPrinter = document.querySelector(
       'input[name="printer"]:checked'
     ) as HTMLInputElement;
@@ -62,21 +83,61 @@ function ChoosePrinter() {
     }
     if (!data) return;
     const printerIndex = parseInt(selectedPrinter.value, 10);
-
     // Sử dụng chỉ số để lấy thông tin máy in từ mảng data
     const printerData = data[printerIndex];
-    console.log("submit", "seletedPrinte", printerData);
-    openModal("ConfirmPrintModal", {
-      config: config,
-      file: routerState.location.state.file,
-      printer: printerData,
-    });
-    // openModal("InsufficientPagesModal");
-  };
 
-  useEffect(() => {
-    // fetchData();
-  }, []);
+    try {
+      const data = await mutation.mutateAsync(printerData);
+
+      if (Number(data.paymentAmount) <= Number(data.pageBalance)) {
+        openModal("ConfirmPrintModal", {
+          config: {
+            ...config,
+            paymentAmount: Number(data.paymentAmount),
+            pageBalance: Number(data.pageBalance),
+          },
+
+          fileName: routerState.location.state.file?.name,
+          printer: printerData,
+          navigate: function () {
+            setBlock(false);
+            setTimeout(() => navigate({ to: "/print" }), 0);
+          },
+        });
+      } else {
+        openModal("InsufficientPagesModal", {
+          config: {
+            ...config,
+            paymentAmount: Number(data.paymentAmount),
+            pageBalance: Number(data.pageBalance),
+          },
+          fileName: routerState.location.state.file?.name,
+          printer: printerData,
+          navigate: function () {
+            setBlock(false);
+            setTimeout(
+              () =>
+                navigate({
+                  to: "/buy-page",
+                  state: {
+                    config: {
+                      ...config,
+                      printer: printerData.id,
+                      fileName: routerState.location.state.file?.name,
+                      paymentAmount: Number(data.paymentAmount),
+                      pageBalance: Number(data.pageBalance),
+                    },
+                  },
+                }),
+              0
+            );
+          },
+        });
+      }
+    } catch (error) {
+      alert("Cannot get pages balance. Please try again");
+    }
+  };
 
   if (deletemutation.isLoading)
     return (
@@ -93,8 +154,6 @@ function ChoosePrinter() {
 
       {data && (
         <form
-          // id="printer-form"
-          // onSubmit={onSubmit}
           className={`grid grid-cols-4 w-full ${data.length >= 9 ? "h-[80vh]" : "h-fit"} px-7 gap-6 max-sm:grid-cols-1 max-lg:grid-cols-2 max-2xl:grid-cols-3 overflow-y-auto`}
         >
           {data.map((printer, index) => {
@@ -182,7 +241,7 @@ function ChoosePrinter() {
 
 const fetchPrinters = async () => {
   const result = await getPrinters();
-  console.log(result);
+
   const formattedPrinters: Printer[] = result.map((printer: any) => ({
     id: printer.id,
     name: printer.name,

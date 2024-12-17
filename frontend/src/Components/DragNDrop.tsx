@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { MdClear } from "react-icons/md";
-// import { ReactComponent as UploadIcon } from './assets/upload.svg';
 import {
   FaFilePdf,
   FaFileWord,
@@ -54,13 +53,7 @@ const FileIcon: React.FC<
   }
 };
 
-interface DragNDropProps {
-  onFilesSelected: (files: File[]) => void;
-  width?: string;
-  height?: string;
-}
-
-const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
+const DragNDrop: React.FC = () => {
   const navigate = useNavigate();
   const routerState = useRouterState();
   const file = routerState.location.state.file;
@@ -122,11 +115,6 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
   const handleRemoveFile = (index: number) => {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
-  console.log("file", files);
-
-  useEffect(() => {
-    onFilesSelected(files);
-  }, [files, onFilesSelected]);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -137,6 +125,8 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
       });
     }
   };
+
+  const image_path = "/assets/upload.svg";
 
   return (
     <div className="grid grid-cols-3 grid-rows-1 gap-x-12 gap-y-10 w-[80vw] max-lg:grid-cols-2 max-sm:grid-cols-1">
@@ -151,7 +141,7 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
           onDragOver={(event) => event.preventDefault()}
           id="document-uploader"
         >
-          <img src="./src/assets/upload.svg" className="w-[42px] h-[42px]" />
+          <img src={image_path} className="w-[42px] h-[42px]" />
           {/* <object data="./assets/upload.svg"> </object> */}
           <div className="self-stretch h-[84px] flex-col justify-start items-center gap-2 flex">
             <div className="self-stretch justify-center items-start gap-1 inline-flex">
@@ -186,7 +176,10 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     event.preventDefault();
                     const selectedFiles = event.target.files;
-                    return handleFile(selectedFiles);
+                    handleFile(selectedFiles);
+                    if (inputFile.current) {
+                      inputFile.current.value = "";
+                    }
                   }}
                   accept=".pdf"
                 />
@@ -250,7 +243,7 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
             <button
               type="submit"
               form="file-form"
-              className={`bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold ${files.length > 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none select-none"}`}
+              className={`navigateBtn bg-[#0052B4] text-white px-6 py-3 rounded-xl w-[150px] relative group overflow-hidden transition-all ease-in-out duration-500 font-semibold ${files.length > 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none select-none"}`}
             >
               Next
               <span className="absolute top-0 left-[-200%] w-[200%] h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-40 transform skew-x-12 group-hover:left-[50%] transition-all duration-700 ease-in-out"></span>

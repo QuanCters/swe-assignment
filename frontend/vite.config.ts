@@ -4,12 +4,31 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react(), TanStackRouterVite()],
-  server: {
-    port: 3003,
-  },
-  resolve: {
-    alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
-  },
+export default defineConfig(({ }) => {
+  // Define the default configuration object
+  const config = {
+    plugins: [react(), TanStackRouterVite()],
+    server: {
+      watch: {
+        usePolling: true, // Đảm bảo hot reload hoạt động trong Docker
+      },
+      host: "0.0.0.0",
+      port: 3000,
+    },
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
+    publicDir: "public",
+    build: {
+      outDir: "build",
+      assetsDir: "images",
+      rollupOptions: {
+        input: path.resolve(__dirname, "index.html"),
+      },
+    },
+  };
+
+  return config;
 });

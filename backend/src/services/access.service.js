@@ -10,6 +10,7 @@ const {
   findUserByEmail,
   findUserByAccessToken,
 } = require("../repositories/user.repository");
+const crypto = require("node:crypto");
 
 const ROLE = {
   STUDENT: "0000",
@@ -60,6 +61,26 @@ class AccessService {
     };
   };
 
+  static confirmPassword = async ({ password, access_token, role }) => {
+    const foundUser = await findUserByAccessToken({ access_token, role });
+    if (!foundUser[0]) {
+      throw new NotFoundError("User not found");
+    }
+
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
+    let match = hashedPassword === foundUser[0].password ? 1 : 0;
+    if (!match) {
+      throw new AuthFailureError("Authentication Error");
+    }
+    return {
+      status: 200,
+      message: "Verify Password Successfully",
+    };
+  };
+
   static login = async ({ email, password, role }) => {
     // Check if user is already logged in
     const foundUser = await findUserByEmail({ email, role });
@@ -78,7 +99,11 @@ class AccessService {
 
     // 2: Verify password
     // const match = await compare(password, foundUser.password);
-    let match = password === foundUser[0].password ? 1 : 0;
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
+    let match = hashedPassword === foundUser[0].password ? 1 : 0;
     if (!match) {
       throw new AuthFailureError("Authentication Error");
     }
@@ -110,6 +135,7 @@ class AccessService {
       message: "Login successful",
       accessToken,
       userID: foundUser[0].id,
+      name: foundUser[0].name,
     };
 
     // Add "x-api-key" only if the role is not "0000"

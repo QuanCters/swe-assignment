@@ -13,7 +13,11 @@ export const useAuth = () => {
 
   const isSPSO = () => localStorage.getItem("x-api-key");
 
-  return { signIn, signOut, isLogged, isSPSO };
+  const getName = () => localStorage.getItem("name") ?? "";
+  
+  const getUserID = () => localStorage.getItem("userID");
+
+  return { signIn, signOut, isLogged, isSPSO, getName, getUserID };
 };
 
 export type AuthContext = ReturnType<typeof useAuth>;

@@ -31,12 +31,7 @@ function PrintingHistoryPage() {
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  // Sample data created manually
-
-  // Manually defined sample data
-  // const [printingData, setPrintingData] = useState<Printing[]>(samplePrintings);
   const columns = useMemo<ColumnDef<Printing, any>[]>(() => {
-    // Cột bổ sung
     const additionalColumn: ColumnDef<Printing, any> = {
       accessorKey: "studentId",
       header: "Student ID",
@@ -53,6 +48,7 @@ function PrintingHistoryPage() {
       ? [...printing_columns, additionalColumn]
       : printing_columns;
   }, []);
+
   const table = useReactTable({
     data: data ?? [],
     columns,
@@ -65,9 +61,6 @@ function PrintingHistoryPage() {
     getFilteredRowModel: getFilteredRowModel(), //client side filtering
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugTable: true,
-    debugHeaders: true,
-    debugColumns: true,
   });
   if (error)
     return (
@@ -83,8 +76,8 @@ function PrintingHistoryPage() {
     );
 
   return (
-    <div className="body flex justify-center w-full bg-[#F0F7FF] pb-16 pt-10 min-w-fit px-5">
-      <div className="shadow-lg w-[18\/25] min-w-min h-full px-12 py-16">
+    <div className="body flex flex-col items-center justify-center w-full bg-[#F0F7FF] pb-16 pt-10 min-w-fit px-5 flex-grow">
+      <div className="shadow-lg w-[18\/25] min-w-min h-full px-12 py-16 flex-grow flex flex-col">
         <div className="filters flex items-stretch flex-wrap">
           {/* <DateRangePicker /> */}
           <Filter column={table.getColumn("date")} placeholder="Age" />
@@ -111,7 +104,6 @@ const fetchHistory = async (isSPSO: any) => {
   const result = isSPSO()
     ? await getAllHistory()
     : await getHistoryByStudentID();
-  console.log("History result", result);
   const printings: Printing[] = result?.map((item: any) => ({
     id: item.id,
     timestamp: new Date(item.timestamp), // Chuyển timestamp sang Date

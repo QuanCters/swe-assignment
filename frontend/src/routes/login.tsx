@@ -48,39 +48,9 @@ function Login() {
     onSuccess: () => {
       navigate({ to: "/" });
     },
-    onSettled: () => {},
   });
 
   const handleSubmit = async (e: any) => {
-    // e.preventDefault();
-
-    // const roleName =
-    //   Object.keys(Role)
-    //     .find((key) => Role[key as keyof typeof Role] === account)
-    //     ?.toLowerCase() || "";
-    // // Logic xử lý form
-    // const formData = new FormData(e.target);
-    // const formObject: Record<string, string> = {};
-
-    // // Duyệt qua các key-value trong FormData
-    // formData.forEach((value, key) => {
-    //   if (value) {
-    //     formObject[key] = value.toString();
-    //   }
-    // });
-
-    // try {
-    //   const result = await loginWithRole(roleName, formObject);
-    //   console.log(result, "EEEEEEEEEEE", typeof result.status);
-    //   if (result.status === 200 || result.status === 409) {
-    //     navigate({ to: "/" });
-    //   }
-    // } catch (err) {
-    //   // setError(err.message);
-    //   console.log(err);
-    // } finally {
-    //   // setLoading(false);
-    // }
     mutation.mutate(e);
   };
   if (mutation.isLoading)
@@ -90,8 +60,10 @@ function Login() {
       </div>
     );
 
+  const image_path = "/assets/hcmut.png";
+
   return (
-    <div className="flex py-12 justify-center items-center">
+    <div className="flex justify-center items-center flex-grow">
       <div className="shadow-2xl flex flex-col gap-14 p-12 w-[50vw] max-w-[512px] items-center rounded-2xl min-w-fit relative">
         {account && (
           <button
@@ -105,7 +77,7 @@ function Login() {
           </button>
         )}
         <img
-          src="src/assets/hcmut.png"
+          src={image_path}
           alt="hcmut.png"
           className="h-40 w-40 aspect-square"
         />
@@ -173,7 +145,7 @@ function Login() {
               </div>
             </div>
             <button
-              className="py-3 bg-[#0052B4] w-1/3 min-w-fit self-center font-semibold text-white mt-5 rounded-xl"
+              className="navigateBtn py-3 bg-[#0052B4] w-1/3 min-w-fit self-center font-semibold text-white mt-5 rounded-xl"
               type="submit"
             >
               Login
