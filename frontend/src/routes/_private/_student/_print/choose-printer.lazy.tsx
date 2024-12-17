@@ -40,6 +40,8 @@ function ChoosePrinter() {
           duplex: config.data.duplex === "duplex-true" ? true : false,
         },
       };
+      console.log('Check' , data);
+      
       return printPagesCheck(printer.id, data);
     },
     onError: (error) => {
