@@ -3,6 +3,7 @@ import { Link, useChildMatches } from "@tanstack/react-router";
 type Props = {
   page: string;
   route?: string;
+  routeMatches?: string[];
   routeMatch?: string;
   wholeRoute?: boolean;
 };
@@ -15,6 +16,7 @@ function toKebabCase(str: string) {
 
 export const Tab = ({
   page,
+  routeMatches = [],
   routeMatch = "",
   route,
   wholeRoute,
@@ -24,6 +26,10 @@ export const Tab = ({
     select: (matches) =>
       matches.some((match) => {
         if (wholeRoute) return match.routeId == routeMatch;
+        if (routeMatches.includes(match.routeId)) {
+          return true;
+        }
+
         const targetRoute = routeMatch === "" ? routePath : routeMatch;
         return (
           match.routeId.startsWith(targetRoute) ||

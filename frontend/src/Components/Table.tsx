@@ -6,8 +6,8 @@ type Props = {
 
 const Table = ({ table }: Props) => {
   return (
-    <div className="p-2 z-0">
-      <table className="table-auto z-0 w-[80vw]">
+    <div className="p-2 z-0 flex-grow flex flex-col justify-between">
+      <table className="table-auto z-0 w-[80vw] h-full ">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
