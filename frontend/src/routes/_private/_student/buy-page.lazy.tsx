@@ -11,28 +11,35 @@ export const Route = createLazyFileRoute('/_private/_student/buy-page')({
 })
 
 function BuyPage() {
+  //preload
   const navigate = useNavigate()
   const { openModal } = useModal()
   const routerState = useRouterState()
-  const config = routerState.location.state.config
 
+  //fetching
   const { data } = useQuery(
-    ['pageBalance'], 
+    ['pageBalance'],
     () => getCurrentStudentPageBalance(),
   )
-  
+  const config = routerState.location.state.config
 
   const pageBalance = data;
   const paymentAmount = config?.paymentAmount ?? 0;
-  let recommendedPages = (paymentAmount - pageBalance < 0) ? 1 : (paymentAmount - pageBalance);
+  //fix recommended paGES
+  const recommendedPages = (paymentAmount - pageBalance < 0) ? 1 :
+    (paymentAmount - pageBalance <= 1000000) ? (paymentAmount - pageBalance) :
+    1000000;
+  console.log('Buy: ', recommendedPages);
   const price = 220;
-
   const [pageCount, setPageCount] = React.useState(recommendedPages);
-  //i dont write state for this because of infinite loading from state
-  let isFromHome = true;
 
+  let isFromHome = true;
   if (config) isFromHome = false;
-  console.log(isFromHome);
+
+  React.useEffect(() => {
+    setPageCount(recommendedPages);
+  }, [paymentAmount, pageBalance]);
+
 
   const handleConfirm = () => {
     if (isFromHome) {
@@ -42,7 +49,7 @@ function BuyPage() {
         },
         pageCount: pageCount,
         totalPrice: totalPrice,
-  
+
         navigate: () => {
           setTimeout(() => {
             navigate({
@@ -53,33 +60,40 @@ function BuyPage() {
       })
     }
     else {
-        openModal('ConfirmBuyModal', {
-          config: {
-            ...config,
-          },
-          pageCount: pageCount,
-          totalPrice: totalPrice,
-    
-          navigate: () => {
-            setTimeout(() => {
-              navigate({
-                to: '/print',
-              })
-            }, 100)
-          },
-        })
+      openModal('ConfirmBuyModal', {
+        config: {
+          ...config,
+        },
+        pageCount: pageCount,
+        totalPrice: totalPrice,
+
+        navigate: () => {
+          setTimeout(() => {
+            navigate({
+              to: '/print',
+            })
+          }, 100)
+        },
+      })
     }
   }
   const totalPrice = pageCount * price
   const handleDecrement = () => {
-    setPageCount((prevValue) => prevValue - 1)
+    setPageCount((prevValue) =>  {
+      if (prevValue - 1 >= 1) return prevValue - 1;
+      else return prevValue;
+    })
   }
 
   const handleIncrement = () => {
-    setPageCount((prevValue) => prevValue + 1)
+    setPageCount((prevValue) => {
+      if (prevValue + 1 <= 1000000) return prevValue + 1;
+      else return prevValue;
+    })
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (/^\d*$/.test(e.target.value) && Number(e.target.value))
+    if (/^\d*$/.test(e.target.value) && Number(e.target.value) <= 1000000 
+    && Number(e.target.value) >= 1)
       setPageCount(Number(e.target.value))
   }
 
@@ -98,11 +112,39 @@ function BuyPage() {
             />
           </figure>
           <section className="flex overflow-hidden flex-col flex-1 shrink py-6 pr-8 pl-32 basis-0 min-w-[240px] max-md:px-5 max-md:max-w-full">
-            <PageInfo
-              pageBalance={pageBalance}
-              pricePerPage={price}
-              recommendedPages={recommendedPages}
-            />
+            <section aria-labelledby="page-info-title">
+              <h2 id="page-info-title" className="sr-only">
+                Page Information
+              </h2>
+              <dl className="flex flex-col justify-center w-full text-gray-500 max-md:max-w-full space-y-2.5">
+                <div>
+                  <dt className="inline text-xl">You have: </dt>
+                  <dd className="inline font-bold text-xl text-sky-500">
+                    {pageBalance} A4 pages
+                  </dd>
+                </div>
+                <div>
+                  <div className="inline text-xl text-gray-500">Price: </div>
+                  <div className="inline font-bold text-xl text-sky-500">
+                    {price} vnđ/page
+                  </div>
+                </div>
+                {!isFromHome &&
+                  <div>
+                    <dt className="inline text-xl">Recommended purchase: </dt>
+                    <dd className="inline font-bold text-xl text-sky-500">
+                      {recommendedPages} A4 pages
+                    </dd>
+                  </div>
+                }
+              </dl>
+              <div className="mt-2.5 text-xl text-black text-opacity-90 max-md:max-w-full">
+                <strong>Note</strong>: printing pages with bigger sizes will cost an
+                equal number of A4 pages.
+                <br />
+                (For example: a document with 16 A3 pages will cost 32 A4 pages)
+              </div>
+            </section>
             <div className="flex overflow-hidden justify-between items-center mt-2.5 w-full font-bold text-black text-opacity-90 max-md:max-w-full">
               <label className="self-stretch my-auto text-xl">
                 Number of pages to buy:
@@ -150,7 +192,7 @@ function BuyPage() {
               </div>
             </div>
             <div className="flex overflow-hidden flex-col flex-1 items-end mt-16 w-full font-bold max-md:mt-10 max-md:max-w-full">
-              <div className="flex overflow-hidden flex-col justify-between px-6 py-8 max-w-full min-h-[171px] w-[241px] max-md:px-5">
+              <div className="flex overflow-hidden flex-col justify-between px-6 py-8 max-w-full min-h-[171px] max-md:px-5">
                 <p className="self-end text-xl text-black text-opacity-90">
                   Total price: {totalPrice.toLocaleString()} vnđ
                 </p>
@@ -170,47 +212,3 @@ function BuyPage() {
   )
 }
 
-function PageInfo({
-  pageBalance,
-  pricePerPage,
-  recommendedPages,
-}: {
-  pageBalance: number
-  pricePerPage: number
-  recommendedPages: number
-}) {
-  return (
-    <section aria-labelledby="page-info-title">
-      <h2 id="page-info-title" className="sr-only">
-        Page Information
-      </h2>
-      <dl className="flex flex-col justify-center w-full text-gray-500 max-md:max-w-full space-y-2.5">
-        <div>
-          <dt className="inline text-xl">You have: </dt>
-          <dd className="inline font-bold text-xl text-sky-500">
-            {pageBalance} A4 pages
-          </dd>
-        </div>
-        <div>
-          <div className="inline text-xl text-gray-500">Price: </div>
-          <div className="inline font-bold text-xl text-sky-500">
-            {pricePerPage} vnđ/page
-          </div>
-        </div>
-        <div>
-          <dt className="inline text-xl">Recommended purchase: </dt>
-          <dd className="inline font-bold text-xl text-sky-500">
-            {recommendedPages} A4 pages
-          </dd>
-        </div>
-      </dl>
-      <div className="mt-2.5 text-xl text-black text-opacity-90 max-md:max-w-full">
-        <strong>Note</strong>: printing pages with bigger sizes will cost an
-        equal number of A4 pages.
-        <br />
-        (For example: a document with 16 A3 pages will cost 32 A4 pages)
-      </div>
-    </section>
-  )
-
-}
