@@ -23,7 +23,6 @@ import { Route as PrivateSpsoManagePrinterImport } from './routes/_private/_spso
 
 // Create Virtual Routes
 
-const IndexLazyImport = createFileRoute('/')()
 const PrivatePrintingHistoryLazyImport = createFileRoute(
   '/_private/printing-history',
 )()
@@ -53,14 +52,11 @@ const PrivateRoute = PrivateImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-
-
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
-
 
 const PrivatePrintingHistoryLazyRoute = PrivatePrintingHistoryLazyImport.update(
   {
@@ -141,9 +137,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-
       preLoaderRoute: typeof IndexImport
-
       parentRoute: typeof rootRoute
     }
     '/_private': {
@@ -389,9 +383,7 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-
       "filePath": "index.tsx"
-
     },
     "/_private": {
       "filePath": "_private.tsx",
