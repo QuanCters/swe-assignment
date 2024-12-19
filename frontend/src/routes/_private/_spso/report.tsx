@@ -35,8 +35,8 @@ function ManageReportPage() {
   };
   useEffect(() => {
     handleDayLimit();
-  }, [year, month]);
-
+  }, [year, month]); 
+  
   useEffect(() => {
     generatePrintRequestData();
   }, [dayLimit]);
@@ -156,16 +156,18 @@ function ManageReportPage() {
 
         {month != '' && year != '' && (
           <div>
-            <section className="flex flex-col gap-10 justify-between items-center mt-4 w-full min-h-[561px] max-md:max-w-full">
+            <section className="grid grid-cols-5 grid-flow-col gap-10 justify-between items-center mt-4 w-full min-h-[561px] max-md:max-w-full">
               <article
-                className="flex flex-grow justify-center items-center gap-2 self-stretch my-auto max-md:max-w-full">
+                className="col-span-4 justify-center items-center gap-2
+         self-stretch my-auto max-md:max-w-full"
+              >
                 <h2 className="text-2xl px-[360px] font-bold leading-none text-black">
                   Print requests per day
                 </h2>
                 <div className="flex flex-col mt-16 w-full max-w-[1200px] max-md:mt-10 max-md:max-w-full">
                   <BarChart
                     dataset={printRequestData}
-                    xAxis={[{ scaleType: 'band', dataKey: 'day' }]}
+                    xAxis={[{ scaleType: 'band', dataKey: 'day'}]}
                     series={[{ dataKey: 'request', label: 'Print requests', color: '#3498db' }]}
                     slotProps={{ legend: { hidden: true } }}
                     height={500}
@@ -173,17 +175,17 @@ function ManageReportPage() {
                 </div>
               </article>
 
-
-              <section className="fgit flex flex-wrap flex-col gap-4 items-start mt-4 max-w-full min-h-[122px] w-[1262px]">
-                {statCardData.slice(0, 4).map((card, index) => (
-                  <StatCard
-                    type="col"
-                    key={index}
-                    title={card.title}
-                    value={card.value}
-                  />
-                ))}
-              </section>
+              
+            <section className="col-span-1 flex flex-wrap flex-col gap-4 items-start mt-4 max-w-full min-h-[122px] w-[1262px]">
+              {statCardData.slice(0, 4).map((card, index) => (
+                <StatCard
+                  type="col"
+                  key={index}
+                  title={card.title}
+                  value={card.value}
+                />
+              ))}
+            </section>
 
             </section>
           </div>

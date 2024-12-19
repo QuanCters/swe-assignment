@@ -9,7 +9,7 @@ const ModalLookup: Record<string, React.FC<any>> = {
   ConfirmPrintModal: ConfirmPrintModal,
   InsufficientPagesModal: InsufficientPagesModal,
   AddPrinterModal: AddPrinterModal,
-  ConfirmBuyModal: ConfirmBuyModal
+  ConfirmBuyModal: ConfirmBuyModal,
 };
 
 const ModalManager = () => {
