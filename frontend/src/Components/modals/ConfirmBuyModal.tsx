@@ -9,6 +9,7 @@ const ConfirmBuyModal: React.FC<{
   totalPrice: any;
   pageCount: any;
 }> = ({ config, onClose, navigate, totalPrice, pageCount }) => {
+  
   console.log("Config:", config);
   const mutation = useMutation({
     mutationFn: (e: any) => {

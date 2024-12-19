@@ -29,7 +29,7 @@ function BuyPage() {
   const recommendedPages = (paymentAmount - pageBalance < 0) ? 1 :
     (paymentAmount - pageBalance <= 1000000) ? (paymentAmount - pageBalance) :
     1000000;
-  console.log('Buy: ', recommendedPages);
+  // console.log('Buy: ', recommendedPages);
   const price = 220;
   const [pageCount, setPageCount] = React.useState(recommendedPages);
 
@@ -92,8 +92,7 @@ function BuyPage() {
     })
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (/^\d*$/.test(e.target.value) && Number(e.target.value) <= 1000000 
-    && Number(e.target.value) >= 1)
+    if (/^\d*$/.test(e.target.value) && Number(e.target.value) <= 1000000)
       setPageCount(Number(e.target.value))
   }
 
