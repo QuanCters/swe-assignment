@@ -24,14 +24,14 @@ function BuyPage() {
 
   const pageBalance = data;
   const paymentAmount = config?.paymentAmount ?? 0;
-  //fix recommended paGES
+  //fix recommended pages input
   const recommendedPages =
     paymentAmount - pageBalance < 0
       ? 1
       : paymentAmount - pageBalance <= 1000000
         ? paymentAmount - pageBalance
         : 1000000;
-  console.log("Buy: ", recommendedPages);
+  // console.log('Buy: ', recommendedPages);
   const price = 220;
   const [pageCount, setPageCount] = React.useState(recommendedPages);
 
@@ -42,7 +42,12 @@ function BuyPage() {
     setPageCount(recommendedPages);
   }, [paymentAmount, pageBalance]);
 
-  const handleConfirm = async () => {
+  const handleConfirm = () => {
+    //pre-check pagecount
+    if (pageCount === 0) {
+      alert("You have entered an invalid number. Please try again.");
+      return;
+    }
     if (isFromHome) {
       openModal("ConfirmBuyModal", {
         config: {
@@ -91,11 +96,7 @@ function BuyPage() {
     });
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (
-      /^\d*$/.test(e.target.value) &&
-      Number(e.target.value) <= 1000000 &&
-      Number(e.target.value) >= 1
-    )
+    if (/^\d*$/.test(e.target.value) && Number(e.target.value) <= 1000000)
       setPageCount(Number(e.target.value));
   };
 

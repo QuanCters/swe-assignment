@@ -56,21 +56,37 @@ function ChoosePrinter() {
     retry: 3,
   });
   const [block, setBlock] = useState(true);
+  
+  // useBlocker({
+  //   blockerFn: () => {
+  //     if (block) {
+  //       const userConfirmed = window.confirm("Are you sure you want to leave?");
 
+  //       if (userConfirmed) {
+  //         deletemutation.mutate();
+  //       }
+  //       return userConfirmed;
+  //     }
+  //     return true;
+  //   },
+  //   condition: true,
+  // });
+
+  //deprecated blockerfn
+  //when user confirmed to redirect, turn off the blocke
   useBlocker({
-    blockerFn: () => {
+    shouldBlockFn: () => {
       if (block) {
         const userConfirmed = window.confirm("Are you sure you want to leave?");
 
         if (userConfirmed) {
           deletemutation.mutate();
         }
-        return userConfirmed;
+        return !userConfirmed;
       }
-      return true;
+      else return false;
     },
-    condition: true,
-  });
+  })
 
   const onSubmit = async () => {
     const selectedPrinter = document.querySelector(
