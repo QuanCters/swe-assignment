@@ -128,11 +128,7 @@ const ConfigPrintPage: React.FC = () => {
     <div className="flex-1 flex flex-row px-20 gap-x-20 flex-wrap max-lg:grid max-lg:grid-cols-1 max-lg:gap-3">
       <FileViewer
         fileData={fileData}
-        display={{
-          pages: formState.pages,
-          margins,
-          customPages: formState.customPages,
-        }}
+        margins={margins}
         file={file}
         numPages={numPages}
         setNumPages={setNumPages}
@@ -222,24 +218,6 @@ const ConfigPrintPage: React.FC = () => {
                 ${formState.pagesPerSheet !== 1 ? "opacity-50 cursor-not-allowed" : ""}`}
               value={formState.margins}
               onChange={(e) => {
-                if (
-                  e.target.value === "Default" ||
-                  e.target.value === "Custom"
-                ) {
-                  setMargins({
-                    top: 25.2,
-                    bottom: 25.2,
-                    left: 25.2,
-                    right: 25.2,
-                  });
-                } else if (e.target.value === "None") {
-                  setMargins({
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                  });
-                }
                 setFormState((prevState) => ({
                   ...prevState,
                   margins: e.target.value,
