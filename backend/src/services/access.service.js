@@ -19,9 +19,13 @@ const ROLE = {
 
 class AccessService {
   static generateAccessToken = async () => {
-    const accessToken = jwt.sign({ role: ROLE.STUDENT }, "HCMUT", {
-      expiresIn: "1h",
-    });
+    const accessToken = jwt.sign(
+      { role: ROLE.STUDENT },
+      process.env.ACCESS_TOKEN_SECRET || "HCMUT",
+      {
+        expiresIn: "1h",
+      }
+    );
     return accessToken;
   };
 
