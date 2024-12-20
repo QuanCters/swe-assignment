@@ -34,20 +34,29 @@ function BuyPage() {
   // console.log('Buy: ', recommendedPages);
   const price = 220;
   const [pageCount, setPageCount] = React.useState(recommendedPages);
-
-  let isFromHome = true;
-  if (config) isFromHome = false;
-
+  const [isFromHome, setIsFromHome] = React.useState(() => {
+    return config ? false : true;
+  });
+  
   React.useEffect(() => {
     setPageCount(recommendedPages);
   }, [paymentAmount, pageBalance]);
 
+  React.useEffect(() => {
+    if (isFromHome) {
+      localStorage.setItem('isFromHome', 'true');
+    } else {
+      localStorage.removeItem('isFromHome');
+    }
+  }, [isFromHome]);
+
   const handleConfirm = () => {
-    //pre-check pagecount
-    if (pageCount === 0) {
-      alert("You have entered an invalid number. Please try again.");
+    //pre-check pagecount due to MOMO min at 1000 vnd
+    if (pageCount < 5) {
+      alert("You need to purchase at least 5 pages.");
       return;
     }
+
     if (isFromHome) {
       openModal("ConfirmBuyModal", {
         config: {
@@ -63,14 +72,14 @@ function BuyPage() {
           }, 100);
         },
       });
-    } else {
+    }
+    else {
       openModal("ConfirmBuyModal", {
         config: {
           ...config,
         },
         pageCount: pageCount,
         totalPrice: totalPrice,
-
         navigate: () => {
           setTimeout(() => {
             navigate({
@@ -81,6 +90,7 @@ function BuyPage() {
       });
     }
   };
+
   const totalPrice = pageCount * price;
   const handleDecrement = () => {
     setPageCount((prevValue) => {

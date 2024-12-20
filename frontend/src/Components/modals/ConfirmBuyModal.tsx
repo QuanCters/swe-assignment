@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { updatePageBalance } from "@/api/buy";
+import { confirmThenRedirect } from "@/api/buy";
 import React, { useState } from "react";
 import { useDialog } from "@/hooks/useDialog";
 
@@ -12,23 +12,20 @@ const ConfirmBuyModal: React.FC<{
 }> = ({ config, onClose, navigate, totalPrice, pageCount }) => {
 
   const [password, setPassword] = useState('');
-
+  const [isPending, setIsPending] = useState(false);
+  //handle status API
   const mutation = useMutation({
     mutationFn: (pass: any) => {
-      const data = {
-        pageCount: pageCount,
-      };
       const password = {
         password: pass,
       };
-      return updatePageBalance(data, password);
+
+      const price = {
+        amount: totalPrice,
+      }
+      return confirmThenRedirect(password, price);
     },
     onSuccess: () => {
-      alert(
-        "Successfully bought pages."
-      );
-      onClose();
-      navigate();
     },
     onError: (error) => {
       alert(error);
@@ -39,11 +36,20 @@ const ConfirmBuyModal: React.FC<{
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log('Password: ', password);
 
-    mutation.mutate(password);
+    var data: any
+    //get the data, then do the redirecting
+    try {
+      data = await mutation.mutateAsync(password);
+      console.log(data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      window.location.href = data.message.shortLink;
+    }
   };
 
   const { dialogRef, handleOutsideClick } = useDialog(onClose);

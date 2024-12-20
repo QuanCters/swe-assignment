@@ -41,6 +41,6 @@ const setupLogoutOnClose = () => {
   window.addEventListener("pageshow", () => {
     navigating = false;
   });
+  
 };
-
 export default setupLogoutOnClose;
