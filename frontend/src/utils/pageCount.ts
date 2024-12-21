@@ -9,7 +9,7 @@ export function pageCount(totalPages: number, formState: any): number {
       pagesCount = Math.ceil(totalPages / 2);
       break;
     case "custom":
-      pagesCount = parseCustomPages(formState.customPages, totalPages);
+      pagesCount = parseCustomPages(formState.customPages, totalPages).length;
       break;
     case "all":
     default:
@@ -21,7 +21,10 @@ export function pageCount(totalPages: number, formState: any): number {
   return totalSheets;
 }
 
-function parseCustomPages(customPagesStr: string, totalPages: number): number {
+export function parseCustomPages(
+  customPagesStr: string,
+  totalPages: number
+): Array<number> {
   const ranges = customPagesStr.split(",").map((range) => range.trim());
   const pagesSet = new Set<number>();
 
@@ -41,5 +44,5 @@ function parseCustomPages(customPagesStr: string, totalPages: number): number {
     }
   });
 
-  return Array.from(pagesSet).sort((a, b) => a - b).length;
+  return Array.from(pagesSet).sort((a, b) => a - b);
 }
