@@ -80,7 +80,7 @@ function PrintingHistoryPage() {
       <div className="shadow-lg w-[18\/25] min-w-min h-full px-12 py-16 flex-grow flex flex-col">
         <div className="filters flex items-stretch flex-wrap">
           {/* <DateRangePicker /> */}
-          <Filter column={table.getColumn("date")} placeholder="Age" />
+          <Filter column={table.getColumn("date")} placeholder="Date" />
           {!isSPSO() && (
             <Filter
               column={table.getColumn("documentName")}

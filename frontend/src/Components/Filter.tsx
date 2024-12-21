@@ -45,7 +45,7 @@ function Filter({ column, placeholder }: FilterProps) {
         onChange={(value) =>
           column.setFilterValue((old: [number, number]) => [value, old?.[1]])
         }
-        placeholder={`Min ${placeholder}`}
+        placeholder={`From ${placeholder}`}
         className="border-2 py-1 px-2 m-2 border-[#0052B4] rounded-xl bg-transparent focus-within:border-[#2196F3] focus-within:text-[#2196F3]"
       />
       <DebouncedInput
@@ -55,7 +55,7 @@ function Filter({ column, placeholder }: FilterProps) {
         onChange={(value) =>
           column.setFilterValue((old: [number, number]) => [old?.[0], value])
         }
-        placeholder={`Max ${placeholder}`}
+        placeholder={`To ${placeholder}`}
         className="border-2 py-1 px-2 m-2 border-[#0052B4] rounded-xl bg-transparent focus-within:border-[#2196F3] focus-within:text-[#2196F3]"
       />
     </div>

@@ -55,6 +55,7 @@ const ConfigPrintPage: React.FC = () => {
   });
 
   const [numPages, setNumPages] = useState(0);
+  
   const mutation = useMutation({
     mutationFn: () => {
       if (!file)
@@ -95,7 +96,7 @@ const ConfigPrintPage: React.FC = () => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const userConfirmed = window.confirm(
-      "Are you sure you want to continue? If continue, cannot go back to this back"
+      "Are you sure you want to continue? You can't return to this page once you have confirmed."
     );
     if (!userConfirmed) return;
     const printCount = getCopiesValue();
