@@ -50,9 +50,6 @@ export const confirmThenRedirect = async (password: any, price: any, page: any) 
     return result;
 };
 
-// data: {
-//   pageBalance: number
-// }
 export const updatePageBalance = async (dataPageCount: any) => {
   const access_token = localStorage.getItem("access-token");
   const userID = localStorage.getItem("userID");

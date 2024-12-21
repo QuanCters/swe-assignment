@@ -32,7 +32,7 @@ function BuyPage() {
         ? paymentAmount - pageBalance
         : 1000000;
   // console.log('Buy: ', recommendedPages);
-  const price = 220;
+  const price = 1000;
   const [pageCount, setPageCount] = React.useState(recommendedPages);
   const [isFromHome, setIsFromHome] = React.useState(() => {
     return config ? false : true;
@@ -53,10 +53,6 @@ function BuyPage() {
 
   const handleConfirm = () => {
     //pre-check pagecount due to MOMO min at 1000 vnd
-    if (pageCount < 5) {
-      alert("You need to purchase at least 5 pages.");
-      return;
-    }
 
     if (isFromHome) {
       openModal("ConfirmBuyModal", {

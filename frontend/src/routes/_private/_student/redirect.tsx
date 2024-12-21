@@ -25,7 +25,6 @@ function RouteComponent() {
     },
   });
 
-
   const statusMutation = useMutation({
     mutationFn: (orderId: any) => {
       const data = {
@@ -40,14 +39,15 @@ function RouteComponent() {
 
 
   useEffect(() => {
-    // Code to run on initial load
+    // Check status and then update
+    // they will throw 
     statusMutation.mutate(orderId);
     updateMutation.mutate(pageCount);
       
     localStorage.removeItem('pageCount');
     localStorage.removeItem('orderId');
     localStorage.removeItem('isFromHome');
-    
+
     alert('Success. Navigating back');
     if (isFromHome) {
       navigate({to: '/'});
