@@ -9,21 +9,20 @@ const ConfirmBuyModal: React.FC<{
   navigate: any;
   totalPrice: any;
   pageCount: any;
-}> = ({ config, onClose, navigate, totalPrice, pageCount }) => {
+}> = ({ config, onClose, totalPrice, pageCount }) => {
 
   const [password, setPassword] = useState('');
-  const [isPending, setIsPending] = useState(false);
   //handle status API
   const mutation = useMutation({
     mutationFn: (pass: any) => {
       const password = {
         password: pass,
       };
-
       const price = {
         amount: totalPrice,
       }
-      return confirmThenRedirect(password, price);
+      const page = pageCount
+      return confirmThenRedirect(password, price, page);
     },
     onSuccess: () => {
     },
@@ -39,16 +38,20 @@ const ConfirmBuyModal: React.FC<{
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log('Password: ', password);
-
-    var data: any
+    
+    var data: any;
     //get the data, then do the redirecting
     try {
       data = await mutation.mutateAsync(password);
-      console.log(data)
+      console.log(data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     } finally {
-      window.location.href = data.message.shortLink;
+      if (data && data.message && data.message.shortLink) {
+        window.location.href = data.message.shortLink;
+      } else {
+        console.error('Data or data.message.shortLink is undefined');
+      }
     }
   };
 

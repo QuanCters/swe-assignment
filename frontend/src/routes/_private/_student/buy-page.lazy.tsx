@@ -42,11 +42,12 @@ function BuyPage() {
     setPageCount(recommendedPages);
   }, [paymentAmount, pageBalance]);
 
+  //add isFromHome for redirecting page
   React.useEffect(() => {
     if (isFromHome) {
       localStorage.setItem('isFromHome', 'true');
     } else {
-      localStorage.removeItem('isFromHome');
+      localStorage.setItem('isFromHome', 'false');
     }
   }, [isFromHome]);
 

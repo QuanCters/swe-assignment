@@ -27,7 +27,7 @@ const router = createRouter({
 
 const queryClient = new QueryClient();
 
-setupLogoutOnClose();
+// setupLogoutOnClose();
 
 export default function App() {
   const authentication = useAuth();

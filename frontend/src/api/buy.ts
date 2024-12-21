@@ -2,7 +2,7 @@ import { HttpError } from "@/errors/HttpError";
 
 const BaseUrl = import.meta.env.VITE_API_URL;
 
-export const confirmThenRedirect = async (password: any, price: any) => {
+export const confirmThenRedirect = async (password: any, price: any, page: any) => {
   //First of all, confirm correct password
   const access_token = localStorage.getItem("access-token");
   const userID = localStorage.getItem("userID");
@@ -44,11 +44,16 @@ export const confirmThenRedirect = async (password: any, price: any) => {
   console.log(result);
 
   if (result.message.resultCode != 0) throw new HttpError(result.message.message, result.message.resultCode);
-  else return result;
+
+    localStorage.setItem('pageCount', page);
+    localStorage.setItem('orderId', result.message.orderId);
+    return result;
 };
 
-
-export const updatePageBalance = async (password: any) => {
+// data: {
+//   pageBalance: number
+// }
+export const updatePageBalance = async (dataPageCount: any) => {
   const access_token = localStorage.getItem("access-token");
   const userID = localStorage.getItem("userID");
   if (!access_token || !userID) {
@@ -56,6 +61,19 @@ export const updatePageBalance = async (password: any) => {
       "Access token or userID not found. Please try to login again"
     );
   }
+  // const responseOrder = await fetch(`${BaseUrl}/payment/status`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     CLIENT_ID: "x-client-id",
+  //     AUTHORIZATION: access_token,
+  //   },
+  //   body: JSON.stringify(dataOrderId),
+  // });
+  // if (!responseOrder.ok) throw new HttpError(responseOrder.statusText, responseOrder.status);
+  // const resultOrder = await responseOrder.json();
+
+  // if (resultOrder.orderId != 0) throw new HttpError(responseOrder.statusText, responseOrder.status);
 
   //then update balance
   const response = await fetch(`${BaseUrl}/student/${userID}/buyPages`, {
@@ -65,7 +83,7 @@ export const updatePageBalance = async (password: any) => {
       CLIENT_ID: "x-client-id",
       AUTHORIZATION: access_token,
     },
-    body: JSON.stringify(page),
+    body: JSON.stringify(dataPageCount),
   });
 
   if (!response.ok) throw new HttpError(response.statusText, response.status);
@@ -73,6 +91,27 @@ export const updatePageBalance = async (password: any) => {
   return result;
 };
 
+export const checkStatus = async (dataOrderId: any) => {
+  const access_token = localStorage.getItem("access-token");
+  const userID = localStorage.getItem("userID");
+  if (!access_token || !userID) {
+    throw new Error(
+      "Access token or userID not found. Please try to login again"
+    );
+  }
+  const responseOrder = await fetch(`${BaseUrl}/payment/status`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      CLIENT_ID: "x-client-id",
+      AUTHORIZATION: access_token,
+    },
+    body: JSON.stringify(dataOrderId),
+  });
+  if (!responseOrder.ok) throw new HttpError(responseOrder.statusText, responseOrder.status);
+  const resultOrder = await responseOrder.json();
+  return resultOrder;
+}
 // export const confirmPassword = async (data: any) => {
 //   const access_token = localStorage.getItem("access-token");
 //   const userID = localStorage.getItem("userID");

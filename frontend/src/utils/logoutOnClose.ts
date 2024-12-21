@@ -42,5 +42,7 @@ const setupLogoutOnClose = () => {
     navigating = false;
   });
   
+  window.
+  
 };
 export default setupLogoutOnClose;
