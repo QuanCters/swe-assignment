@@ -106,23 +106,44 @@ To use the application, follow these steps:
 
 ### Prerequisite
 
-Before running the project, install *Docker*
+Before running the project, install *Docker* and *Git*
 
 ### Clone project 
+To install the project into your local directory, do the following:
 
-Open your terminal, "cd" your folder that you want to clone your project to, then run this command:
-
-```
-git clone https://github.com/QuanCters/swe-assignment.git
-```
+1. Open your terminal (by typing command prompt in Windows Search and click the icon to run)
+2. Run this command to "cd" to your folder that you want the project to be saved on
+  ```
+  cd <working directory>
+  ```
+  For example, if you want to save the project into "D:\test\" type the following:
+  ```
+  cd "D:\test\"
+  ```
+3. Then clone your project by typing this command (make sure to install git before running this command)
+  ```
+  git clone https://github.com/QuanCters/swe-assignment.git
+  ```
+  
 
 ## Using the system
 
-To run the project, open your terminal and run the following command:
+To run the project:
+1. Open Docker and make sure you log in successfully
+2. Open your terminal and "cd" to your directory by typing:
+```
+cd <working directory>
+```
+For example, if the project is located in "D:\test\swe-assignment", type:
+```
+cd "D:\test\swe-assignment\"
+```
+3. Run this command to start the project
 
 ```
 docker compose up
 ```
+The project will be started within [http://localhost:3000/](http://localhost:3000/)
 
 ## Credit
 
