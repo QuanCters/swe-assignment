@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "mkdir -p dist && cp -r src/* dist/ && cp server.js dist/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +15,9 @@
   "dependencies": {
     "compression": "^1.7.5",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "helmet": "^8.0.0",
-    "json-web-token": "^3.2.0",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
@@ -27,6 +26,8 @@
     "@types/express": "^4.17.21",
     "@types/node": "^22.5.4",
     "@types/swagger-jsdoc": "^6.0.4",
-    "@types/swagger-ui-express": "^4.1.7"
+    "@types/swagger-ui-express": "^4.1.7",
+    "dotenv": "^16.4.7",
+    "morgan": "^1.10.0"
   }
 }

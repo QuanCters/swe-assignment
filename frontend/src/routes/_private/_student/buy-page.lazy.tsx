@@ -1,34 +1,36 @@
 import * as React from "react";
 import { useRouterState, useNavigate } from "@tanstack/react-router";
 
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { useModal } from '@/context/ModalContext'
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { useModal } from "@/context/ModalContext";
 import { getCurrentStudentPageBalance } from "@/api/student";
 import { useQuery } from "@tanstack/react-query";
 
-export const Route = createLazyFileRoute('/_private/_student/buy-page')({
+export const Route = createLazyFileRoute("/_private/_student/buy-page")({
   component: BuyPage,
-})
+});
 
 function BuyPage() {
   //preload
-  const navigate = useNavigate()
-  const { openModal } = useModal()
-  const routerState = useRouterState()
+  const navigate = useNavigate();
+  const { openModal } = useModal();
+  const routerState = useRouterState();
 
   //fetching
-  const { data } = useQuery(
-    ['pageBalance'],
-    () => getCurrentStudentPageBalance(),
-  )
-  const config = routerState.location.state.config
+  const { data } = useQuery(["pageBalance"], () =>
+    getCurrentStudentPageBalance()
+  );
+  const config = routerState.location.state.config;
 
   const pageBalance = data;
   const paymentAmount = config?.paymentAmount ?? 0;
   //fix recommended pages input
-  const recommendedPages = (paymentAmount - pageBalance < 0) ? 1 :
-    (paymentAmount - pageBalance <= 1000000) ? (paymentAmount - pageBalance) :
-    1000000;
+  const recommendedPages =
+    paymentAmount - pageBalance < 0
+      ? 1
+      : paymentAmount - pageBalance <= 1000000
+        ? paymentAmount - pageBalance
+        : 1000000;
   // console.log('Buy: ', recommendedPages);
   const price = 220;
   const [pageCount, setPageCount] = React.useState(recommendedPages);
@@ -40,15 +42,29 @@ function BuyPage() {
     setPageCount(recommendedPages);
   }, [paymentAmount, pageBalance]);
 
-
   const handleConfirm = () => {
     //pre-check pagecount
     if (pageCount === 0) {
-      alert('You have entered an invalid number. Please try again.');
+      alert("You have entered an invalid number. Please try again.");
       return;
     }
     if (isFromHome) {
-      openModal('ConfirmBuyModal', {
+      openModal("ConfirmBuyModal", {
+        config: {
+          ...config,
+        },
+        pageCount: pageCount,
+        totalPrice: totalPrice,
+        navigate: () => {
+          setTimeout(() => {
+            navigate({
+              to: "/",
+            });
+          }, 100);
+        },
+      });
+    } else {
+      openModal("ConfirmBuyModal", {
         config: {
           ...config,
         },
@@ -58,48 +74,31 @@ function BuyPage() {
         navigate: () => {
           setTimeout(() => {
             navigate({
-              to: '/',
-            })
-          }, 100)
+              to: "/print",
+            });
+          }, 100);
         },
-      })
+      });
     }
-    else {
-      openModal('ConfirmBuyModal', {
-        config: {
-          ...config,
-        },
-        pageCount: pageCount,
-        totalPrice: totalPrice,
-
-        navigate: () => {
-          setTimeout(() => {
-            navigate({
-              to: '/print',
-            })
-          }, 100)
-        },
-      })
-    }
-  }
-  const totalPrice = pageCount * price
+  };
+  const totalPrice = pageCount * price;
   const handleDecrement = () => {
-    setPageCount((prevValue) =>  {
+    setPageCount((prevValue) => {
       if (prevValue - 1 >= 1) return prevValue - 1;
       else return prevValue;
-    })
-  }
+    });
+  };
 
   const handleIncrement = () => {
     setPageCount((prevValue) => {
       if (prevValue + 1 <= 1000000) return prevValue + 1;
       else return prevValue;
-    })
-  }
+    });
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (/^\d*$/.test(e.target.value) && Number(e.target.value) <= 1000000)
-      setPageCount(Number(e.target.value))
-  }
+      setPageCount(Number(e.target.value));
+  };
 
   return (
     <main className="flex overflow-hidden flex-col flex-1 justify-center px-16 py-8 w-full max-md:px-5 max-md:max-w-full">
@@ -133,18 +132,18 @@ function BuyPage() {
                     {price} vnđ/page
                   </div>
                 </div>
-                {!isFromHome &&
+                {!isFromHome && (
                   <div>
                     <dt className="inline text-xl">Recommended purchase: </dt>
                     <dd className="inline font-bold text-xl text-sky-500">
                       {recommendedPages} A4 pages
                     </dd>
                   </div>
-                }
+                )}
               </dl>
               <div className="mt-2.5 text-xl text-black text-opacity-90 max-md:max-w-full">
-                <strong>Note</strong>: printing pages with bigger sizes will cost an
-                equal number of A4 pages.
+                <strong>Note</strong>: printing pages with bigger sizes will
+                cost an equal number of A4 pages.
                 <br />
                 (For example: a document with 16 A3 pages will cost 32 A4 pages)
               </div>
@@ -213,6 +212,5 @@ function BuyPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }
-

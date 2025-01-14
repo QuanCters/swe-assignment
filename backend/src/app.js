@@ -1,12 +1,16 @@
-require("dotenv").config();
 const express = require("express");
-const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 const swaggerDocs = require("./swagger").default;
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 // init middlewares
-app.use(morgan("dev"));
+if (process.env.NODE_ENV !== "production") {
+  const morgan = require("morgan");
+  app.use(morgan("dev"));
+}
 app.use(express.json());
 app.use(cors());
 app.use(
