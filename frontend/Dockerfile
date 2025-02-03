@@ -1,14 +1,5 @@
-FROM node:23-alpine 
+FROM nginx:alpine
 
-WORKDIR /app
+EXPOSE 80
 
-COPY frontend/package.json ./
-
-RUN npm install 
-
-COPY frontend/ ./
-
-EXPOSE 3000 
-
-CMD ["npm", "run", "dev"]
-
+COPY frontend/build /usr/share/nginx/html
